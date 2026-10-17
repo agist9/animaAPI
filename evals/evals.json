@@ -50,6 +50,11 @@
       "id": 10,
       "prompt": "/anima rx show what imatinib does in the body, from the tablet to the leukemic cell",
       "expected_output": "Uses the imatinib dossier in rx/dossiers/. The page follows the drug from mouth to intestine, liver, blood and bone marrow, then shows the BCR-ABL kinase scene, where imatinib occupies the ATP site and the phosphorylation signal falls with occupancy, before metabolism by CYP3A4 and elimination mostly in feces. Every number (98% bioavailability, about 95% protein binding, half-lives of about 18 and 40 h, 68% in feces and 13% in urine) cites the Gleevec label. No dose appears."
+    },
+    {
+      "id": 11,
+      "prompt": "/anima rx CGT9486 tablet",
+      "expected_output": "Recognises CGT9486 as bezuclastinib (formerly PLX9486) and uses or writes rx/dossiers/bezuclastinib.json with route oral. The figure uses the receptor-tyrosine-kinase scene: KIT D816V, active without SCF, with bezuclastinib as a type I inhibitor in the ATP site. The target step is the bone marrow, citing D816V in 93% of adults with indolent or aggressive SM. Human pharmacokinetics (bioavailability, metabolism, half-life, protein binding, excretion) are listed as optional needs, not invented. Trial and regulatory facts are cited and dated, and no dose appears."
     }
   ]
 }

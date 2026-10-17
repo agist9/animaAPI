@@ -3,6 +3,8 @@ body{margin:0}
 .iso{color-scheme:dark;min-height:100%;background:var(--anatomy-page);color:var(--anatomy-text);font:14px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .iso[data-theme="light"]{color-scheme:light}
 .iso{--rx-drug:var(--anatomy-lit);--rx-sig:var(--anatomy-green);--rx-bad:var(--anatomy-red);--rx-rna:var(--anatomy-blue)}
+.iso{--rx-need:#f0b43c;--rx-need-bg:#f0b43c1f}
+.iso[data-theme="light"]{--rx-need:#a35f00;--rx-need-bg:#a35f0014}
 .rx-page{width:min(1120px,100%);margin:0 auto;padding-block:28px 96px}
 .rx-search,.rx-stage>*,.rx-now{min-width:0}
 .rx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -13,8 +15,11 @@ code{font-family:var(--anatomy-mono);font-size:.92em}
 .rx-brand{display:flex;flex-direction:column;line-height:1.2;margin-right:auto}
 .rx-brand b{font:600 15px var(--anatomy-mono);color:var(--anatomy-strong);letter-spacing:.04em}
 .rx-brand span{font:11px var(--anatomy-mono);color:var(--anatomy-muted);letter-spacing:.08em;text-transform:uppercase}
-.rx-search{display:flex;gap:8px;flex:1 1 420px;max-width:620px}
-.rx-search input{flex:1;min-width:0;background:var(--anatomy-card);border:1px solid var(--anatomy-lo);color:var(--anatomy-strong);font:14px var(--anatomy-mono);padding:10px 12px}
+.rx-search{display:flex;flex-wrap:wrap;gap:8px;flex:1 1 520px;max-width:720px}
+.rx-search select{flex:0 1 230px;min-width:0;background:var(--anatomy-card);border:1px solid var(--anatomy-lo);color:var(--anatomy-strong);font:13px var(--anatomy-mono);padding:9px 8px;max-width:100%}
+.rx-search select:focus{outline:2px solid var(--anatomy-lit);outline-offset:1px}
+.rx-engine{flex-basis:100%;margin:0;font:11px var(--anatomy-mono);color:var(--anatomy-muted)}
+.rx-search input{flex:1 1 200px;min-width:0;background:var(--anatomy-card);border:1px solid var(--anatomy-lo);color:var(--anatomy-strong);font:14px var(--anatomy-mono);padding:10px 12px}
 .rx-search input:focus{outline:2px solid var(--anatomy-lit);outline-offset:1px}
 .rx-tools{display:flex;gap:6px;flex-wrap:wrap}
 button{font:12.5px var(--anatomy-mono);color:var(--anatomy-text);background:transparent;border:1px solid var(--anatomy-faint);padding:7px 11px;cursor:pointer}
@@ -202,3 +207,28 @@ footer.rx-foot a{color:var(--anatomy-text)}
   .rx-facts dl{grid-template-columns:1fr}.rx-facts dt{border-top:1px solid var(--anatomy-faint);padding-bottom:0}.rx-facts dd{border-top:0;padding-top:2px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* fields that still need the user's input */
+.rx-needs{display:flex;flex-direction:column;gap:6px;margin:0 0 12px;padding:10px 12px;border:1px solid var(--rx-need);background:var(--rx-need-bg)}
+.rx-needs>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.rx-needs-h{font:600 11.5px var(--anatomy-mono);color:var(--anatomy-text);margin-right:4px}
+.rx-needs-h.rx-req{color:var(--rx-need)}
+.rx-need-chip{font-size:11.5px;padding:4px 8px;border-style:dashed}
+.rx-need-chip.rx-req{border:1px solid var(--rx-need);border-style:solid;color:var(--anatomy-strong)}
+.rx-flag{display:block;font-style:normal;font-size:10px;color:var(--anatomy-muted)}
+.rx-flag.rx-req{color:var(--rx-need);font-weight:600}
+.rx-steps button:has(.rx-flag.rx-req){border-color:var(--rx-need)}
+.rx-now-need{display:block;margin-top:6px;font-size:12px;color:var(--anatomy-muted)}
+.rx-now-need button{font-size:11.5px;padding:3px 7px;border-style:dashed}
+.rx-now-need.rx-req button{border:1px solid var(--rx-need);color:var(--anatomy-strong)}
+.rx-missing{color:var(--anatomy-muted);font-style:italic}
+.rx-need-cell{font-size:11.5px;padding:3px 7px;border-style:dashed;color:var(--anatomy-muted)}
+.rx-need-cell.rx-req{border:1px solid var(--rx-need);border-style:solid;color:var(--anatomy-strong)}
+.rx-edit .rx-need{outline:2px solid var(--rx-need)!important;outline-offset:1px;background:var(--rx-need-bg)!important}
+.rx-edit .rx-need-opt{outline:1px dashed var(--rx-need);outline-offset:1px}
+.rx-edit fieldset.rx-need,.rx-edit fieldset.rx-need-opt{outline-offset:-1px}
+.rx-need-note{display:block;grid-column:1/-1;font:11px var(--anatomy-mono);color:var(--anatomy-muted);margin:3px 0 2px}
+.rx-need-note.rx-req{color:var(--rx-need);font-weight:600}
+.rx-key{display:inline-flex;align-items:center;gap:5px;margin-left:10px}
+.rx-key i{width:12px;height:12px;display:inline-block;outline:1px dashed var(--rx-need)}
+.rx-key i.rx-req{outline:2px solid var(--rx-need);background:var(--rx-need-bg)}

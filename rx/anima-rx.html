@@ -112,6 +112,8 @@ body{margin:0}
 .iso{color-scheme:dark;min-height:100%;background:var(--anatomy-page);color:var(--anatomy-text);font:14px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .iso[data-theme="light"]{color-scheme:light}
 .iso{--rx-drug:var(--anatomy-lit);--rx-sig:var(--anatomy-green);--rx-bad:var(--anatomy-red);--rx-rna:var(--anatomy-blue)}
+.iso{--rx-need:#f0b43c;--rx-need-bg:#f0b43c1f}
+.iso[data-theme="light"]{--rx-need:#a35f00;--rx-need-bg:#a35f0014}
 .rx-page{width:min(1120px,100%);margin:0 auto;padding-block:28px 96px}
 .rx-search,.rx-stage>*,.rx-now{min-width:0}
 .rx-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -122,8 +124,11 @@ code{font-family:var(--anatomy-mono);font-size:.92em}
 .rx-brand{display:flex;flex-direction:column;line-height:1.2;margin-right:auto}
 .rx-brand b{font:600 15px var(--anatomy-mono);color:var(--anatomy-strong);letter-spacing:.04em}
 .rx-brand span{font:11px var(--anatomy-mono);color:var(--anatomy-muted);letter-spacing:.08em;text-transform:uppercase}
-.rx-search{display:flex;gap:8px;flex:1 1 420px;max-width:620px}
-.rx-search input{flex:1;min-width:0;background:var(--anatomy-card);border:1px solid var(--anatomy-lo);color:var(--anatomy-strong);font:14px var(--anatomy-mono);padding:10px 12px}
+.rx-search{display:flex;flex-wrap:wrap;gap:8px;flex:1 1 520px;max-width:720px}
+.rx-search select{flex:0 1 230px;min-width:0;background:var(--anatomy-card);border:1px solid var(--anatomy-lo);color:var(--anatomy-strong);font:13px var(--anatomy-mono);padding:9px 8px;max-width:100%}
+.rx-search select:focus{outline:2px solid var(--anatomy-lit);outline-offset:1px}
+.rx-engine{flex-basis:100%;margin:0;font:11px var(--anatomy-mono);color:var(--anatomy-muted)}
+.rx-search input{flex:1 1 200px;min-width:0;background:var(--anatomy-card);border:1px solid var(--anatomy-lo);color:var(--anatomy-strong);font:14px var(--anatomy-mono);padding:10px 12px}
 .rx-search input:focus{outline:2px solid var(--anatomy-lit);outline-offset:1px}
 .rx-tools{display:flex;gap:6px;flex-wrap:wrap}
 button{font:12.5px var(--anatomy-mono);color:var(--anatomy-text);background:transparent;border:1px solid var(--anatomy-faint);padding:7px 11px;cursor:pointer}
@@ -311,11 +316,36 @@ footer.rx-foot a{color:var(--anatomy-text)}
   .rx-facts dl{grid-template-columns:1fr}.rx-facts dt{border-top:1px solid var(--anatomy-faint);padding-bottom:0}.rx-facts dd{border-top:0;padding-top:2px}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* fields that still need the user's input */
+.rx-needs{display:flex;flex-direction:column;gap:6px;margin:0 0 12px;padding:10px 12px;border:1px solid var(--rx-need);background:var(--rx-need-bg)}
+.rx-needs>div{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.rx-needs-h{font:600 11.5px var(--anatomy-mono);color:var(--anatomy-text);margin-right:4px}
+.rx-needs-h.rx-req{color:var(--rx-need)}
+.rx-need-chip{font-size:11.5px;padding:4px 8px;border-style:dashed}
+.rx-need-chip.rx-req{border:1px solid var(--rx-need);border-style:solid;color:var(--anatomy-strong)}
+.rx-flag{display:block;font-style:normal;font-size:10px;color:var(--anatomy-muted)}
+.rx-flag.rx-req{color:var(--rx-need);font-weight:600}
+.rx-steps button:has(.rx-flag.rx-req){border-color:var(--rx-need)}
+.rx-now-need{display:block;margin-top:6px;font-size:12px;color:var(--anatomy-muted)}
+.rx-now-need button{font-size:11.5px;padding:3px 7px;border-style:dashed}
+.rx-now-need.rx-req button{border:1px solid var(--rx-need);color:var(--anatomy-strong)}
+.rx-missing{color:var(--anatomy-muted);font-style:italic}
+.rx-need-cell{font-size:11.5px;padding:3px 7px;border-style:dashed;color:var(--anatomy-muted)}
+.rx-need-cell.rx-req{border:1px solid var(--rx-need);border-style:solid;color:var(--anatomy-strong)}
+.rx-edit .rx-need{outline:2px solid var(--rx-need)!important;outline-offset:1px;background:var(--rx-need-bg)!important}
+.rx-edit .rx-need-opt{outline:1px dashed var(--rx-need);outline-offset:1px}
+.rx-edit fieldset.rx-need,.rx-edit fieldset.rx-need-opt{outline-offset:-1px}
+.rx-need-note{display:block;grid-column:1/-1;font:11px var(--anatomy-mono);color:var(--anatomy-muted);margin:3px 0 2px}
+.rx-need-note.rx-req{color:var(--rx-need);font-weight:600}
+.rx-key{display:inline-flex;align-items:center;gap:5px;margin-left:10px}
+.rx-key i{width:12px;height:12px;display:inline-block;outline:1px dashed var(--rx-need)}
+.rx-key i.rx-req{outline:2px solid var(--rx-need);background:var(--rx-need-bg)}
 </style></head>
 <body class="iso"><main class="rx-page">
 <header class="rx-head">
   <div class="rx-brand"><b>Anima Rx</b><span>drug · body · cell</span></div>
-  <form class="rx-search" id="rx-search" role="search"><label class="rx-sr" for="rx-q">Drug name or code</label><input id="rx-q" list="rx-list" placeholder="API name or code, e.g. imatinib or CGT1815" autocomplete="off" spellcheck="false"><datalist id="rx-list"></datalist><button type="submit">Visualize</button></form>
+  <form class="rx-search" id="rx-search" role="search"><label class="rx-sr" for="rx-q">Drug name or code</label><input id="rx-q" list="rx-list" placeholder="API name or code, e.g. CGT9486" autocomplete="off" spellcheck="false"><datalist id="rx-list"></datalist><label class="rx-sr" for="rx-form-sel">Dosage form</label><select id="rx-form-sel"></select><button type="submit">Go</button><p class="rx-engine" id="rx-engine"></p></form>
   <div class="rx-tools"><button type="button" data-act="open">Open dossier…</button><input type="file" id="rx-file" accept=".json,application/json" hidden><button type="button" data-act="new">New dossier</button><button type="button" data-act="theme">Light theme</button></div>
 </header>
 <nav class="rx-lib" id="rx-lib" aria-label="Dossiers on this page"></nav>
@@ -324,7 +354,7 @@ footer.rx-foot a{color:var(--anatomy-text)}
 <details id="rx-edit" class="rx-edit"><summary>Dossier editor: build one for an internal code, or edit the one on screen</summary><div id="rx-form"></div></details>
 <footer class="rx-foot">Anima Rx is part of <a href="https://github.com/Garinmckayl/anima">Anima</a>. Educational illustrations of mechanism only: no doses, schedules or recommendations. Dossiers you create or open stay in this browser.</footer>
 </main>
-<script>window.__RX_DOSSIERS__=[{"id":"imatinib","name":"Imatinib","aliases":["STI571","STI-571","Gleevec","Glivec","CGP 57148B","imatinib mesylate"],"modality":"small-molecule","status":"Approved","summary":"A small-molecule kinase inhibitor. It holds the BCR-ABL tyrosine kinase, the abnormal enzyme made by the Philadelphia chromosome in chronic myeloid leukemia, in an inactive shape, so the growth signal it drives stops.","target":{"name":"BCR-ABL tyrosine kinase","short":"BCR-ABL","class":"enzyme","action":"inhibitor","cell":"Philadelphia-chromosome-positive leukemic cell","labels":{"pocket":"ATP site","product":"phosphorylated substrate","signal":"growth signal"}},"binding":true,"journey":[{"site":"mouth","title":"Swallowed","text":"Imatinib is taken by mouth as a tablet.","cite":[1]},{"site":"stomach","title":"Dissolves","text":"The tablet dissolves and the drug moves on to the small intestine."},{"site":"intestine","title":"Absorbed","text":"Imatinib crosses the intestinal wall into the portal blood. Absorption is nearly complete: mean absolute bioavailability of the capsule formulation is 98%.","cite":[1]},{"site":"liver","title":"First pass through the liver","text":"Portal blood carries it through the liver before it reaches the general circulation. Little is lost on this pass, consistent with the 98% bioavailability.","cite":[1]},{"site":"blood","title":"Carried in the blood","text":"About 95% is bound to plasma proteins, mostly albumin and α1-acid glycoprotein. Only the unbound fraction can leave the blood and enter cells.","cite":[1]},{"site":"bone-marrow","title":"Reaches the leukemic cells","text":"In chronic myeloid leukemia the target cells are Philadelphia-chromosome-positive cells in the bone marrow and blood.","cite":[1],"target":true},{"site":"liver","title":"Metabolised","text":"CYP3A4 is the main enzyme that metabolises imatinib. The main circulating metabolite, the N-desmethyl piperazine derivative, is also active. Half-lives are about 18 h for imatinib and 40 h for the metabolite.","cite":[1]},{"site":"intestine","title":"Eliminated, mostly in feces","text":"About 81% of a dose is eliminated within 7 days, 68% of it in feces (via bile), mostly as metabolites.","cite":[1]},{"site":"bladder","title":"and some in urine","text":"The remaining 13% of the dose that is eliminated in 7 days leaves in urine.","cite":[1]}],"mechanism":[{"title":"Enters the cell","text":"Imatinib crosses the cell membrane to reach BCR-ABL, which sits in the cytoplasm.","cite":[1]},{"title":"Locks the kinase shut","text":"It binds the ATP site of the ABL kinase domain while the kinase is in its inactive conformation, and holds it there.","cite":[2]},{"title":"No phosphate is passed on","text":"With the site occupied, BCR-ABL cannot move phosphate from ATP onto its substrate proteins, so the growth signal it drives stops.","cite":[1,2]},{"title":"The leukemic cell stops growing","text":"Without BCR-ABL signalling, BCR-ABL-positive cells stop proliferating and many undergo apoptosis (programmed cell death).","cite":[1]}],"facts":[{"label":"Absolute bioavailability","value":"98% (capsule formulation, mean)","cite":[1]},{"label":"Plasma protein binding","value":"≈95%, mostly albumin and α1-acid glycoprotein","cite":[1]},{"label":"Main metabolising enzyme","value":"CYP3A4","cite":[1]},{"label":"Elimination half-life","value":"≈18 h (imatinib), ≈40 h (N-desmethyl metabolite)","cite":[1]},{"label":"Elimination within 7 days","value":"≈81% of dose: 68% feces, 13% urine","cite":[1]},{"label":"Other kinases inhibited","value":"PDGF receptor and KIT (stem cell factor receptor)","cite":[1]}],"simplified":["Uptake into the cell is drawn as simple diffusion; transporters such as OCT-1 may contribute and their role is debated.","BCR-ABL drives several pathways (for example RAS/MAPK, PI3K/AKT and STAT5); they are drawn as one growth signal.","The body map is a schematic. Organ shapes and positions are approximate and not to scale."],"sources":[{"id":1,"text":"Gleevec (imatinib mesylate) tablets, US Prescribing Information, Novartis. Sections 12.1 Mechanism of Action and 12.3 Pharmacokinetics.","url":"https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=gleevec"},{"id":2,"text":"Schindler T, Bornmann W, Pellicena P, Miller WT, Clarkson B, Kuriyan J. Structural mechanism for STI-571 inhibition of Abelson tyrosine kinase. Science. 2000;289(5486):1938–1942.","url":"https://doi.org/10.1126/science.289.5486.1938"}]},{"id":"onasemnogene-abeparvovec","name":"Onasemnogene abeparvovec","aliases":["Zolgensma","AVXS-101","onasemnogene"],"modality":"gene-therapy","status":"Approved","summary":"An AAV9 gene therapy for spinal muscular atrophy. A non-replicating viral capsid carries a working copy of the gene for SMN protein into motor neurons, where it is expressed without integrating into the chromosomes.","target":{"name":"SMN gene replacement in motor neurons","short":"SMN","class":"gene","action":"expression","vector":"AAV","cell":"Spinal motor neuron","labels":{"vector":"AAV9 capsid","transgene":"SMN transgene","protein":"SMN protein"}},"binding":false,"journey":[{"site":"iv","title":"Infused into a vein","text":"Given once as an intravenous infusion.","cite":[1]},{"site":"blood","title":"Carried in the blood","text":"The AAV9 capsid can cross the blood–brain barrier, which lets an intravenous dose reach neurons in the spinal cord.","cite":[2]},{"site":"spinal-cord","title":"Reaches motor neurons","text":"In spinal muscular atrophy, motor neurons in the spinal cord lack enough SMN protein because SMN1 is lost or mutated.","cite":[1],"target":true},{"site":"liver","title":"Also reaches the liver","text":"AAV9 also transduces the liver. Acute serious liver injury and acute liver failure carry a boxed warning, so liver function is monitored.","cite":[1]},{"site":"bladder","title":"Vector DNA is shed","text":"Vector DNA is shed for a time in saliva, urine and stool.","cite":[1]}],"mechanism":[{"title":"The capsid attaches","text":"The AAV9 capsid binds the cell surface and is taken up by endocytosis.","cite":[3]},{"title":"It travels to the nucleus","text":"The capsid escapes the endosome and moves toward the nucleus.","cite":[3]},{"title":"The gene is delivered","text":"In the nucleus the capsid releases its self-complementary DNA, which persists mostly as a separate episome rather than integrating into the chromosomes.","cite":[1,3]},{"title":"SMN protein is made","text":"The SMN transgene, driven by a CMV enhancer / chicken-β-actin hybrid promoter, is transcribed and translated into SMN protein.","cite":[1]}],"facts":[{"label":"Vector","value":"Non-replicating recombinant AAV9","cite":[1]},{"label":"Genome","value":"Self-complementary DNA carrying human SMN cDNA","cite":[1]},{"label":"Promoter","value":"CMV enhancer / chicken-β-actin hybrid","cite":[1]},{"label":"Fate in the nucleus","value":"Persists mostly as a non-integrated episome","cite":[3]},{"label":"Boxed warning","value":"Acute serious liver injury and acute liver failure","cite":[1]}],"simplified":["Receptor binding, endosomal escape and nuclear entry are each shown as one step. AAV entry involves several receptors and trafficking routes.","Uncoating is shown at the nucleus; where AAV capsids actually uncoat is still being studied.","The body map is a schematic. The spinal cord is drawn on the midline, in front of the organs, for visibility."],"sources":[{"id":1,"text":"ZOLGENSMA (onasemnogene abeparvovec-xioi) suspension for intravenous infusion, US Prescribing Information, Novartis Gene Therapies. Boxed warning, sections 11 and 12.","url":"https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=zolgensma"},{"id":2,"text":"Foust KD, Nurre E, Montgomery CL, Hernandez A, Chan CM, Kaspar BK. Intravascular AAV9 preferentially targets neonatal neurons and adult astrocytes. Nat Biotechnol. 2009;27(1):59–65.","url":"https://doi.org/10.1038/nbt.1515"},{"id":3,"text":"Wang D, Tai PWL, Gao G. Adeno-associated virus vector as a platform for gene therapy delivery. Nat Rev Drug Discov. 2019;18(5):358–378.","url":"https://doi.org/10.1038/s41573-019-0012-9"}]},{"id":"pembrolizumab","name":"Pembrolizumab","aliases":["Keytruda","MK-3475","lambrolizumab"],"modality":"antibody","status":"Approved","summary":"A humanised IgG4 monoclonal antibody against PD-1, an off switch on T cells. Blocking PD-1 stops tumour cells from using PD-L1 and PD-L2 to switch T cells off.","target":{"name":"PD-1 receptor on T cells","short":"PD-1","class":"checkpoint","action":"blocker","cell":"T cell facing a tumour cell","labels":{"receptor":"PD-1","ligand":"PD-L1","effector":"T cell","target":"tumour cell"}},"binding":true,"journey":[{"site":"iv","title":"Infused into a vein","text":"Pembrolizumab is given as an intravenous infusion, so it enters the bloodstream directly, with no absorption step.","cite":[1]},{"site":"blood","title":"Circulates for weeks","text":"Like other IgG antibodies it is rescued from breakdown by the neonatal Fc receptor (FcRn), which helps give it a terminal half-life of about 22 days.","cite":[1,2]},{"site":"lymph-nodes","title":"Meets T cells in lymph nodes","text":"PD-1 is found on activated T cells. Blocking it can act on T cells in lymph nodes as well as in the tumour.","cite":[3]},{"site":"tumor","title":"Reaches the tumour","text":"In the tumour, tumour cells and some immune cells can display PD-L1, which switches T cells off through PD-1.","cite":[1,3],"target":true},{"site":"tissues","title":"Broken down like other proteins","text":"Antibodies are cleared mainly by protein catabolism inside cells throughout the body, not by liver CYP enzymes or kidney filtration of the intact molecule.","cite":[2]}],"mechanism":[{"title":"The brake is on","text":"PD-L1 or PD-L2 on the tumour cell engages PD-1 on the T cell and damps down its activity.","cite":[1]},{"title":"Pembrolizumab binds PD-1","text":"The antibody binds PD-1 and blocks its interaction with PD-L1 and PD-L2.","cite":[1]},{"title":"The brake is released","text":"Releasing PD-1 pathway inhibition restores T-cell activity, including the anti-tumour response.","cite":[1]},{"title":"T cells attack the tumour","text":"Reactivated T cells can recognise and kill tumour cells. The same release of brakes on T cells in healthy tissue causes immune-mediated side effects.","cite":[1,3]}],"facts":[{"label":"Molecule","value":"Humanised monoclonal IgG4-κ antibody","cite":[1]},{"label":"Target","value":"PD-1; blocks binding of PD-L1 and PD-L2","cite":[1]},{"label":"Terminal half-life","value":"≈22 days","cite":[1]},{"label":"Clearance","value":"Protein catabolism; no CYP metabolism","cite":[2]}],"simplified":["The tumour–T-cell contact is drawn as one flat interface. Real immune synapses are 3D and hold many other receptor pairs.","T-cell activation also needs the T-cell receptor to recognise antigen on MHC; the figure shows only the PD-1 brake.","The body map is a schematic, and the tumour position is illustrative only."],"sources":[{"id":1,"text":"KEYTRUDA (pembrolizumab) injection, US Prescribing Information, Merck Sharp & Dohme. Sections 12.1 Mechanism of Action and 12.3 Pharmacokinetics.","url":"https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=keytruda"},{"id":2,"text":"Ryman JT, Meibohm B. Pharmacokinetics of monoclonal antibodies. CPT Pharmacometrics Syst Pharmacol. 2017;6(9):576–588.","url":"https://doi.org/10.1002/psp4.12224"},{"id":3,"text":"Ribas A, Wolchok JD. Cancer immunotherapy using checkpoint blockade. Science. 2018;359(6382):1350–1355.","url":"https://doi.org/10.1126/science.aar4060"}]},{"id":"tisagenlecleucel","name":"Tisagenlecleucel","aliases":["Kymriah","CTL019","tisa-cel"],"modality":"cell-therapy","status":"Approved","summary":"An autologous CAR-T cell therapy. The patient's own T cells are engineered with a lentiviral vector to carry a chimeric antigen receptor (CAR) against CD19, then given back to find and kill CD19-positive B cells.","target":{"name":"CD19 on B cells","short":"CD19","class":"car","action":"cytotoxic","cell":"CAR-T cell meeting a malignant B cell","labels":{"receptor":"anti-CD19 CAR","antigen":"CD19","effector":"CAR-T cell","target":"malignant B cell"}},"binding":false,"journey":[{"site":"iv","title":"T cells are collected","text":"White blood cells are collected from the patient's own blood by leukapheresis.","cite":[1]},{"site":"ex-vivo","title":"Engineered outside the body","text":"At the manufacturing site, the T cells are transduced with a lentiviral vector encoding the anti-CD19 CAR, expanded, then formulated and cryopreserved as the drug product.","cite":[1]},{"site":"iv","title":"Infused back","text":"The patient's own modified T cells are returned by intravenous infusion.","cite":[1]},{"site":"blood","title":"Expands inside the patient","text":"On meeting CD19, the CAR-T cells multiply. Unlike a conventional drug, the product keeps growing after it is given.","cite":[1]},{"site":"bone-marrow","title":"Finds CD19-positive cells","text":"CD19 is present on normal and malignant B cells in the blood, bone marrow and lymphoid tissue.","cite":[1,2],"target":true},{"site":"lymph-nodes","title":"Persists and patrols","text":"CAR-T cells can persist for months, so normal B cells can stay depleted (B-cell aplasia) for a long time.","cite":[2]}],"mechanism":[{"title":"The CAR finds CD19","text":"The CAR's murine anti-CD19 single-chain variable fragment (scFv) binds CD19 on the B cell.","cite":[1]},{"title":"The T cell switches on","text":"Binding signals through the CAR's 4-1BB (CD137) and CD3ζ domains and activates the T cell without needing antigen presented on MHC.","cite":[1,3]},{"title":"It kills the target cell","text":"The activated CAR-T cell releases cytotoxic granules and cytokines that kill the CD19-positive cell.","cite":[3]},{"title":"It multiplies and persists","text":"Activation drives expansion and persistence. The cytokine surge from mass activation is the source of cytokine release syndrome.","cite":[1]}],"facts":[{"label":"Product","value":"Autologous T cells modified with a lentiviral vector","cite":[1]},{"label":"CAR design","value":"Murine anti-CD19 scFv · CD8α hinge and transmembrane · 4-1BB · CD3ζ","cite":[1]},{"label":"Antigen","value":"CD19 (normal and malignant B cells)","cite":[1]},{"label":"Boxed warnings","value":"Cytokine release syndrome; neurological toxicities","cite":[1]}],"simplified":["Manufacturing is shown as a single ex-vivo step. The real process includes T-cell activation, transduction, expansion, formulation, release testing and cryopreservation.","Killing is drawn as granule release; cytokine-mediated and other killing routes are not shown separately.","The body map is a schematic; organ shapes and positions are approximate."],"sources":[{"id":1,"text":"KYMRIAH (tisagenlecleucel) suspension for intravenous infusion, US Prescribing Information, Novartis. Boxed warning, sections 11 Description and 12.1 Mechanism of Action.","url":"https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=kymriah"},{"id":2,"text":"Maude SL, Laetsch TW, Buechner J, et al. Tisagenlecleucel in children and young adults with B-cell lymphoblastic leukemia. N Engl J Med. 2018;378(5):439–448.","url":"https://doi.org/10.1056/NEJMoa1709866"},{"id":3,"text":"June CH, Sadelain M. Chimeric antigen receptor therapy. N Engl J Med. 2018;379(1):64–73.","url":"https://doi.org/10.1056/NEJMra1706169"}]}];window.__RX_INITIAL__="imatinib";</script>
+<script>window.__RX_DOSSIERS__=[{"id":"bezuclastinib","name":"Bezuclastinib","aliases":["CGT9486","CGT-9486","PLX9486","PLX-9486"],"modality":"small-molecule","route":"oral","status":"Investigational. NDAs under FDA review as of 17 Oct 2026","summary":"An oral, selective type I tyrosine kinase inhibitor of KIT D816V, the mutation that drives most systemic mastocytosis. It binds the active form of the mutant kinase and shuts off the signal that keeps neoplastic mast cells growing. It is designed to spare closely related kinases and to stay largely out of the brain.","target":{"name":"KIT D816V receptor tyrosine kinase","short":"KIT D816V","class":"rtk","action":"inhibitor","cell":"Neoplastic mast cell (bone marrow)","labels":{"pocket":"ATP site (active form)","substrate":"substrate","signal":"growth and survival signal","domain":"SCF-binding domain","note":"D816V: on without SCF"}},"binding":true,"journey":[{"site":"mouth","title":"Taken by mouth","text":"Bezuclastinib is an oral drug.","cite":[1]},{"site":"stomach","title":"Dissolves","text":"The dosage form disintegrates and the drug dissolves in the stomach and upper intestine.","generic":true},{"site":"intestine","title":"Absorbed","text":"Absorbed across the small-intestine wall into the portal blood. Bioavailability and food effect for bezuclastinib have not been published.","generic":true},{"site":"liver","title":"First pass through the liver","text":"Portal blood passes through the liver before it reaches the general circulation. How much bezuclastinib is lost on this pass has not been published.","generic":true},{"site":"blood","title":"Distributed, but kept out of the brain","text":"Carried in the blood to the tissues. Preclinical studies showed minimal brain penetration, which was a design goal. These are company-sponsored data.","cite":[1,2]},{"site":"bone-marrow","title":"Reaches the neoplastic mast cells","text":"In systemic mastocytosis, mast cells carrying KIT D816V build up in the bone marrow. D816V was found in 93% of adults with indolent or aggressive SM, and in about a third of them also in CD34+ progenitors and eosinophils.","cite":[3],"target":true},{"site":"liver","title":"Metabolised","text":"Most oral kinase inhibitors are metabolised in the liver, often by CYP3A4. The metabolic pathway of bezuclastinib has not been published.","generic":true},{"site":"intestine","title":"Eliminated","text":"Kinase inhibitors and their metabolites usually leave mainly in bile and feces, with a smaller share in urine. Mass-balance data for bezuclastinib have not been published.","generic":true}],"mechanism":[{"title":"Enters the mast cell","text":"As a small molecule, bezuclastinib crosses the cell membrane to reach the kinase domain of KIT, which sits on the inside of the membrane.","generic":true},{"title":"Binds the active kinase","text":"It is a type I inhibitor: it binds the ATP site of KIT D816V while the kinase is in its active conformation. Sunitinib, its partner in GIST, is a type II inhibitor that binds the inactive conformation.","cite":[1,4]},{"title":"The always-on signal stops","text":"D816V switches KIT on without its ligand, stem cell factor (SCF). With the ATP site blocked, the mutant kinase can no longer phosphorylate its substrates, and the growth and survival signal stops.","cite":[5,2]},{"title":"Mast-cell burden falls","text":"Neoplastic mast cells depend on this signal, so they decline. In the APEX trial in advanced SM, 65% of 68 evaluable patients responded by mIWG-MRC criteria.","cite":[6]}],"facts":[{"label":"Molecule","value":"Oral, selective type I tyrosine kinase inhibitor","cite":[1]},{"label":"Primary target","value":"KIT D816V (exon 17); preclinical activity against KIT exon 9, 11, 17 and 18 mutations","cite":[2]},{"label":"Selectivity","value":"Spares closely related kinases; minimal brain penetration in preclinical studies (company data)","cite":[1,2]},{"label":"Why KIT D816V","value":"Present in 93% of adults with indolent or aggressive SM (Spanish REMA network, n = 113)","cite":[3]},{"label":"GIST combination","value":"With sunitinib (type II), covers both KIT conformations. PEAK phase 3: median PFS 16.5 vs 9.2 months, HR 0.50","cite":[4,7]},{"label":"Regulatory status","value":"Not approved. FDA target action dates: GIST with sunitinib 30 Nov 2026; nonadvanced SM 30 Dec 2026; advanced SM 29 Jun 2027","cite":[8]}],"needs":[{"path":"journey[2].text","label":"Oral bioavailability and food effect","why":"Not published. Add from the Investigator's Brochure or clinical pharmacology report if you have it.","required":false},{"path":"journey[6].text","label":"Metabolic pathway (main CYP enzymes)","why":"Not published. The step shows what is typical for oral kinase inhibitors.","required":false},{"path":"journey[7].text","label":"Elimination route (feces / urine split)","why":"No mass-balance study published.","required":false},{"path":"fact:Elimination half-life","label":"Elimination half-life","why":"Human half-life not published.","required":false},{"path":"fact:Plasma protein binding","label":"Plasma protein binding","why":"Not published.","required":false}],"simplified":["KIT is drawn with one extracellular domain and one kinase domain. The real receptor has five immunoglobulin-like domains, a juxtamembrane region and a split kinase domain, and it signals as a dimer.","Downstream KIT signalling (for example PI3K/AKT, STAT5 and RAS/MAPK) is drawn as one growth-and-survival signal.","Systemic mastocytosis also involves mast cells in skin, gut, liver and spleen; the figure follows the bone marrow only.","Steps marked typical describe oral kinase inhibitors in general, because bezuclastinib's human pharmacokinetics have not been published."],"sources":[{"id":1,"text":"OncLive. Bezuclastinib demonstrates early promise in advanced systemic mastocytosis (APEX trial coverage; describes bezuclastinib as an oral, potent, selective type I TKI that spares closely related kinases, with minimal brain penetration).","url":"https://onclive.com/view/bezuclastinib-demonstrates-early-promise-in-advanced-systemic-mastocytosis"},{"id":2,"text":"Cogent Biosciences. Preclinical data identifies bezuclastinib as a differentiated KIT inhibitor with unique selectivity to KIT D816V and minimal evidence of brain penetration. Poster, AACR-NCI-EORTC Molecular Targets, October 2021. Company-sponsored.","url":"https://www.cogentbio.com/wp-content/uploads/2022/08/october-2021_Cogent_Bezu_MolTargets21_Final.pdf"},{"id":3,"text":"Garcia-Montero AC, Jara-Acevedo M, Teodosio C, et al. KIT mutation in mast cells and other bone marrow hematopoietic cell lineages in systemic mast cell disorders. Blood. 2006;108(7):2366–2372.","url":"https://pubmed.ncbi.nlm.nih.gov/?term=Garcia-Montero+KIT+mutation+mast+cells+Blood+2006"},{"id":4,"text":"Wagner AJ, et al. Association of combination of conformation-specific KIT inhibitors with clinical benefit in patients with refractory gastrointestinal stromal tumors: a phase 1b/2a nonrandomized clinical trial (PLX9486 with sunitinib, NCT02401815). JAMA Oncol. 2021;7(9):1343–1350.","url":"https://pubmed.ncbi.nlm.nih.gov/?term=Wagner+conformation-specific+KIT+inhibitors+JAMA+Oncol+2021"},{"id":5,"text":"Furitsu T, Tsujimura T, Tono T, et al. Identification of mutations in the coding sequence of the proto-oncogene c-kit in a human mast cell leukemia cell line causing ligand-independent activation of c-kit product. J Clin Invest. 1993;92(4):1736–1744.","url":"https://pubmed.ncbi.nlm.nih.gov/?term=Furitsu+c-kit+ligand-independent+activation+1993"},{"id":6,"text":"Cogent Biosciences. Positive top-line results of APEX trial of bezuclastinib in patients with advanced systemic mastocytosis (press release; Part 2, 68 evaluable patients, ORR 65% per mIWG-MRC).","url":"https://investors.cogentbio.com/news-releases/news-release-details/cogent-biosciences-announces-positive-top-line-results-apex"},{"id":7,"text":"CancerNetwork. Bezuclastinib plus sunitinib meets PFS end point in KIT-mutant GIST (PEAK phase 3; median PFS 16.5 vs 9.2 months, HR 0.50, 95% CI 0.39–0.65). May 30, 2026.","url":"https://www.cancernetwork.com/view/bezuclastinib-plus-sunitinib-meets-pfs-end-point-in-kit-mutant-gist"},{"id":8,"text":"Drugs.com. Bezuclastinib FDA approval status and NDA history (GIST priority review, PDUFA 30 Nov 2026; nonadvanced SM, 30 Dec 2026; advanced SM, 29 Jun 2027). Checked 17 Oct 2026.","url":"https://www.drugs.com/history/bezuclastinib.html"}]},{"id":"imatinib","name":"Imatinib","aliases":["STI571","STI-571","Gleevec","Glivec","CGP 57148B","imatinib mesylate"],"route":"oral","modality":"small-molecule","status":"Approved","summary":"A small-molecule kinase inhibitor. It holds the BCR-ABL tyrosine kinase, the abnormal enzyme made by the Philadelphia chromosome in chronic myeloid leukemia, in an inactive shape, so the growth signal it drives stops.","target":{"name":"BCR-ABL tyrosine kinase","short":"BCR-ABL","class":"enzyme","action":"inhibitor","cell":"Philadelphia-chromosome-positive leukemic cell","labels":{"pocket":"ATP site","product":"phosphorylated substrate","signal":"growth signal"}},"binding":true,"journey":[{"site":"mouth","title":"Swallowed","text":"Imatinib is taken by mouth as a tablet.","cite":[1]},{"site":"stomach","title":"Dissolves","text":"The tablet dissolves and the drug moves on to the small intestine."},{"site":"intestine","title":"Absorbed","text":"Imatinib crosses the intestinal wall into the portal blood. Absorption is nearly complete: mean absolute bioavailability of the capsule formulation is 98%.","cite":[1]},{"site":"liver","title":"First pass through the liver","text":"Portal blood carries it through the liver before it reaches the general circulation. Little is lost on this pass, consistent with the 98% bioavailability.","cite":[1]},{"site":"blood","title":"Carried in the blood","text":"About 95% is bound to plasma proteins, mostly albumin and α1-acid glycoprotein. Only the unbound fraction can leave the blood and enter cells.","cite":[1]},{"site":"bone-marrow","title":"Reaches the leukemic cells","text":"In chronic myeloid leukemia the target cells are Philadelphia-chromosome-positive cells in the bone marrow and blood.","cite":[1],"target":true},{"site":"liver","title":"Metabolised","text":"CYP3A4 is the main enzyme that metabolises imatinib. The main circulating metabolite, the N-desmethyl piperazine derivative, is also active. Half-lives are about 18 h for imatinib and 40 h for the metabolite.","cite":[1]},{"site":"intestine","title":"Eliminated, mostly in feces","text":"About 81% of a dose is eliminated within 7 days, 68% of it in feces (via bile), mostly as metabolites.","cite":[1]},{"site":"bladder","title":"and some in urine","text":"The remaining 13% of the dose that is eliminated in 7 days leaves in urine.","cite":[1]}],"mechanism":[{"title":"Enters the cell","text":"Imatinib crosses the cell membrane to reach BCR-ABL, which sits in the cytoplasm.","cite":[1]},{"title":"Locks the kinase shut","text":"It binds the ATP site of the ABL kinase domain while the kinase is in its inactive conformation, and holds it there.","cite":[2]},{"title":"No phosphate is passed on","text":"With the site occupied, BCR-ABL cannot move phosphate from ATP onto its substrate proteins, so the growth signal it drives stops.","cite":[1,2]},{"title":"The leukemic cell stops growing","text":"Without BCR-ABL signalling, BCR-ABL-positive cells stop proliferating and many undergo apoptosis (programmed cell death).","cite":[1]}],"facts":[{"label":"Absolute bioavailability","value":"98% (capsule formulation, mean)","cite":[1]},{"label":"Plasma protein binding","value":"≈95%, mostly albumin and α1-acid glycoprotein","cite":[1]},{"label":"Main metabolising enzyme","value":"CYP3A4","cite":[1]},{"label":"Elimination half-life","value":"≈18 h (imatinib), ≈40 h (N-desmethyl metabolite)","cite":[1]},{"label":"Elimination within 7 days","value":"≈81% of dose: 68% feces, 13% urine","cite":[1]},{"label":"Other kinases inhibited","value":"PDGF receptor and KIT (stem cell factor receptor)","cite":[1]}],"simplified":["Uptake into the cell is drawn as simple diffusion; transporters such as OCT-1 may contribute and their role is debated.","BCR-ABL drives several pathways (for example RAS/MAPK, PI3K/AKT and STAT5); they are drawn as one growth signal.","The body map is a schematic. Organ shapes and positions are approximate and not to scale."],"sources":[{"id":1,"text":"Gleevec (imatinib mesylate) tablets, US Prescribing Information, Novartis. Sections 12.1 Mechanism of Action and 12.3 Pharmacokinetics.","url":"https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=gleevec"},{"id":2,"text":"Schindler T, Bornmann W, Pellicena P, Miller WT, Clarkson B, Kuriyan J. Structural mechanism for STI-571 inhibition of Abelson tyrosine kinase. Science. 2000;289(5486):1938–1942.","url":"https://doi.org/10.1126/science.289.5486.1938"}]},{"id":"onasemnogene-abeparvovec","name":"Onasemnogene abeparvovec","aliases":["Zolgensma","AVXS-101","onasemnogene"],"route":"gene-iv","modality":"gene-therapy","status":"Approved","summary":"An AAV9 gene therapy for spinal muscular atrophy. A non-replicating viral capsid carries a working copy of the gene for SMN protein into motor neurons, where it is expressed without integrating into the chromosomes.","target":{"name":"SMN gene replacement in motor neurons","short":"SMN","class":"gene","action":"expression","vector":"AAV","cell":"Spinal motor neuron","labels":{"vector":"AAV9 capsid","transgene":"SMN transgene","protein":"SMN protein"}},"binding":false,"journey":[{"site":"iv","title":"Infused into a vein","text":"Given once as an intravenous infusion.","cite":[1]},{"site":"blood","title":"Carried in the blood","text":"The AAV9 capsid can cross the blood–brain barrier, which lets an intravenous dose reach neurons in the spinal cord.","cite":[2]},{"site":"spinal-cord","title":"Reaches motor neurons","text":"In spinal muscular atrophy, motor neurons in the spinal cord lack enough SMN protein because SMN1 is lost or mutated.","cite":[1],"target":true},{"site":"liver","title":"Also reaches the liver","text":"AAV9 also transduces the liver. Acute serious liver injury and acute liver failure carry a boxed warning, so liver function is monitored.","cite":[1]},{"site":"bladder","title":"Vector DNA is shed","text":"Vector DNA is shed for a time in saliva, urine and stool.","cite":[1]}],"mechanism":[{"title":"The capsid attaches","text":"The AAV9 capsid binds the cell surface and is taken up by endocytosis.","cite":[3]},{"title":"It travels to the nucleus","text":"The capsid escapes the endosome and moves toward the nucleus.","cite":[3]},{"title":"The gene is delivered","text":"In the nucleus the capsid releases its self-complementary DNA, which persists mostly as a separate episome rather than integrating into the chromosomes.","cite":[1,3]},{"title":"SMN protein is made","text":"The SMN transgene, driven by a CMV enhancer / chicken-β-actin hybrid promoter, is transcribed and translated into SMN protein.","cite":[1]}],"facts":[{"label":"Vector","value":"Non-replicating recombinant AAV9","cite":[1]},{"label":"Genome","value":"Self-complementary DNA carrying human SMN cDNA","cite":[1]},{"label":"Promoter","value":"CMV enhancer / chicken-β-actin hybrid","cite":[1]},{"label":"Fate in the nucleus","value":"Persists mostly as a non-integrated episome","cite":[3]},{"label":"Boxed warning","value":"Acute serious liver injury and acute liver failure","cite":[1]}],"simplified":["Receptor binding, endosomal escape and nuclear entry are each shown as one step. AAV entry involves several receptors and trafficking routes.","Uncoating is shown at the nucleus; where AAV capsids actually uncoat is still being studied.","The body map is a schematic. The spinal cord is drawn on the midline, in front of the organs, for visibility."],"sources":[{"id":1,"text":"ZOLGENSMA (onasemnogene abeparvovec-xioi) suspension for intravenous infusion, US Prescribing Information, Novartis Gene Therapies. Boxed warning, sections 11 and 12.","url":"https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=zolgensma"},{"id":2,"text":"Foust KD, Nurre E, Montgomery CL, Hernandez A, Chan CM, Kaspar BK. Intravascular AAV9 preferentially targets neonatal neurons and adult astrocytes. Nat Biotechnol. 2009;27(1):59–65.","url":"https://doi.org/10.1038/nbt.1515"},{"id":3,"text":"Wang D, Tai PWL, Gao G. Adeno-associated virus vector as a platform for gene therapy delivery. Nat Rev Drug Discov. 2019;18(5):358–378.","url":"https://doi.org/10.1038/s41573-019-0012-9"}]},{"id":"pembrolizumab","name":"Pembrolizumab","aliases":["Keytruda","MK-3475","lambrolizumab"],"route":"iv","modality":"antibody","status":"Approved","summary":"A humanised IgG4 monoclonal antibody against PD-1, an off switch on T cells. Blocking PD-1 stops tumour cells from using PD-L1 and PD-L2 to switch T cells off.","target":{"name":"PD-1 receptor on T cells","short":"PD-1","class":"checkpoint","action":"blocker","cell":"T cell facing a tumour cell","labels":{"receptor":"PD-1","ligand":"PD-L1","effector":"T cell","target":"tumour cell"}},"binding":true,"journey":[{"site":"iv","title":"Infused into a vein","text":"Pembrolizumab is given as an intravenous infusion, so it enters the bloodstream directly, with no absorption step.","cite":[1]},{"site":"blood","title":"Circulates for weeks","text":"Like other IgG antibodies it is rescued from breakdown by the neonatal Fc receptor (FcRn), which helps give it a terminal half-life of about 22 days.","cite":[1,2]},{"site":"lymph-nodes","title":"Meets T cells in lymph nodes","text":"PD-1 is found on activated T cells. Blocking it can act on T cells in lymph nodes as well as in the tumour.","cite":[3]},{"site":"tumor","title":"Reaches the tumour","text":"In the tumour, tumour cells and some immune cells can display PD-L1, which switches T cells off through PD-1.","cite":[1,3],"target":true},{"site":"tissues","title":"Broken down like other proteins","text":"Antibodies are cleared mainly by protein catabolism inside cells throughout the body, not by liver CYP enzymes or kidney filtration of the intact molecule.","cite":[2]}],"mechanism":[{"title":"The brake is on","text":"PD-L1 or PD-L2 on the tumour cell engages PD-1 on the T cell and damps down its activity.","cite":[1]},{"title":"Pembrolizumab binds PD-1","text":"The antibody binds PD-1 and blocks its interaction with PD-L1 and PD-L2.","cite":[1]},{"title":"The brake is released","text":"Releasing PD-1 pathway inhibition restores T-cell activity, including the anti-tumour response.","cite":[1]},{"title":"T cells attack the tumour","text":"Reactivated T cells can recognise and kill tumour cells. The same release of brakes on T cells in healthy tissue causes immune-mediated side effects.","cite":[1,3]}],"facts":[{"label":"Molecule","value":"Humanised monoclonal IgG4-κ antibody","cite":[1]},{"label":"Target","value":"PD-1; blocks binding of PD-L1 and PD-L2","cite":[1]},{"label":"Terminal half-life","value":"≈22 days","cite":[1]},{"label":"Clearance","value":"Protein catabolism; no CYP metabolism","cite":[2]}],"simplified":["The tumour–T-cell contact is drawn as one flat interface. Real immune synapses are 3D and hold many other receptor pairs.","T-cell activation also needs the T-cell receptor to recognise antigen on MHC; the figure shows only the PD-1 brake.","The body map is a schematic, and the tumour position is illustrative only."],"sources":[{"id":1,"text":"KEYTRUDA (pembrolizumab) injection, US Prescribing Information, Merck Sharp & Dohme. Sections 12.1 Mechanism of Action and 12.3 Pharmacokinetics.","url":"https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=keytruda"},{"id":2,"text":"Ryman JT, Meibohm B. Pharmacokinetics of monoclonal antibodies. CPT Pharmacometrics Syst Pharmacol. 2017;6(9):576–588.","url":"https://doi.org/10.1002/psp4.12224"},{"id":3,"text":"Ribas A, Wolchok JD. Cancer immunotherapy using checkpoint blockade. Science. 2018;359(6382):1350–1355.","url":"https://doi.org/10.1126/science.aar4060"}]},{"id":"tisagenlecleucel","name":"Tisagenlecleucel","aliases":["Kymriah","CTL019","tisa-cel"],"route":"ex-vivo","modality":"cell-therapy","status":"Approved","summary":"An autologous CAR-T cell therapy. The patient's own T cells are engineered with a lentiviral vector to carry a chimeric antigen receptor (CAR) against CD19, then given back to find and kill CD19-positive B cells.","target":{"name":"CD19 on B cells","short":"CD19","class":"car","action":"cytotoxic","cell":"CAR-T cell meeting a malignant B cell","labels":{"receptor":"anti-CD19 CAR","antigen":"CD19","effector":"CAR-T cell","target":"malignant B cell"}},"binding":false,"journey":[{"site":"iv","title":"T cells are collected","text":"White blood cells are collected from the patient's own blood by leukapheresis.","cite":[1]},{"site":"ex-vivo","title":"Engineered outside the body","text":"At the manufacturing site, the T cells are transduced with a lentiviral vector encoding the anti-CD19 CAR, expanded, then formulated and cryopreserved as the drug product.","cite":[1]},{"site":"iv","title":"Infused back","text":"The patient's own modified T cells are returned by intravenous infusion.","cite":[1]},{"site":"blood","title":"Expands inside the patient","text":"On meeting CD19, the CAR-T cells multiply. Unlike a conventional drug, the product keeps growing after it is given.","cite":[1]},{"site":"bone-marrow","title":"Finds CD19-positive cells","text":"CD19 is present on normal and malignant B cells in the blood, bone marrow and lymphoid tissue.","cite":[1,2],"target":true},{"site":"lymph-nodes","title":"Persists and patrols","text":"CAR-T cells can persist for months, so normal B cells can stay depleted (B-cell aplasia) for a long time.","cite":[2]}],"mechanism":[{"title":"The CAR finds CD19","text":"The CAR's murine anti-CD19 single-chain variable fragment (scFv) binds CD19 on the B cell.","cite":[1]},{"title":"The T cell switches on","text":"Binding signals through the CAR's 4-1BB (CD137) and CD3ζ domains and activates the T cell without needing antigen presented on MHC.","cite":[1,3]},{"title":"It kills the target cell","text":"The activated CAR-T cell releases cytotoxic granules and cytokines that kill the CD19-positive cell.","cite":[3]},{"title":"It multiplies and persists","text":"Activation drives expansion and persistence. The cytokine surge from mass activation is the source of cytokine release syndrome.","cite":[1]}],"facts":[{"label":"Product","value":"Autologous T cells modified with a lentiviral vector","cite":[1]},{"label":"CAR design","value":"Murine anti-CD19 scFv · CD8α hinge and transmembrane · 4-1BB · CD3ζ","cite":[1]},{"label":"Antigen","value":"CD19 (normal and malignant B cells)","cite":[1]},{"label":"Boxed warnings","value":"Cytokine release syndrome; neurological toxicities","cite":[1]}],"simplified":["Manufacturing is shown as a single ex-vivo step. The real process includes T-cell activation, transduction, expansion, formulation, release testing and cryopreservation.","Killing is drawn as granule release; cytokine-mediated and other killing routes are not shown separately.","The body map is a schematic; organ shapes and positions are approximate."],"sources":[{"id":1,"text":"KYMRIAH (tisagenlecleucel) suspension for intravenous infusion, US Prescribing Information, Novartis. Boxed warning, sections 11 Description and 12.1 Mechanism of Action.","url":"https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=kymriah"},{"id":2,"text":"Maude SL, Laetsch TW, Buechner J, et al. Tisagenlecleucel in children and young adults with B-cell lymphoblastic leukemia. N Engl J Med. 2018;378(5):439–448.","url":"https://doi.org/10.1056/NEJMoa1709866"},{"id":3,"text":"June CH, Sadelain M. Chimeric antigen receptor therapy. N Engl J Med. 2018;379(1):64–73.","url":"https://doi.org/10.1056/NEJMra1706169"}]}];window.__RX_INITIAL__="bezuclastinib";</script>
 <script>/* Anima Rx renderer: one dossier in, a body map + a cell-level mechanism + a step player out.
    Plain browser script with no dependencies; rx/build.mjs inlines it into a standalone page. */
 (function (G) {
@@ -344,6 +374,8 @@ footer.rx-foot a{color:var(--anatomy-text)}
   const SITES = {
     brain: { label: "Brain", pts: [[150, 48]] },
     mouth: { label: "Mouth", pts: [[150, 78]] },
+    eye: { label: "Eye", pts: [[139, 57], [161, 57]] },
+    nose: { label: "Nose", pts: [[150, 67]] },
     lungs: { label: "Lungs", pts: [[126, 190], [174, 190]] },
     heart: { label: "Heart", pts: [[156, 203]] },
     blood: { label: "Bloodstream", pts: [[153, 214], [92, 200], [208, 200], [121, 420], [179, 420], [152, 300]] },
@@ -372,7 +404,8 @@ footer.rx-foot a{color:var(--anatomy-text)}
     vein: "iv", intravenous: "iv", infusion: "iv", subcutaneous: "subq", sc: "subq", intramuscular: "im", muscle: "im",
     topical: "skin", transdermal: "skin", cns: "brain", spine: "spinal-cord", lung: "lungs", inhaled: "lungs", tumour: "tumor",
     duodenum: "intestine", jejunum: "intestine", ileum: "intestine", portal: "liver", hepatic: "liver", renal: "kidneys", csf: "spinal-cord", "motor-neurons": "spinal-cord",
-    oral: "mouth", manufacturing: "ex-vivo", circulation: "blood", plasma: "blood", "whole-body": "tissues", body: "tissues",
+    oral: "mouth", sublingual: "mouth", buccal: "mouth", manufacturing: "ex-vivo", eyes: "eye", ophthalmic: "eye", intravitreal: "eye",
+    nasal: "nose", intranasal: "nose", rectum: "intestine", rectal: "intestine", intrathecal: "spinal-cord", circulation: "blood", plasma: "blood", "whole-body": "tissues", body: "tissues",
   };
   const siteId = (s) => { const k = lower(s).trim().replace(/\s+/g, "-"); return SITES[k] ? k : SITE_ALIAS[k] || (SITES[k + "s"] ? k + "s" : "tissues"); };
 
@@ -400,6 +433,8 @@ footer.rx-foot a{color:var(--anatomy-text)}
 <g class="rx-vessels">${vessels.map((d) => `<path d="${d}"/>`).join("")}</g>
 ${organ("brain", `<path class="rx-o" d="M128,50 C126,34 140,27 150,28 C162,27 175,34 172,50 C171,62 160,68 150,67 C139,68 129,62 128,50 Z"/><path class="rx-o-line" d="M136,40 C141,44 137,50 142,54 M150,31 L150,66 M164,40 C159,44 163,50 158,54"/>`)}
 ${organ("mouth", `<path class="rx-o-line rx-o-strong" d="M142,77 C146,80 154,80 158,77"/>`)}
+${organ("eye", `<path class="rx-o" d="M133,57 C136,53.5 142,53.5 145,57 C142,60.5 136,60.5 133,57 Z"/><path class="rx-o" d="M155,57 C158,53.5 164,53.5 167,57 C164,60.5 158,60.5 155,57 Z"/>`)}
+${organ("nose", `<path class="rx-o-line rx-o-strong" d="M150,60 L146.5,69 L152,69"/>`)}
 ${organ("lungs", `<path class="rx-o" d="M146,152 C130,148 112,164 110,192 C108,214 114,226 124,226 C134,226 143,220 144,210 Z"/><path class="rx-o" d="M154,152 C170,148 188,164 190,192 C192,214 186,226 176,226 C166,226 157,220 156,210 Z"/><path class="rx-o-line" d="M150,104 L150,150 M150,150 L141,160 M150,150 L159,160"/>`)}
 ${organ("heart", `<path class="rx-o" d="M149,192 C142,186 134,193 139,202 C142,209 151,214 158,219 C166,212 173,204 171,196 C169,188 160,187 156,193 C154,191 152,191 149,192 Z"/>`)}
 ${organ("kidneys", `<ellipse class="rx-o" cx="128" cy="277" rx="8" ry="13"/><ellipse class="rx-o" cx="172" cy="277" rx="8" ry="13"/>`)}
@@ -531,18 +566,19 @@ ${leader(60, 140, 60, 158)}${lab(40, 170, recLabel)}${lab(434, 20, d.name, "end"
     };
   }
 
-  function sceneEnzyme(d, L) {
-    const N = 4, xs = [70, 152, 234, 316], order = [1, 3, 0, 2];
+  function sceneEnzyme(d, L, anchored) {
+    const xs = anchored ? [120, 210, 300] : [70, 152, 234, 316], N = xs.length, order = anchored ? [1, 0, 2] : [1, 3, 0, 2], x0 = xs[0];
     const up = isUp(d.target.action);
-    const enz = L.enzyme || d.target.short || "enzyme";
-    const svg = `${sideLabels(30, 110)}<rect class="rx-cyto" x="-10" y="84" width="460" height="230"/>${bilayer(66)}${nucleus(352, 270, 98, 46)}
+    const enz = L.enzyme || d.target.short || (anchored ? "receptor kinase" : "enzyme");
+    const svg = `${sideLabels(anchored ? 14 : 30, 110)}<rect class="rx-cyto" x="-10" y="84" width="460" height="230"/>${anchored ? xs.map((x) => `<path class="rx-stalk" d="M${x - 10},44 L${x - 10},147"/>`).join("") : ""}${bilayer(66)}${nucleus(352, 270, 98, 46)}
+${anchored ? xs.map((x) => `<ellipse class="rx-rec" cx="${x - 10}" cy="34" rx="8" ry="12"/>`).join("") + lab(xs[N - 1] + 6, 50, L.domain || "extracellular domain") : ""}
 ${xs.map((x, i) => g("enz", i, `<path class="rx-enz" d="M-8,-15 A17,17 0 1 0 8,-15 L0,-4 Z"/>`, "rx-enzg")).join("")}
 ${xs.map((_, i) => g("sub", i, `<rect class="rx-sub" x="-4" y="-4" width="8" height="8" rx="1.5"/>`)).join("")}
 ${xs.map((_, i) => g("phos", i, `<circle class="rx-sig" r="3.4"/><text class="rx-p" y="2.4" text-anchor="middle">P</text>`)).join("")}
 ${xs.map((_, i) => g("drug", i, drugGlyph(d.modality))).join("")}
-${leader(70, 180, 70, 196)}${lab(70, 208, enz, "middle")}${lab(120, 126, L.pocket || "active site", "start")}${leader(118, 128, 77, 146)}
-${lab(230, 246, L.signal || "downstream signal", "middle")}${lab(6, 128, L.substrate || "substrate", "start")}${leader(30, 132, 45, 154)}
-${lab(434, 20, d.name, "end", "rx-strong")}${lab(434, 33, up ? "activates the enzyme" : "inhibits the enzyme", "end")}`;
+${leader(x0, 180, x0, 196)}${lab(x0, 208, enz, "middle")}${L.note ? lab(x0, 221, L.note, "middle") : ""}${lab(x0 + 50, 126, L.pocket || "active site", "start")}${leader(x0 + 48, 128, x0 + 7, 146)}
+${lab(anchored ? 170 : 230, anchored ? 240 : 246, L.signal || "downstream signal", "middle")}${lab(6, 128, L.substrate || "substrate", "start")}${leader(30, 132, x0 - 25, 154)}
+${lab(434, 20, d.name, "end", "rx-strong")}${lab(434, 33, up ? (anchored ? "activates the kinase" : "activates the enzyme") : anchored ? "inhibits the kinase" : "inhibits the enzyme", "end")}`;
     let level = 0, bound = 0;
     return {
       svg,
@@ -559,7 +595,7 @@ ${lab(434, 20, d.name, "end", "rx-strong")}${lab(434, 33, up ? "activates the en
         xs.forEach((x, i) => {
           mv(R.enz[i], [x, 160]);
           const isB = set.has(i);
-          const start = [x - 14, 22 + (i % 2) * 10];
+          const start = anchored ? [x + 16, 14 + (i % 2) * 8] : [x - 14, 22 + (i % 2) * 10];
           let pos;
           const p0 = beatP(s, 0), p1 = beatP(s, 1);
           if (isB) pos = p1 > 0 ? mix([x - 4, 112], [x, 151], ease(p1)) : mix(start, [x - 4, 112], ease(p0));
@@ -575,7 +611,7 @@ ${lab(434, 20, d.name, "end", "rx-strong")}${lab(434, 33, up ? "activates the en
         level = act / N; bound = k;
         R.root.style.setProperty("--glow", f1(0.1 + 0.6 * level));
       },
-      metric: () => `${bound}/${N} enzymes bound · activity ${pct(level)}`,
+      metric: () => `${bound}/${N} ${anchored ? "kinases" : "enzymes"} bound · activity ${pct(level)}`,
     };
   }
 
@@ -918,14 +954,14 @@ ${lab(434, 22, d.name, "end", "rx-strong")}${lab(434, 35, "silences " + target, 
     if (c === "kinase") return "enzyme";
     if (c === "engager") return "car";
     if (c === "mrna-knockdown") return "oligo";
-    if (["checkpoint", "car", "gene", "oligo", "channel", "transporter", "nuclear", "ligand", "enzyme", "receptor"].includes(c)) return c;
+    if (["checkpoint", "car", "gene", "oligo", "channel", "transporter", "nuclear", "ligand", "enzyme", "rtk", "receptor"].includes(c)) return c;
     if (m === "cell-therapy") return "car";
     if (m === "gene-therapy" || m === "mrna") return "gene";
     if (m === "oligonucleotide") return "oligo";
     return m === "antibody" || m === "protein" || m === "peptide" ? "receptor" : "enzyme";
   }
   const SCENES = {
-    receptor: sceneReceptor, enzyme: sceneEnzyme, nuclear: sceneNuclear, ligand: sceneLigand, checkpoint: sceneCheckpoint, car: sceneCar, gene: sceneGene, oligo: sceneOligo,
+    receptor: sceneReceptor, enzyme: (d, L) => sceneEnzyme(d, L, false), rtk: (d, L) => sceneEnzyme(d, L, true), nuclear: sceneNuclear, ligand: sceneLigand, checkpoint: sceneCheckpoint, car: sceneCar, gene: sceneGene, oligo: sceneOligo,
     channel: (d, L) => sceneChannel(d, L, false), transporter: (d, L) => sceneChannel(d, L, true),
   };
   function sceneFor(d) {
@@ -933,14 +969,15 @@ ${lab(434, 22, d.name, "end", "rx-strong")}${lab(434, 35, "silences " + target, 
     s.key = key;
     return s;
   }
-  const SCENE_NAMES = { receptor: "Membrane receptor", enzyme: "Enzyme / kinase", channel: "Ion channel", transporter: "Transporter", nuclear: "Nuclear receptor", ligand: "Soluble ligand (neutraliser)", checkpoint: "Immune checkpoint (two cells)", car: "CAR-T / T-cell engager", gene: "Gene therapy / mRNA", oligo: "siRNA / antisense" };
+  const SCENE_NAMES = { receptor: "Membrane receptor", enzyme: "Enzyme / kinase", rtk: "Receptor tyrosine kinase", channel: "Ion channel", transporter: "Transporter", nuclear: "Nuclear receptor", ligand: "Soluble ligand (neutraliser)", checkpoint: "Immune checkpoint (two cells)", car: "CAR-T / T-cell engager", gene: "Gene therapy / mRNA", oligo: "siRNA / antisense" };
 
   /* ---------- the timeline ---------- */
 
+  const needFor = (d, prefix) => (d.needs || []).find((n) => String(n.path || "").startsWith(prefix));
   function timelineOf(d, scene) {
-    const journey = (d.journey || []).map((j) => ({ kind: "body", site: siteId(j.site), title: j.title, text: j.text, cite: j.cite, generic: j.generic }));
+    const journey = (d.journey || []).map((j, i) => ({ kind: "body", site: siteId(j.site), title: j.title, text: j.text, cite: j.cite, generic: j.generic, need: needFor(d, `journey[${i}]`) }));
     const mech = (d.mechanism && d.mechanism.length ? d.mechanism : scene.steps.map(([title, text]) => ({ title, text, generic: true })))
-      .map((m, i) => ({ kind: "cell", beat: Math.min(i, 3), title: m.title, text: m.text, cite: m.cite, generic: m.generic }));
+      .map((m, i) => ({ kind: "cell", beat: Math.min(i, 3), title: m.title, text: m.text, cite: m.cite, generic: m.generic, need: needFor(d, `mechanism[${i}]`) || (!(d.mechanism || []).length ? needFor(d, "mechanism") : null) }));
     let at = (d.journey || []).findIndex((j) => j.target);
     if (at < 0) at = journey.length - 1;
     const site = journey[at] ? journey[at].site : "tissues";
@@ -961,12 +998,21 @@ ${lab(434, 22, d.name, "end", "rx-strong")}${lab(434, 35, "silences " + target, 
     const scene = sceneFor(d);
     const steps = timelineOf(d, scene);
     const binding = d.binding !== false && !["cell-therapy", "gene-therapy", "oligonucleotide", "mrna"].includes(d.modality) && !["car", "gene", "oligo"].includes(lower(d.target.class));
-    const banner = d.confidential
-      ? `<p class="rx-banner rx-banner-conf"><b>Confidential.</b> Loaded on this device only. Nothing on this page is sent anywhere unless you press a public-lookup button.</p>`
-      : d.draft ? `<p class="rx-banner"><b>Auto-drafted from public databases.</b> Steps marked “typical” describe the drug class, not this drug. Verify against the label or primary sources before you rely on it.</p>` : "";
+    const form = d.dosageForm ? ` (${esc(d.dosageForm)})` : "";
+    const DRAFTS = {
+      claude: `<b>Drafted by Claude for ${esc(d.name)}${form}.</b> Claude wrote this from what it already knew; it did not look anything up. Check every statement and source before you rely on it. Steps marked “typical” describe the drug class.`,
+      template: `<b>Built from the ${esc(d.dosageForm || "route")} template.</b> The route and class steps are filled in. The highlighted fields are specific to ${esc(d.name)} and need your input.`,
+      public: `<b>Auto-drafted from public databases.</b> Steps marked “typical” describe the drug class, not this drug. Verify against the label or primary sources before you rely on it.`,
+    };
+    const needs = (d.needs || []).filter((n) => n && n.label);
+    const req = needs.filter((n) => n.required), opt = needs.filter((n) => !n.required);
+    const needBtn = (n) => `<button type="button" class="rx-need-chip${n.required ? " rx-req" : ""}" data-need="${esc(n.path)}" title="${esc(n.why || "")}">${esc(n.label)}</button>`;
+    const banner = (d.confidential ? `<p class="rx-banner rx-banner-conf"><b>Confidential.</b> Loaded on this device only. Nothing on this page is sent anywhere unless you press a public-lookup button.</p>` : "")
+      + (d.draft ? `<p class="rx-banner">${DRAFTS[d.draft] || DRAFTS.public}</p>` : "")
+      + (needs.length ? `<div class="rx-needs" role="region" aria-label="Fields that need your input">${req.length ? `<div><span class="rx-needs-h rx-req">${req.length} required field${req.length > 1 ? "s" : ""} need${req.length > 1 ? "" : "s"} your input</span>${req.map(needBtn).join("")}</div>` : `<div><span class="rx-needs-h">Nothing required is missing.</span></div>`}${opt.length ? `<div><span class="rx-needs-h">Optional, not public or not known:</span>${opt.map(needBtn).join("")}</div>` : ""}</div>` : "");
     host.innerHTML = `${banner}<figure class="iso-figure rx-fig">
 <div class="iso-plate rx-plate">
-  <div class="iso-plate-corners" aria-hidden="true"><span class="iso-plate-corner" data-corner="fig">${esc(opts.fig || "Fig 1")}</span><span class="iso-plate-corner" data-corner="title">${esc(d.name)} · ${esc(MODALITY[d.modality] || d.modality || "drug")}</span><span class="iso-plate-corner" data-corner="hint">Space pause · ←/→ step · hover parts</span><span class="iso-plate-corner" data-corner="readout" data-readout></span></div>
+  <div class="iso-plate-corners" aria-hidden="true"><span class="iso-plate-corner" data-corner="fig">${esc(opts.fig || "Fig 1")}</span><span class="iso-plate-corner" data-corner="title">${esc(d.name)} · ${esc(MODALITY[d.modality] || d.modality || "drug")}${d.dosageForm ? ` · ${esc(d.dosageForm)}` : ""}</span><span class="iso-plate-corner" data-corner="hint">Space pause · ←/→ step · hover parts</span><span class="iso-plate-corner" data-corner="readout" data-readout></span></div>
   <div class="rx-stage">
     <div class="rx-pane rx-pane-body"><div class="rx-pane-h">In the body</div>${bodySvg()}</div>
     <div class="rx-pane rx-pane-cell"><div class="rx-pane-h">At the target<span> · ${esc(d.target.cell || d.target.name || "")}</span></div>
@@ -978,11 +1024,15 @@ ${lab(434, 22, d.name, "end", "rx-strong")}${lab(434, 35, "silences " + target, 
     <div class="rx-group"><button type="button" data-act="prev" aria-label="Previous step">◀</button><button type="button" data-act="play" aria-pressed="false">Pause</button><button type="button" data-act="next" aria-label="Next step">▶</button></div>
     ${binding ? `<label class="rx-range"><span class="rx-gl">Drug concentration at the target, relative to K<sub>d</sub></span><input type="range" min="-2" max="2" step="0.05" value="${opts.logc ?? 0.6}" data-act="conc" aria-describedby="rx-occ-note"><span class="rx-ticks"><i>0.01×</i><i>0.1×</i><i>1×</i><i>10×</i><i>100×</i></span></label>` : ""}
   </div>
-  <ol class="rx-steps">${steps.map((st, i) => `<li><button type="button" data-step="${i}"><span class="rx-step-k">${st.kind === "cell" ? "cell" : esc(SITES[st.site].label)}</span>${esc(st.title)}${st.generic ? ` <em>typical</em>` : ""}</button></li>`).join("")}</ol>
+  <ol class="rx-steps">${steps.map((st, i) => `<li><button type="button" data-step="${i}"><span class="rx-step-k">${st.kind === "cell" ? "cell" : esc(SITES[st.site].label)}</span>${esc(st.title)}${st.generic ? ` <em>typical</em>` : ""}${st.need ? ` <i class="rx-flag${st.need.required ? " rx-req" : ""}">${st.need.required ? "needs input" : "could add data"}</i>` : ""}</button></li>`).join("")}</ol>
 </div>
 <figcaption class="iso-legend"><span class="iso-caption">${esc(d.summary || "")}${binding ? ` <span id="rx-occ-note">The slider drives a simple binding model, occupancy = C / (C + K<sub>d</sub>) (one site, Hill coefficient 1). It shows the shape of the relationship, not a measured value for this drug.</span>` : ""}</span></figcaption>
 </figure>
-${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.structure && d.structure.url ? `<figure class="rx-struct"><img src="${esc(d.structure.url)}" alt="2D structure of ${esc(d.name)}" loading="lazy" width="150" height="150"><figcaption>2D structure${cites(d.structure.cite, d)}</figcaption></figure>` : ""}<dl>${d.facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}${cites(f.cite, d)}</dd></div>`).join("")}</dl></section>` : ""}
+${(() => {
+      const missing = needs.filter((n) => String(n.path).startsWith("fact:") && !(d.facts || []).some((f) => f.label === n.label && f.value));
+      d = { ...d, facts: [...(d.dosageForm ? [{ label: "Dosage form", value: `${d.dosageForm} (as entered)` }] : []), ...(d.facts || []).filter((f) => f.value), ...missing.map((n) => ({ label: n.label, value: "", need: n }))] };
+      return "";
+    })()}${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.structure && d.structure.url ? `<figure class="rx-struct"><img src="${esc(d.structure.url)}" alt="2D structure of ${esc(d.name)}" loading="lazy" width="150" height="150"><figcaption>2D structure${cites(d.structure.cite, d)}</figcaption></figure>` : ""}<dl>${d.facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${f.need ? `<button type="button" class="rx-need-cell${f.need.required ? " rx-req" : ""}" data-need="${esc(f.need.path)}">${f.need.required ? "Needs your input" : "Not public: add if you have it"}</button>` : esc(f.value)}${cites(f.cite, d)}</dd></div>`).join("")}</dl></section>` : ""}
 <section class="bio-sources">
   <h2>Sources</h2>${(d.sources || []).length ? `<ol>${d.sources.map((s) => `<li id="rx-src-${esc(s.id)}" value="${esc(s.id)}">${esc(s.text)}${s.url ? ` <a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url.replace(/^https?:\/\//, "").slice(0, 60))}</a>` : ""}</li>`).join("")}</ol>` : `<p>No sources given. Treat every statement on this page as unverified.</p>`}
   <h2>What is simplified</h2><ul>${[...(d.simplified || []), `The cell scene is the generic “${SCENE_NAMES[scene.key]}” template, labelled for this drug. It is schematic and not to scale.`].map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
@@ -1025,7 +1075,8 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
       host.querySelector(".rx-pane-body").classList.toggle("rx-live", st.kind !== "cell");
       now.k.textContent = `Step ${idx + 1} of ${steps.length} · ${st.kind === "cell" ? "at the target" : SITES[st.site].label}${st.generic ? " · typical for the class" : ""}`;
       now.t.textContent = st.title || "";
-      now.p.innerHTML = esc(st.text || "") + cites(st.cite, d);
+      now.p.innerHTML = (st.text ? esc(st.text) : `<span class="rx-missing">Not filled in yet.</span>`) + cites(st.cite, d)
+        + (st.need ? `<span class="rx-now-need${st.need.required ? " rx-req" : ""}"><button type="button" data-need="${esc(st.need.path)}">${st.need.required ? "Needs your input" : "You could add"}: ${esc(st.need.label)}</button>${st.need.why ? ` ${esc(st.need.why)}` : ""}</span>` : "");
       labelSite(hover || st.site);
       if (user && reduce) draw();
     }
@@ -1095,6 +1146,11 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
       else if (e.key === "ArrowLeft") setStep(idx - 1, true);
     };
     document.addEventListener("keydown", onKey);
+    const onNeed = (e) => {
+      const b = e.target.closest && e.target.closest("[data-need]");
+      if (b && host.contains(b)) host.dispatchEvent(new CustomEvent("rx-need", { bubbles: true, detail: { path: b.dataset.need } }));
+    };
+    host.addEventListener("click", onNeed);
     let io = null;
     if (typeof IntersectionObserver === "function") { io = new IntersectionObserver((es) => { visible = es.some((e) => e.isIntersecting); }); io.observe(host.querySelector(".rx-stage")); }
 
@@ -1104,7 +1160,7 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
     raf = requestAnimationFrame(tick);
     const api = {
       steps, scene,
-      destroy() { cancelAnimationFrame(raf); document.removeEventListener("keydown", onKey); if (io) io.disconnect(); host._rx = null; },
+      destroy() { cancelAnimationFrame(raf); document.removeEventListener("keydown", onKey); host.removeEventListener("click", onNeed); if (io) io.disconnect(); host._rx = null; },
       go: (i) => setStep(i, true),
       pause: () => setPlaying(false),
       advance(sec) { clock += sec; draw(); },
@@ -1116,8 +1172,9 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
   G.AnimaRx = { mount, SITES, SITE_ALIAS, SCENE_NAMES, siteId, sceneFor, sceneKey, timelineOf, esc };
 })(typeof window !== "undefined" ? window : globalThis);
 </script>
-<script>/* Anima Rx app: search box, local dossier library, public lookup (ChEMBL + PubChem) and the dossier editor.
-   Needs render.js first. Bundled dossiers arrive as window.__RX_DOSSIERS__. */
+<script>/* Anima Rx app: name + dosage form -> Go. Finds a dossier, or drafts one (Claude in the hosted page, the
+   dosage-form template elsewhere, ChEMBL + PubChem on request), then opens the editor on whatever still needs
+   the user's input. Needs render.js first. Bundled dossiers arrive as window.__RX_DOSSIERS__. */
 (function () {
   "use strict";
   const RX = window.AnimaRx, esc = RX.esc;
@@ -1126,14 +1183,118 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
   const KEY = "anima-rx-local-v1";
   const norm = (s) => String(s || "").toLowerCase().replace(/[\s\-_.()®™]/g, "");
   const $ = (q, el = document) => el.querySelector(q);
+  const clone = (o) => JSON.parse(JSON.stringify(o));
   const store = {
     load() { try { return JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch { return {}; } },
     save(v) { try { localStorage.setItem(KEY, JSON.stringify(v)); return true; } catch { return false; } },
   };
   let local = store.load();
   let current = null;
+  let sample = null, downloads = null;
 
-  const view = $("#rx-view"), msg = $("#rx-msg"), q = $("#rx-q"), list = $("#rx-list"), lib = $("#rx-lib");
+  const view = $("#rx-view"), msg = $("#rx-msg"), q = $("#rx-q"), formSel = $("#rx-form-sel"), list = $("#rx-list"), lib = $("#rx-lib"), engine = $("#rx-engine");
+
+  /* ---------- dosage forms and the journeys they start ---------- */
+
+  const FORMS = [
+    ["Oral", [["Tablet", "oral"], ["Film-coated tablet", "oral"], ["Capsule", "oral"], ["Oral solution or suspension", "oral"], ["Orally disintegrating tablet", "oral"], ["Sublingual or buccal tablet", "sublingual"]]],
+    ["Inhaled and nasal", [["Inhalation powder (DPI)", "inhaled"], ["Inhalation aerosol (MDI)", "inhaled"], ["Nebuliser solution", "inhaled"], ["Nasal spray", "nasal"]]],
+    ["Injection", [["IV infusion", "iv"], ["IV injection (bolus)", "iv"], ["Subcutaneous injection", "subq"], ["Intramuscular injection", "im"], ["Intravitreal injection", "intravitreal"], ["Intrathecal injection", "intrathecal"]]],
+    ["Skin, eye and other", [["Cream, ointment or gel", "topical"], ["Transdermal patch", "transdermal"], ["Eye drops", "ophthalmic"], ["Rectal suppository", "rectal"]]],
+    ["Advanced therapies", [["Autologous cell suspension for infusion", "ex-vivo"], ["Allogeneic cell suspension for infusion", "allogeneic"], ["Gene therapy suspension for IV infusion", "gene-iv"], ["mRNA lipid nanoparticle injection", "mrna-im"]]],
+  ];
+  const ROUTE_OF = Object.fromEntries(FORMS.flatMap(([, items]) => items));
+  const MODALITY_OF_ROUTE = { "ex-vivo": "cell-therapy", allogeneic: "cell-therapy", "gene-iv": "gene-therapy", "mrna-im": "mrna" };
+  const SMALL_ROUTES = ["oral", "sublingual", "inhaled", "nasal", "topical", "transdermal", "ophthalmic", "rectal"];
+  const LOCAL_SITE = { intravitreal: "eye", ophthalmic: "eye", topical: "skin", inhaled: "lungs", intrathecal: "spinal-cord" };
+  const ROUTE_NAME = { oral: "oral", sublingual: "sublingual", inhaled: "inhaled", nasal: "nasal", iv: "intravenous", subq: "subcutaneous", im: "intramuscular", intravitreal: "intravitreal", intrathecal: "intrathecal", topical: "topical", transdermal: "transdermal", ophthalmic: "ophthalmic", rectal: "rectal", "ex-vivo": "autologous cell infusion", allogeneic: "allogeneic cell infusion", "gene-iv": "intravenous", "mrna-im": "intramuscular" };
+  const formInfo = (label) => {
+    const route = ROUTE_OF[label] || null;
+    return { label, route, modality: MODALITY_OF_ROUTE[route] || null, localSite: LOCAL_SITE[route] || null };
+  };
+
+  const ROUTES = {
+    oral: [
+      ["mouth", "Swallowed", "Taken by mouth."],
+      ["stomach", "Dissolves", "The dosage form disintegrates and the drug dissolves."],
+      ["intestine", "Absorbed", "Most oral drugs are absorbed across the small-intestine wall into the portal blood."],
+      ["liver", "First pass through the liver", "Portal blood passes through the liver before reaching the general circulation; some drugs are partly metabolised on this pass."],
+      ["blood", "Distributed", "Carried in the blood, partly bound to plasma proteins; the unbound fraction reaches tissues."]],
+    sublingual: [
+      ["mouth", "Dissolves under the tongue", "Absorbed through the lining of the mouth straight into the blood, which bypasses first-pass metabolism in the liver."],
+      ["blood", "Distributed", "Carried in the blood to the tissues."]],
+    inhaled: [
+      ["mouth", "Inhaled", "Breathed in as a powder, aerosol or mist."],
+      ["lungs", "Deposits in the airways", "Acts on the airways; some crosses into the blood."]],
+    nasal: [
+      ["nose", "Sprayed into the nose", "Absorbed through the nasal lining; it may act locally or reach the blood."],
+      ["blood", "Distributed", "Carried in the blood to the tissues."]],
+    iv: [
+      ["iv", "Infused into a vein", "Enters the bloodstream directly, with no absorption step."],
+      ["blood", "Distributed", "Carried in the blood to the tissues."]],
+    subq: [
+      ["subq", "Injected under the skin", "Forms a depot in the tissue under the skin."],
+      ["lymph-nodes", "Absorbed", "Small molecules enter capillaries; large molecules such as antibodies are absorbed slowly, largely through the lymphatic system."],
+      ["blood", "Distributed", "Reaches the bloodstream and is carried to the tissues."]],
+    im: [
+      ["im", "Injected into muscle", "Absorbed from the muscle into nearby capillaries."],
+      ["blood", "Distributed", "Carried in the blood to the tissues."]],
+    intravitreal: [["eye", "Injected into the eye", "Delivered into the vitreous, so it acts locally; little reaches the rest of the body."]],
+    intrathecal: [["spinal-cord", "Injected into the spinal fluid", "Delivered into the cerebrospinal fluid around the spinal cord, bypassing the blood–brain barrier."]],
+    topical: [["skin", "Applied to the skin", "Acts locally in the skin; little reaches the blood."]],
+    transdermal: [
+      ["skin", "Patch on the skin", "Releases drug that crosses the skin slowly."],
+      ["blood", "Absorbed into the blood", "Enters the blood without passing through the liver first."]],
+    ophthalmic: [["eye", "Drops in the eye", "Acts on the surface and front of the eye; a little is absorbed into the blood."]],
+    rectal: [
+      ["intestine", "Inserted rectally", "Absorbed through the rectal lining; part of the blood draining the rectum bypasses the liver."],
+      ["blood", "Distributed", "Carried in the blood to the tissues."]],
+    "ex-vivo": [
+      ["iv", "Cells are collected", "The patient’s own cells are collected, for example by leukapheresis."],
+      ["ex-vivo", "Engineered outside the body", "The cells are modified, expanded and formulated at the manufacturing site."],
+      ["iv", "Infused back", "The modified cells are returned by intravenous infusion."],
+      ["blood", "Expand in the body", "The cells multiply after infusion."]],
+    allogeneic: [
+      ["ex-vivo", "Donor cells are engineered", "Cells from a healthy donor are modified, expanded and formulated at the manufacturing site."],
+      ["iv", "Infused", "The cells are given by intravenous infusion."],
+      ["blood", "Expand in the body", "The cells multiply after infusion."]],
+    "gene-iv": [
+      ["iv", "Infused into a vein", "The vector enters the bloodstream directly."],
+      ["blood", "Carried in the blood", "The vector circulates and reaches tissues its capsid can enter."]],
+    "mrna-im": [
+      ["im", "Injected into muscle", "Lipid nanoparticles are taken up by cells at the injection site."],
+      ["lymph-nodes", "Drains to lymph nodes", "Some particles and antigen-presenting cells travel to nearby lymph nodes."]],
+  };
+  const CLEAR = {
+    small: [["liver", "Metabolised", "Small molecules are typically metabolised in the liver, often by CYP enzymes."], ["kidneys", "Filtered", "Drug and metabolites are filtered by the kidneys."], ["bladder", "Excreted", "Some leaves in the urine; some leaves in bile and feces."]],
+    big: [["tissues", "Broken down like other proteins", "Proteins and antibodies are cleared by catabolism throughout the body, not by CYP enzymes."]],
+  };
+  const isBig = (m) => ["antibody", "protein", "peptide"].includes(m);
+  function journeyFor(route, modality, targetName, targetSite, generic = true) {
+    const site = targetSite || LOCAL_SITE[route] || "tissues";
+    const pre = (ROUTES[route] || ROUTES.iv).map(([s, title, text]) => ({ site: s, title, text, generic }));
+    if (LOCAL_SITE[route] && pre[pre.length - 1].site === site) {
+      pre[pre.length - 1].target = true;
+      return pre;
+    }
+    const tgt = { site, title: `Reaches ${targetName || "its target"}`, text: `Distributes to the tissue where ${targetName || "the target"} is found.`, generic, target: true };
+    const post = ["cell-therapy", "gene-therapy", "mrna"].includes(modality) ? [] : (isBig(modality) ? CLEAR.big : CLEAR.small).map(([s, title, text]) => ({ site: s, title, text, generic }));
+    return [...pre, tgt, ...post];
+  }
+  /* Keep a curated dossier's target and later steps, and redraw only how the drug gets in. */
+  function reroute(d, route) {
+    const at = d.journey.findIndex((j) => j.target);
+    const tail = at >= 0 ? d.journey.slice(at) : [];
+    const pre = (ROUTES[route] || []).map(([site, title, text]) => ({ site, title, text, generic: true }));
+    const shift = pre.length - Math.max(0, at);
+    d.journey = [...pre, ...tail];
+    d.needs = (d.needs || []).map((n) => ({ ...n, path: String(n.path).replace(/^journey\[(\d+)\]/, (_, i) => `journey[${+i + shift}]`) }));
+    d.route = route;
+    d.simplified = [...(d.simplified || []), `The entry steps were redrawn for the ${ROUTE_NAME[route]} route you chose; they describe the route in general, not this product.`];
+    return d;
+  }
+
+  /* ---------- library and display ---------- */
 
   const all = () => [...Object.values(local).map((d) => ({ ...d, _local: true })), ...BUNDLED.filter((b) => !local[b.id])];
   function find(term) {
@@ -1152,61 +1313,210 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
 
   function show(d, opts = {}) {
     if (!d) return;
-    current = JSON.parse(JSON.stringify(d));
+    current = clone(d);
     delete current._local;
-    say("");
+    if (!opts.keepMsg) say("");
     RX.mount(view, current, opts);
     q.value = current.name;
+    if (current.dosageForm && ROUTE_OF[current.dosageForm]) formSel.value = current.dosageForm;
     document.title = `${current.name} · Anima Rx`;
     try { if (!current.confidential && !current.draft) history.replaceState(null, "", `#${encodeURIComponent(current.id)}`); else history.replaceState(null, "", location.pathname + location.search); } catch {}
-    if (editor.open && !opts.fromEditor) editor.fill(current);
+    if (!opts.fromEditor && (editor.open || (current.needs || []).some((n) => n.required))) editor.fill(current, (current.needs || []).some((n) => n.required));
   }
+  view.addEventListener("rx-need", (e) => editor.focusNeed(e.detail.path));
 
   const looksInternal = (s) => /^[a-z]{1,6}[-\s]?\d{2,}[a-z0-9-]*$/i.test(String(s).trim());
-  function notFound(term) {
-    const internal = looksInternal(term);
-    if (view._rx) view._rx.destroy();
-    view.innerHTML = "";
-    current = null;
-    say(`<p><b>No dossier for “${esc(term)}” on this page.</b> ${internal ? "It looks like an internal development code. Codes like this rarely appear in public databases until a compound is published, so the fastest route is to build a dossier from your own documents (Investigator’s Brochure, development reports, tech-transfer package)." : "Build a dossier yourself, open a dossier file, or draft one from public databases."}</p>
-<div class="rx-msg-actions"><button type="button" data-act="create">Create a dossier for “${esc(term)}”</button><button type="button" data-act="open-file">Open a dossier file…</button>${HOSTED ? "" : `<button type="button" data-act="public">Search ChEMBL + PubChem</button>`}</div>
-<p class="rx-small">${HOSTED ? "Public database search is switched off in this hosted copy, which cannot reach outside servers. Use the local file <code>rx/anima-rx.html</code> for it. " : ""}The public search sends the text “${esc(term)}” to EBI (ChEMBL) and NCBI (PubChem).${internal ? " <b>Check your confidentiality policy before you send an unpublished code to a third party.</b>" : ""} Nothing else leaves this page. Dossiers you create stay in this browser.</p>`, internal ? "rx-msg-warn" : "");
-    msg.querySelector('[data-act="create"]').onclick = () => editor.start(term);
-    msg.querySelector('[data-act="open-file"]').onclick = () => fileIn.click();
-    const pubBtn = msg.querySelector('[data-act="public"]');
-    if (pubBtn) pubBtn.onclick = () => lookupPublic(term);
+
+  /* ---------- Go ---------- */
+
+  let busy = null;
+  $("#rx-search").addEventListener("submit", (e) => { e.preventDefault(); go(q.value.trim(), formSel.value); });
+  async function go(name, formLabel) {
+    if (!name) { q.focus(); return; }
+    if (busy) busy.abort();
+    const f = formInfo(formLabel);
+    const hit = find(name);
+    if (hit) {
+      const d = clone(hit);
+      delete d._local;
+      if (formLabel) {
+        d.dosageForm = formLabel;
+        if (f.route && d.route && f.route !== d.route && ROUTES[f.route] && !f.modality) {
+          reroute(d, f.route);
+          say(`<p><b>This dossier describes ${esc(d.name)} by the ${esc(ROUTE_NAME[hit.route] || hit.route)} route.</b> You chose ${esc(formLabel)}, so the entry steps were redrawn for that route, marked “typical”. Everything from the target on is unchanged.</p>`, "rx-msg-warn");
+          show(d, { keepMsg: true });
+          return;
+        }
+      }
+      show(d);
+      return;
+    }
+    if (!formLabel) {
+      say(`<p><b>Choose a dosage form for “${esc(name)}”.</b> It decides how the drug gets into the body, which is the first half of the flow.</p>`, "rx-msg-warn");
+      formSel.focus();
+      return;
+    }
+    if (sample) return draftWithClaude(name, formLabel);
+    const d = templateDraft(name, formLabel);
+    show(d, { keepMsg: true });
+    say(`<p>${HOSTED ? "Claude drafting is not available in this view." : "This copy of the page cannot ask Claude to draft it. Use the hosted page for that, or fill what public databases know."}</p>
+<div class="rx-msg-actions">${HOSTED ? "" : `<button type="button" data-act="public">Fill from ChEMBL + PubChem</button>`}<button type="button" data-act="edit">Fill in the highlighted fields</button></div>
+${HOSTED ? "" : `<p class="rx-small">ChEMBL + PubChem receive the text “${esc(name)}”.${looksInternal(name) ? " <b>It looks like an internal code: check your confidentiality policy before you send it to a third party.</b>" : ""}</p>`}`, looksInternal(name) ? "rx-msg-warn" : "");
+    const pub = msg.querySelector('[data-act="public"]');
+    if (pub) pub.onclick = () => lookupPublic(name, formLabel);
+    msg.querySelector('[data-act="edit"]').onclick = () => editor.fill(current, true);
   }
 
-  $("#rx-search").addEventListener("submit", (e) => {
-    e.preventDefault();
-    const term = q.value.trim();
-    if (!term) return;
-    const d = find(term);
-    if (d) show(d); else notFound(term);
-  });
+  function templateDraft(name, formLabel) {
+    const f = formInfo(formLabel);
+    const modality = f.modality || (SMALL_ROUTES.includes(f.route) ? "small-molecule" : "small-molecule");
+    const journey = journeyFor(f.route, modality, "", f.localSite, true);
+    const at = journey.findIndex((j) => j.target);
+    const needs = [
+      ...(!f.modality && !SMALL_ROUTES.includes(f.route) ? [{ path: "modality", label: "Modality", why: "An injection could hold a small molecule, peptide, protein or antibody.", required: true }] : []),
+      { path: "target.name", label: "Target", why: "The molecule the drug acts on, for example KIT D816V or the GLP-1 receptor.", required: true },
+      { path: "target.class", label: "Mechanism type", why: "Picks the cell scene: receptor, kinase, channel, transporter and so on.", required: true },
+      { path: "target.action", label: "Action", why: "Inhibitor, agonist, antagonist, blocker…", required: true },
+      ...(f.localSite ? [] : [{ path: `journey[${at}].site`, label: "Target tissue", why: "Where the target cells are, for example bone marrow or tumour.", required: true }]),
+      { path: "mechanism", label: "Drug-specific mechanism steps", why: "The scene shows generic text until you add them.", required: false },
+      { path: "fact:Elimination half-life", label: "Elimination half-life", why: "With units, population and source.", required: false },
+      { path: "sources", label: "Sources", why: "Cite where each statement comes from.", required: false },
+    ];
+    return {
+      id: norm(name), name, aliases: [name], modality, route: f.route, dosageForm: formLabel, status: looksInternal(name) ? "Investigational (internal)" : "",
+      confidential: looksInternal(name), draft: "template", summary: "",
+      target: { name: "", short: "", class: "", action: modality === "cell-therapy" ? "cytotoxic" : modality === "gene-therapy" || modality === "mrna" ? "expression" : "inhibitor", cell: "", labels: {} },
+      binding: !["cell-therapy", "gene-therapy", "mrna"].includes(modality), journey, mechanism: [], facts: [], needs,
+      simplified: ["The body journey is the general template for this dosage form and modality, not this drug’s measured pharmacokinetics."], sources: [],
+    };
+  }
+
+  /* ---------- Claude drafting (hosted page only) ---------- */
+
+  const SCENES = Object.keys(RX.SCENE_NAMES);
+  const SITES = Object.keys(RX.SITES);
+  function promptFor(name, formLabel, f) {
+    const tmpl = journeyFor(f.route, f.modality || "small-molecule", "", f.localSite, true);
+    return `You are drafting an educational "mechanism dossier" that drives an animated figure of a drug moving through the body and acting at its target. The reader is a GMP technical writer in pharmaceutical manufacturing. Fill in as much as you can judge yourself; flag only what you cannot.
+
+Drug name or code typed by the user: ${JSON.stringify(name)}
+Dosage form chosen by the user: ${JSON.stringify(formLabel)} (route: ${ROUTE_NAME[f.route] || "unknown"})
+
+Rules:
+1. Identify the compound. If the name is a development code you do not recognise with confidence, set "recognized": false. Then do NOT guess its target or mechanism from the code's prefix or the company. Fill only what the dosage form and route tell you, and flag the target, mechanism type, action and target tissue as required needs.
+2. Never include doses, strengths, schedules, regimens or recommendations.
+3. A number may appear only if you can name the specific source it comes from (a product label section, or a paper with authors, journal and year). If you cannot, leave the number out and add a need for it.
+4. Write plain, specific sentences of 1 to 3 lines each. Mark any step that describes the drug class rather than this drug with "generic": true.
+5. Start the journey from this template for the chosen dosage form, adapting the text to this drug where you know better: ${JSON.stringify(tmpl.map(({ site, title, text, target }) => ({ site, title, text, ...(target ? { target } : {}) })))}
+   Then add the target step (exactly one step with "target": true) and the metabolism and elimination steps. Use 5 to 10 steps. Allowed sites: ${SITES.join(", ")}.
+6. Mechanism: exactly 4 beats at the target cell, in order: reaching the target, binding, the immediate effect, the cell's response.
+7. target.class must be one of: ${SCENES.join(", ")} ("rtk" means a receptor tyrosine kinase, a membrane receptor with an intracellular kinase domain; "enzyme" means a cytoplasmic enzyme or kinase). target.action is a word such as inhibitor, antagonist, agonist, blocker, opener, neutraliser, cytotoxic, T-cell engager, expression or knockdown.
+8. Sources: full citation text. Give a "url" only in one of these two forms, which always work: https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=<BRAND_OR_INN> for a US label, or https://pubmed.ncbi.nlm.nih.gov/?term=<first+author+key+words+year> for a paper. Never invent a DOI or any other URL.
+9. "needs" lists only what you could not judge: each item has "path" (for example "target.name", "journey[3].text", "mechanism", "modality", "sources", or "fact:<Label>" for a fact you would want but cannot source), "label" (a few words), "why" (one short sentence) and "required" (true only for the target, mechanism type, action, target tissue or modality, and only when you do not know them).
+
+Reply with only one JSON object of this shape:
+{"recognized": true, "name": "INN or the code", "aliases": ["codes, brand names"], "modality": "small-molecule|antibody|protein|peptide|oligonucleotide|mrna|gene-therapy|cell-therapy", "status": "e.g. Approved (US) or Phase 3", "summary": "two sentences",
+ "target": {"name": "", "short": "label of at most 14 characters", "class": "", "action": "", "cell": "target cell or tissue", "labels": {}},
+ "journey": [{"site": "", "title": "", "text": "", "cite": [1], "generic": false, "target": false}],
+ "mechanism": [{"title": "", "text": "", "cite": [1]}],
+ "facts": [{"label": "", "value": "value with units, population and conditions", "cite": [1]}],
+ "simplified": ["what the figure leaves out"],
+ "sources": [{"id": 1, "text": "", "url": ""}],
+ "needs": [{"path": "", "label": "", "why": "", "required": false}]}`;
+  }
+
+  function normalize(raw, typed, formLabel, f) {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw { code: "invalid_json" };
+    const str = (v) => (typeof v === "string" ? v.trim() : "");
+    const MODS = ["small-molecule", "antibody", "protein", "peptide", "oligonucleotide", "mrna", "gene-therapy", "cell-therapy"];
+    const sources = (Array.isArray(raw.sources) ? raw.sources : []).map((s, i) => ({ id: Number(s.id) || i + 1, text: str(s.text), url: /^https:\/\/(dailymed\.nlm\.nih\.gov|pubmed\.ncbi\.nlm\.nih\.gov)\//.test(str(s.url)) ? str(s.url) : undefined })).filter((s) => s.text);
+    const ids = new Set(sources.map((s) => s.id));
+    const cite = (c) => (Array.isArray(c) ? c.map(Number).filter((n) => ids.has(n)) : []);
+    let journey = (Array.isArray(raw.journey) ? raw.journey : []).map((j) => ({ site: RX.siteId(str(j.site) || "tissues"), title: str(j.title), text: str(j.text), cite: cite(j.cite), generic: !!j.generic, ...(j.target ? { target: true } : {}) })).filter((j) => j.title || j.text);
+    const modality = MODS.includes(raw.modality) ? raw.modality : f.modality || "small-molecule";
+    if (!journey.length) journey = journeyFor(f.route, modality, "", f.localSite, true);
+    let seen = false;
+    journey.forEach((j) => { if (j.target) { if (seen) delete j.target; seen = true; } });
+    if (!seen) journey[Math.min(journey.length - 1, (ROUTES[f.route] || []).length)].target = true;
+    const t = raw.target && typeof raw.target === "object" ? raw.target : {};
+    const name = str(raw.name) || typed;
+    const aliases = [...new Set([typed, ...(Array.isArray(raw.aliases) ? raw.aliases.map(str) : [])].filter((a) => a && norm(a) !== norm(name)))];
+    const needs = (Array.isArray(raw.needs) ? raw.needs : []).map((n) => ({ path: str(n.path), label: str(n.label), why: str(n.why), required: !!n.required })).filter((n) => n.path && n.label);
+    return {
+      id: norm(name), name, aliases, modality, route: f.route, dosageForm: formLabel, status: str(raw.status), draft: "claude",
+      confidential: raw.recognized === false && looksInternal(typed),
+      summary: str(raw.summary),
+      target: { name: str(t.name), short: str(t.short).slice(0, 18) || str(t.name).slice(0, 18), class: SCENES.includes(t.class) ? t.class : "", action: str(t.action), cell: str(t.cell), labels: t.labels && typeof t.labels === "object" ? t.labels : {} },
+      binding: !["cell-therapy", "gene-therapy", "oligonucleotide", "mrna"].includes(modality),
+      journey,
+      mechanism: (Array.isArray(raw.mechanism) ? raw.mechanism : []).slice(0, 4).map((m) => ({ title: str(m.title), text: str(m.text), cite: cite(m.cite), generic: !!m.generic })).filter((m) => m.title || m.text),
+      facts: (Array.isArray(raw.facts) ? raw.facts : []).map((x) => ({ label: str(x.label), value: str(x.value), cite: cite(x.cite) })).filter((x) => x.label && x.value),
+      simplified: [...(Array.isArray(raw.simplified) ? raw.simplified.map(str).filter(Boolean) : []), "Drafted by Claude from its own knowledge, without looking anything up."],
+      sources, needs,
+    };
+  }
+
+  const SAMPLE_COPY = {
+    not_granted: "Claude drafting was not allowed for this page, so the template was used instead.",
+    sampling_disabled: "Claude is not available for this account, so the template was used instead.",
+    rate_limited: "Too many requests to Claude just now. Wait a minute, then press Go again.",
+    session_expired: "Your Claude session has expired. Sign in again, then press Go.",
+    invalid_json: "Claude’s reply could not be read as a dossier. Press Go to try again.",
+    refused: "Claude declined to draft this one. The template was used instead.",
+    empty_completion: "Claude returned nothing. The template was used instead.",
+  };
+  async function draftWithClaude(name, formLabel) {
+    const f = formInfo(formLabel);
+    const ctl = new AbortController();
+    busy = ctl;
+    const t0 = Date.now();
+    say(`<p><b>Claude is drafting “${esc(name)}” as ${esc(formLabel)}…</b> <span id="rx-progress">Thinking. This usually takes 30 to 90 seconds.</span></p><div class="rx-msg-actions"><button type="button" data-act="stop">Stop</button></div><p class="rx-small">The name and dosage form go to Claude on your account. Nothing else on this page is sent.${looksInternal(name) ? " <b>If this is an unpublished internal code, check your confidentiality policy first.</b>" : ""}</p>`);
+    msg.querySelector('[data-act="stop"]').onclick = () => ctl.abort();
+    const prog = () => $("#rx-progress");
+    try {
+      const raw = await sample.json(promptFor(name, formLabel, f), {
+        modelTier: "complex", signal: ctl.signal,
+        onText: ({ text }) => { const p = prog(); if (p) p.textContent = `Writing the dossier… ${text.length.toLocaleString()} characters so far.`; },
+      });
+      const d = normalize(raw, name, formLabel, f);
+      local[d.id] = d; store.save(local); refreshLib();
+      show(d);
+      const req = d.needs.filter((n) => n.required).length;
+      say(`<p><b>Drafted in ${Math.round((Date.now() - t0) / 1000)} s.</b> ${req ? `${req} required field${req > 1 ? "s" : ""} need${req > 1 ? "" : "s"} your input; they are highlighted in the editor below.` : "Nothing required is missing."} The draft is saved in this browser. Check it against your sources before you use it.</p>`);
+      if (req) editor.fill(current, true);
+    } catch (e) {
+      if (e && e.code === "cancelled") { say(`<p>Stopped. Press Go to draft again.</p>`); return; }
+      const fallback = ["not_granted", "sampling_disabled", "refused", "empty_completion", "capability_disabled", "capability_removed", "not_declared"].includes(e && e.code);
+      if (["not_granted", "sampling_disabled", "capability_disabled", "capability_removed", "not_declared"].includes(e && e.code)) { sample = null; refreshEngine(); }
+      if (fallback) { show(templateDraft(name, formLabel), { keepMsg: true }); editor.fill(current, true); }
+      say(`<p><b>${esc(SAMPLE_COPY[e && e.code] || "Claude could not finish the draft. Press Go to try again.")}</b></p>`, "rx-msg-err");
+    } finally {
+      if (busy === ctl) busy = null;
+    }
+  }
+
+  function refreshEngine() {
+    engine.textContent = sample ? "Unknown names are drafted by Claude, then checked by you." : HOSTED ? "Unknown names start from the dosage-form template." : "Unknown names start from the dosage-form template; ChEMBL and PubChem can fill more.";
+  }
 
   /* ---------- files ---------- */
 
   const fileIn = $("#rx-file");
   $('[data-act="open"]').addEventListener("click", () => fileIn.click());
-  fileIn.addEventListener("change", async () => {
-    const f = fileIn.files && fileIn.files[0];
-    fileIn.value = "";
-    if (!f) return;
+  async function openFile(f) {
     try {
       const d = validate(JSON.parse(await f.text()));
       local[d.id] = d; store.save(local); refreshLib(); show(d);
     } catch (err) { say(`<p><b>Could not open that file.</b> ${esc(err.message)}</p>`, "rx-msg-err"); }
-  });
+  }
+  fileIn.addEventListener("change", () => { const f = fileIn.files && fileIn.files[0]; fileIn.value = ""; if (f) openFile(f); });
   document.addEventListener("dragover", (e) => { if (e.dataTransfer && [...e.dataTransfer.types].includes("Files")) e.preventDefault(); });
-  document.addEventListener("drop", async (e) => {
+  document.addEventListener("drop", (e) => {
     const f = e.dataTransfer && e.dataTransfer.files[0];
     if (!f || !/json/i.test(f.type + f.name)) return;
     e.preventDefault();
-    try { const d = validate(JSON.parse(await f.text())); local[d.id] = d; store.save(local); refreshLib(); show(d); }
-    catch (err) { say(`<p><b>Could not open that file.</b> ${esc(err.message)}</p>`, "rx-msg-err"); }
+    openFile(f);
   });
-
   function validate(d) {
     if (!d || typeof d !== "object") throw new Error("The file is not a JSON object.");
     if (!d.name) throw new Error("A dossier needs at least a “name”.");
@@ -1217,54 +1527,11 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
     return d;
   }
 
-  /* ---------- route presets (shared by the editor and public drafts) ---------- */
-
-  const ROUTES = {
-    oral: { label: "Oral (tablet, capsule)", steps: [
-      ["mouth", "Swallowed", "Taken by mouth."],
-      ["stomach", "Dissolves", "The dosage form disintegrates and the drug dissolves."],
-      ["intestine", "Absorbed", "Most oral drugs are absorbed across the small-intestine wall into the portal blood."],
-      ["liver", "First pass through the liver", "Portal blood passes through the liver before reaching the general circulation; some drugs are partly metabolised on this pass."],
-      ["blood", "Distributed", "Carried in the blood, partly bound to plasma proteins; the unbound fraction reaches tissues."]] },
-    iv: { label: "Intravenous", steps: [
-      ["iv", "Infused into a vein", "Enters the bloodstream directly, with no absorption step."],
-      ["blood", "Distributed", "Carried in the blood to the tissues."]] },
-    subq: { label: "Subcutaneous", steps: [
-      ["subq", "Injected under the skin", "Forms a depot in the tissue under the skin."],
-      ["lymph-nodes", "Absorbed via lymph", "Large molecules such as antibodies are absorbed slowly, largely through the lymphatic system."],
-      ["blood", "Distributed", "Reaches the bloodstream and is carried to the tissues."]] },
-    im: { label: "Intramuscular", steps: [
-      ["im", "Injected into muscle", "Absorbed from the muscle into nearby capillaries."],
-      ["blood", "Distributed", "Carried in the blood to the tissues."]] },
-    inhaled: { label: "Inhaled", steps: [
-      ["mouth", "Inhaled", "Breathed in as an aerosol or powder."],
-      ["lungs", "Deposits in the airways", "Acts locally in the lungs; some crosses into the blood."]] },
-    topical: { label: "Topical / transdermal", steps: [
-      ["skin", "Applied to the skin", "Acts locally or crosses the skin slowly into the blood."]] },
-    "ex-vivo": { label: "Autologous cell therapy (ex vivo)", steps: [
-      ["iv", "Cells are collected", "The patient’s cells are collected, for example by leukapheresis."],
-      ["ex-vivo", "Engineered outside the body", "Cells are modified, expanded and formulated at the manufacturing site."],
-      ["iv", "Infused back", "The modified cells are returned by intravenous infusion."],
-      ["blood", "Expand in the body", "The cells multiply after infusion."]] },
-  };
-  const CLEAR = {
-    small: [["liver", "Metabolised", "Small molecules are typically metabolised in the liver, often by CYP enzymes."], ["kidneys", "Filtered", "Drug and metabolites are filtered by the kidneys."], ["bladder", "Excreted in urine", "and leave in the urine (some leave in bile and feces)."]],
-    big: [["tissues", "Broken down like other proteins", "Proteins and antibodies are cleared by catabolism throughout the body, not by CYP enzymes."]],
-  };
-  const isBig = (m) => ["antibody", "protein", "peptide"].includes(m);
-  function journeyFor(route, modality, targetName, targetSite = "tissues", generic = true) {
-    const pre = (ROUTES[route] || ROUTES.iv).steps.map(([site, title, text]) => ({ site, title, text, generic }));
-    const tgt = { site: targetSite, title: `Reaches ${targetName || "its target"}`, text: `Distributes to the tissue where ${targetName || "the target"} is found.`, generic, target: true };
-    const post = ["cell-therapy", "gene-therapy"].includes(modality) ? [] : (isBig(modality) ? CLEAR.big : CLEAR.small).map(([site, title, text]) => ({ site, title, text, generic }));
-    return [...pre, tgt, ...post];
-  }
-
-  /* ---------- public lookup ---------- */
+  /* ---------- public lookup (local file only) ---------- */
 
   const CHEMBL = "https://www.ebi.ac.uk/chembl/api/data";
   const getJson = async (u) => { const r = await fetch(u, { headers: { Accept: "application/json" } }); if (!r.ok) throw new Error(`${r.status} from ${new URL(u).host}`); return r.json(); };
   const TYPE = { "small molecule": "small-molecule", antibody: "antibody", protein: "protein", oligonucleotide: "oligonucleotide", cell: "cell-therapy", gene: "gene-therapy", enzyme: "protein" };
-
   function classify(text, modality) {
     const t = text.toLowerCase();
     if (modality === "cell-therapy") return "car";
@@ -1275,13 +1542,13 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
     if (/channel/.test(t)) return "channel";
     if (/transporter|symporter|antiporter|reuptake|pump|exchanger/.test(t)) return "transporter";
     if (/estrogen receptor|androgen receptor|glucocorticoid receptor|mineralocorticoid|progesterone receptor|peroxisome|ppar|retinoic acid receptor|retinoid x|thyroid hormone receptor|vitamin d receptor|nuclear receptor/.test(t)) return "nuclear";
+    if (/receptor (protein-)?tyrosine kinase|stem cell growth factor receptor|\bkit\b|egfr|erbb|pdgfr|vegfr|fgfr|\bmet\b|\bret\b|\balk\b/.test(t) && modality === "small-molecule") return "rtk";
     if (/receptor/.test(t)) return "receptor";
     if (isBig(modality) && /tumou?r necrosis factor|interleukin|\bil-?\d|cytokine|vegf|immunoglobulin e|complement|tslp|interferon|rankl|sclerostin|pcsk9/.test(t)) return "ligand";
     if (/kinase|ase\b|ase |cyclooxygenase|synthase|protease|polymerase|reductase|inhibitor/.test(t)) return "enzyme";
     return isBig(modality) ? "receptor" : "enzyme";
   }
-
-  async function lookupPublic(term) {
+  async function lookupPublic(term, formLabel) {
     say(`<p>Searching ChEMBL and PubChem for “${esc(term)}”…</p>`);
     try {
       const enc = encodeURIComponent(term);
@@ -1306,29 +1573,35 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
       const gene = tgt && (tgt.target_components || []).flatMap((c) => c.target_component_synonyms || []).find((y) => y.syn_type === "GENE_SYMBOL");
       const short = gene ? gene.component_synonym : tName.length <= 20 ? tName : tName.slice(0, 20).replace(/\s+\S*$/, "") + "…";
       const cls = classify(`${moa} ${tName}`, modality);
-      const route = mol.oral ? "oral" : mol.parenteral ? (isBig(modality) ? "iv" : "iv") : mol.topical ? "topical" : modality === "cell-therapy" ? "ex-vivo" : isBig(modality) ? "iv" : "oral";
+      const f = formInfo(formLabel);
+      const route = f.route || (mol.oral ? "oral" : mol.parenteral ? "iv" : mol.topical ? "topical" : modality === "cell-therapy" ? "ex-vivo" : isBig(modality) ? "iv" : "oral");
       const name = mol.pref_name ? mol.pref_name.charAt(0) + mol.pref_name.slice(1).toLowerCase() : term;
       const sources = [{ id: 1, text: `ChEMBL compound report card ${id}${parent !== id ? ` (parent ${parent})` : ""}, EMBL-EBI.`, url: `https://www.ebi.ac.uk/chembl/compound_report_card/${parent}/` }];
       if (pc) sources.push({ id: 2, text: `PubChem compound CID ${pc.CID}, NCBI.`, url: `https://pubchem.ncbi.nlm.nih.gov/compound/${pc.CID}` });
       const refs = [];
       mech.forEach((m) => (m.mechanism_refs || []).forEach((r) => { if (r.ref_url && refs.length < 4 && !refs.some((x) => x.url === r.ref_url)) refs.push({ text: `${r.ref_type}: ${r.ref_id} (cited by ChEMBL for the mechanism)`, url: r.ref_url }); }));
-      refs.forEach((r, i) => sources.push({ id: sources.length + 1, ...r }));
+      refs.forEach((r) => sources.push({ id: sources.length + 1, ...r }));
       const mechCite = refs.length ? refs.map((_, i) => sources.length - refs.length + i + 1) : [1];
       const inds = ind.slice().sort((a, b) => (+b.max_phase_for_ind || 0) - (+a.max_phase_for_ind || 0)).map((x) => x.efo_term || x.mesh_heading).filter((v, i, a) => v && a.indexOf(v) === i).slice(0, 4);
       const phase = mol.max_phase != null ? `${+mol.max_phase === 4 ? "Approved (max phase 4)" : `Max phase ${+mol.max_phase}`}` : "Unknown";
+      const journey = journeyFor(route, modality, tName, f.localSite, true);
+      const at = journey.findIndex((j) => j.target);
       const d = {
-        id: norm(name), name, aliases: [term], modality, status: phase, draft: true,
+        id: norm(name), name, aliases: [term], modality, route, dosageForm: formLabel || undefined, status: phase, draft: "public",
         summary: `${moa || "Mechanism not recorded in ChEMBL"}. Drafted automatically from ChEMBL${pc ? " and PubChem" : ""}.`,
         target: { name: tName, short, class: cls, action: String(m0.action_type || (cls === "car" ? "cytotoxic" : "inhibitor")).toLowerCase(), cell: `cell carrying ${tName}`, labels: cls === "checkpoint" && /l1|ligand/i.test(tName) ? { blocks: "ligand", receptor: "PD-1", ligand: "PD-L1" } : {} },
         binding: !["car", "gene", "oligo"].includes(cls),
-        journey: journeyFor(route, modality, tName),
-        mechanism: [],
+        journey, mechanism: [],
         facts: [
           { label: "Mechanism (ChEMBL)", value: mech.length ? mech.map((m) => `${m.mechanism_of_action} (${String(m.action_type || "").toLowerCase()})`).join("; ") : "not recorded", cite: mechCite },
           { label: "Molecule type", value: mol.molecule_type || "unknown", cite: [1] },
           { label: "Development stage", value: `${phase}${mol.first_approval ? `, first approved ${mol.first_approval}` : ""}`, cite: [1] },
           ...(pc ? [{ label: "Formula · molecular weight", value: `${pc.MolecularFormula} · ${pc.MolecularWeight} g/mol`, cite: [2] }] : []),
           ...(inds.length ? [{ label: "Indications studied (top)", value: inds.join("; "), cite: [1] }] : []),
+        ],
+        needs: [
+          ...(LOCAL_SITE[route] ? [] : [{ path: `journey[${at}].site`, label: "Target tissue", why: "ChEMBL names the target but not where in the body it acts.", required: true }]),
+          { path: "mechanism", label: "Drug-specific mechanism steps", why: "The scene shows generic text until you add them.", required: false },
         ],
         simplified: [
           "The body journey is a generic template for the route and modality, not this drug’s measured pharmacokinetics.",
@@ -1340,8 +1613,7 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
       local[d.id] = d; store.save(local); refreshLib();
       show(d);
     } catch (err) {
-      say(`<p><b>Public lookup failed.</b> ${esc(err.message)}</p><p class="rx-small">If you opened this page from a sandbox or a locked-down network, the request may be blocked. You can still build the dossier by hand.</p><div class="rx-msg-actions"><button type="button" data-act="create">Create a dossier for “${esc(term)}”</button></div>`, "rx-msg-err");
-      const b = msg.querySelector('[data-act="create"]'); if (b) b.onclick = () => editor.start(term);
+      say(`<p><b>Public lookup failed.</b> ${esc(err.message)}</p><p class="rx-small">If you opened this page from a sandbox or a locked-down network, the request may be blocked. The template draft and the editor still work.</p>`, "rx-msg-err");
     }
   }
 
@@ -1349,66 +1621,92 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
 
   const editor = (() => {
     const box = $("#rx-edit"), form = $("#rx-form");
-    let d = null, timer = 0, stepKeep = 0;
+    let d = null, timer = 0;
+    const touched = new Set();
     const MODS = ["small-molecule", "antibody", "protein", "peptide", "oligonucleotide", "mrna", "gene-therapy", "cell-therapy"];
     const ACTIONS = ["inhibitor", "antagonist", "agonist", "blocker", "opener", "positive modulator", "neutraliser", "cytotoxic", "T-cell engager", "expression", "knockdown"];
     const siteOpts = Object.entries(RX.SITES).map(([k, v]) => `<option value="${k}">${esc(v.label)}</option>`).join("");
+    const formOpts = (v) => `<option value="">Not set</option>` + FORMS.map(([g, items]) => `<optgroup label="${esc(g)}">${items.map(([l]) => `<option${l === v ? " selected" : ""}>${esc(l)}</option>`).join("")}</optgroup>`).join("");
     const opt = (list, v) => list.map((o) => `<option${o === v ? " selected" : ""}>${esc(o)}</option>`).join("");
     const field = (label, inner, wide) => `<label class="rx-f${wide ? " rx-f-wide" : ""}"><span>${label}</span>${inner}</label>`;
     const nums = (s) => String(s || "").split(/[^\d]+/).filter(Boolean).map(Number);
+    const rowBtns = `<span class="rx-row-btns"><button type="button" data-mv="-1" aria-label="Move up">↑</button><button type="button" data-mv="1" aria-label="Move down">↓</button><button type="button" data-del aria-label="Remove">✕</button></span>`;
 
-    function blank(name) {
-      return {
-        id: norm(name) || "new-dossier", name: name || "New dossier", aliases: [], modality: "small-molecule", status: "Investigational (internal)", confidential: true,
-        summary: "", target: { name: "", short: "", class: "", action: "inhibitor", cell: "", labels: {} }, binding: true,
-        journey: journeyFor("oral", "small-molecule", "", "tissues", false).map((j) => ({ ...j, generic: undefined })),
-        mechanism: [], facts: [], simplified: [], sources: [],
-      };
-    }
     function rowsHtml(kind, items) {
       const r = (it, i) => {
-        if (kind === "journey") return `<div class="rx-row" data-i="${i}"><select data-f="site">${siteOpts.replace(`value="${RX.siteId(it.site)}"`, `value="${RX.siteId(it.site)}" selected`)}</select><input data-f="title" placeholder="Step title" value="${esc(it.title)}"><textarea data-f="text" rows="2" placeholder="What happens here (with numbers only if sourced)">${esc(it.text)}</textarea><input data-f="cite" class="rx-cite-in" placeholder="src #" value="${esc((it.cite || []).join(","))}"><label class="rx-tgt"><input type="radio" name="rx-target" data-f="target"${it.target ? " checked" : ""}> target</label>${rowBtns}</div>`;
+        if (kind === "journey") return `<div class="rx-row" data-i="${i}"><select data-f="site" aria-label="Body site">${siteOpts.replace(`value="${RX.siteId(it.site)}"`, `value="${RX.siteId(it.site)}" selected`)}</select><input data-f="title" placeholder="Step title" value="${esc(it.title)}"><textarea data-f="text" rows="2" placeholder="What happens here (numbers only with a source)">${esc(it.text)}</textarea><input data-f="cite" class="rx-cite-in" placeholder="src #" value="${esc((it.cite || []).join(","))}"><label class="rx-tgt"><input type="radio" name="rx-target" data-f="target"${it.target ? " checked" : ""}> target</label>${rowBtns}</div>`;
         if (kind === "mechanism") return `<div class="rx-row" data-i="${i}"><input data-f="title" placeholder="Beat ${i + 1} title" value="${esc(it.title)}"><textarea data-f="text" rows="2" placeholder="What happens at the target">${esc(it.text)}</textarea><input data-f="cite" class="rx-cite-in" placeholder="src #" value="${esc((it.cite || []).join(","))}">${rowBtns}</div>`;
         if (kind === "facts") return `<div class="rx-row" data-i="${i}"><input data-f="label" placeholder="Label, e.g. Half-life" value="${esc(it.label)}"><input data-f="value" placeholder="Value with units and conditions" value="${esc(it.value)}"><input data-f="cite" class="rx-cite-in" placeholder="src #" value="${esc((it.cite || []).join(","))}">${rowBtns}</div>`;
-        return `<div class="rx-row" data-i="${i}"><span class="rx-src-n">${i + 1}</span><input data-f="text" placeholder="Document, section, version (e.g. IB v4.0 §5.3)" value="${esc(it.text)}"><input data-f="url" placeholder="Link (optional)" value="${esc(it.url || "")}">${rowBtns}</div>`;
+        return `<div class="rx-row" data-i="${i}"><span class="rx-src-n">${i + 1}</span><input data-f="text" placeholder="Document, section, version (e.g. IB ed. 4, §5.3)" value="${esc(it.text)}"><input data-f="url" placeholder="Link (optional)" value="${esc(it.url || "")}">${rowBtns}</div>`;
       };
       return items.map(r).join("") + `<button type="button" class="rx-add" data-add="${kind}">+ Add ${kind === "journey" ? "body step" : kind === "mechanism" ? "mechanism beat" : kind === "facts" ? "fact" : "source"}</button>`;
     }
-    const rowBtns = `<span class="rx-row-btns"><button type="button" data-mv="-1" aria-label="Move up">↑</button><button type="button" data-mv="1" aria-label="Move down">↓</button><button type="button" data-del aria-label="Remove">✕</button></span>`;
 
     function render() {
+      (d.needs || []).forEach((n) => { const m = /^fact:(.+)$/.exec(n.path); if (m && !(d.facts || []).some((f) => f.label === m[1])) (d.facts = d.facts || []).push({ label: m[1], value: "" }); });
       const t = d.target, L = t.labels || {};
       form.innerHTML = `
-<p class="rx-small">Everything you type here stays in this browser. <b>Save on this device</b> keeps it in local browser storage; ${HOSTED ? "<b>Copy JSON</b> gives you the text" : "<b>Download JSON</b> gives you a file"} to keep in your controlled document system or in <code>rx/private/</code>. Show only numbers you can cite, with units and conditions.</p>
+<p class="rx-small">Everything you type here stays in this browser. <b>Save on this device</b> keeps it in local browser storage; <b>${downloads || !HOSTED ? "Download JSON" : "Copy JSON"}</b> gives you a copy for your controlled document system or <code>rx/private/</code>. <span class="rx-key"><i class="rx-req"></i> needs your input</span> <span class="rx-key"><i></i> optional, add if you have it</span></p>
 <fieldset><legend>Identity</legend><div class="rx-grid">
-${field("Name or code", `<input data-p="name" value="${esc(d.name)}">`)}
-${field("Aliases (comma-separated)", `<input data-p="aliases" value="${esc((d.aliases || []).join(", "))}">`)}
-${field("Modality", `<select data-p="modality">${opt(MODS, d.modality)}</select>`)}
-${field("Status", `<input data-p="status" value="${esc(d.status || "")}">`)}
-${field("Summary (one or two sentences)", `<textarea data-p="summary" rows="2">${esc(d.summary || "")}</textarea>`, true)}
-<label class="rx-check"><input type="checkbox" data-p="confidential"${d.confidential ? " checked" : ""}> Confidential (shows a banner and never puts the name in the address bar)</label>
+${field("Name or code", `<input id="rx-ed-name" data-p="name" value="${esc(d.name)}">`)}
+${field("Aliases (comma-separated)", `<input id="rx-ed-aliases" data-p="aliases" value="${esc((d.aliases || []).join(", "))}">`)}
+${field("Dosage form", `<select id="rx-ed-form" data-p="dosageForm">${formOpts(d.dosageForm)}</select>`)}
+${field("Modality", `<select id="rx-ed-modality" data-p="modality">${opt(MODS, d.modality)}</select>`)}
+${field("Status", `<input id="rx-ed-status" data-p="status" value="${esc(d.status || "")}">`)}
+${field("Summary (one or two sentences)", `<textarea id="rx-ed-summary" data-p="summary" rows="2">${esc(d.summary || "")}</textarea>`, true)}
+<label class="rx-check"><input type="checkbox" id="rx-ed-conf" data-p="confidential"${d.confidential ? " checked" : ""}> Confidential (shows a banner and never puts the name in the address bar)</label>
 </div></fieldset>
 <fieldset><legend>Target and mechanism scene</legend><div class="rx-grid">
-${field("Target", `<input data-p="target.name" placeholder="e.g. KIT D816V kinase" value="${esc(t.name || "")}">`)}
-${field("Short label", `<input data-p="target.short" placeholder="e.g. KIT" value="${esc(t.short || "")}">`)}
-${field("Scene", `<select data-p="target.class"><option value="">auto (from modality)</option>${Object.entries(RX.SCENE_NAMES).map(([k, v]) => `<option value="${k}"${t.class === k ? " selected" : ""}>${esc(v)}</option>`).join("")}</select>`)}
-${field("Action", `<input data-p="target.action" list="rx-actions" value="${esc(t.action || "")}"><datalist id="rx-actions">${ACTIONS.map((a) => `<option value="${a}">`).join("")}</datalist>`)}
-${field("Target cell or tissue", `<input data-p="target.cell" placeholder="e.g. Mast cell" value="${esc(t.cell || "")}">`)}
-${field("Vector (gene therapy)", `<input data-p="target.vector" placeholder="AAV, lentivirus, LNP" value="${esc(t.vector || "")}">`)}
-${field("Ligand / antigen label", `<input data-p="target.labels.ligand" value="${esc(L.ligand || L.antigen || "")}">`)}
-${field("Effector cell label", `<input data-p="target.labels.effector" value="${esc(L.effector || "")}">`)}
-${field("Target cell label", `<input data-p="target.labels.target" value="${esc(L.target || "")}">`)}
-${field("Protein made (gene therapy)", `<input data-p="target.labels.protein" value="${esc(L.protein || "")}">`)}
-<label class="rx-check"><input type="checkbox" data-p="binding"${d.binding !== false ? " checked" : ""}> Show the binding-occupancy slider</label>
+${field("Target", `<input id="rx-ed-tname" data-p="target.name" placeholder="e.g. KIT D816V kinase" value="${esc(t.name || "")}">`)}
+${field("Short label", `<input id="rx-ed-tshort" data-p="target.short" placeholder="e.g. KIT" value="${esc(t.short || "")}">`)}
+${field("Mechanism type (scene)", `<select id="rx-ed-tclass" data-p="target.class"><option value="">auto (from modality)</option>${Object.entries(RX.SCENE_NAMES).map(([k, v]) => `<option value="${k}"${t.class === k ? " selected" : ""}>${esc(v)}</option>`).join("")}</select>`)}
+${field("Action", `<input id="rx-ed-taction" data-p="target.action" list="rx-actions" value="${esc(t.action || "")}"><datalist id="rx-actions">${ACTIONS.map((a) => `<option value="${a}">`).join("")}</datalist>`)}
+${field("Target cell or tissue", `<input id="rx-ed-tcell" data-p="target.cell" placeholder="e.g. Mast cell" value="${esc(t.cell || "")}">`)}
+${field("Vector (gene therapy)", `<input id="rx-ed-tvector" data-p="target.vector" placeholder="AAV, lentivirus, LNP" value="${esc(t.vector || "")}">`)}
+${field("Ligand / antigen label", `<input id="rx-ed-lig" data-p="target.labels.ligand" value="${esc(L.ligand || L.antigen || "")}">`)}
+${field("Effector cell label", `<input id="rx-ed-eff" data-p="target.labels.effector" value="${esc(L.effector || "")}">`)}
+${field("Target cell label", `<input id="rx-ed-tgt" data-p="target.labels.target" value="${esc(L.target || "")}">`)}
+${field("Protein made (gene therapy)", `<input id="rx-ed-prot" data-p="target.labels.protein" value="${esc(L.protein || "")}">`)}
+<label class="rx-check"><input type="checkbox" id="rx-ed-binding" data-p="binding"${d.binding !== false ? " checked" : ""}> Show the binding-occupancy slider</label>
 </div></fieldset>
-<fieldset><legend>Journey through the body</legend>
-<div class="rx-inline"><select id="rx-route">${Object.entries(ROUTES).map(([k, v]) => `<option value="${k}">${esc(v.label)}</option>`).join("")}</select><button type="button" id="rx-route-go">Replace journey with this route’s template</button></div>
+<fieldset data-sec="journey"><legend>Journey through the body</legend>
+<div class="rx-inline"><select id="rx-route" aria-label="Dosage form template">${FORMS.map(([g, items]) => `<optgroup label="${esc(g)}">${items.map(([l]) => `<option${l === d.dosageForm ? " selected" : ""}>${esc(l)}</option>`).join("")}</optgroup>`).join("")}</select><button type="button" id="rx-route-go">Replace the journey with this dosage form’s template</button></div>
 <div class="rx-rows" data-list="journey">${rowsHtml("journey", d.journey)}</div></fieldset>
-<fieldset><legend>Mechanism at the target (up to four beats; leave empty to use the scene’s default text)</legend><div class="rx-rows" data-list="mechanism">${rowsHtml("mechanism", d.mechanism)}</div></fieldset>
-<fieldset><legend>Key facts</legend><div class="rx-rows" data-list="facts">${rowsHtml("facts", d.facts || [])}</div></fieldset>
-<fieldset><legend>Sources (cite them by number above)</legend><div class="rx-rows" data-list="sources">${rowsHtml("sources", d.sources || [])}</div></fieldset>
-<fieldset><legend>What is simplified (one per line)</legend><textarea data-p="simplified" rows="3">${esc((d.simplified || []).join("\n"))}</textarea></fieldset>
-<div class="rx-inline rx-edit-actions"><button type="button" data-ed="save">Save on this device</button>${HOSTED ? "" : `<button type="button" data-ed="download">Download JSON</button>`}<button type="button" data-ed="copy">Copy JSON</button><button type="button" data-ed="forget">Remove from this device</button><span class="rx-small" id="rx-ed-status"></span></div>`;
+<fieldset data-sec="mechanism"><legend>Mechanism at the target (up to four beats; leave empty to use the scene’s default text)</legend><div class="rx-rows" data-list="mechanism">${rowsHtml("mechanism", d.mechanism)}</div></fieldset>
+<fieldset data-sec="facts"><legend>Key facts</legend><div class="rx-rows" data-list="facts">${rowsHtml("facts", d.facts || [])}</div></fieldset>
+<fieldset data-sec="sources"><legend>Sources (cite them by number above)</legend><div class="rx-rows" data-list="sources">${rowsHtml("sources", d.sources || [])}</div></fieldset>
+<fieldset><legend>What is simplified (one per line)</legend><textarea id="rx-ed-simpl" data-p="simplified" rows="3">${esc((d.simplified || []).join("\n"))}</textarea></fieldset>
+<div class="rx-inline rx-edit-actions"><button type="button" data-ed="save">Save on this device</button>${downloads || !HOSTED ? `<button type="button" data-ed="download">Download JSON</button>` : ""}<button type="button" data-ed="copy">Copy JSON</button><button type="button" data-ed="forget">Remove from this device</button><span class="rx-small" id="rx-ed-status" role="status"></span></div>`;
+      mark();
+    }
+
+    /* The element a need points at, so it can be highlighted and focused. */
+    function target(path) {
+      let m;
+      if ((m = /^(journey|mechanism|facts)\[(\d+)\](?:\.(\w+))?$/.exec(path))) {
+        const row = form.querySelector(`[data-list="${m[1]}"] .rx-row[data-i="${m[2]}"]`);
+        return row && (row.querySelector(`[data-f="${m[3] || (m[1] === "facts" ? "value" : "text")}"]`) || row);
+      }
+      if ((m = /^fact:(.+)$/.exec(path))) {
+        const i = (d.facts || []).findIndex((f) => f.label === m[1]);
+        const row = form.querySelector(`[data-list="facts"] .rx-row[data-i="${i}"]`);
+        return row && row.querySelector('[data-f="value"]');
+      }
+      if (["mechanism", "sources", "journey", "facts"].includes(path)) return form.querySelector(`[data-sec="${path}"]`);
+      return form.querySelector(`[data-p="${path}"]`);
+    }
+    function mark() {
+      form.querySelectorAll(".rx-need, .rx-need-opt").forEach((el) => el.classList.remove("rx-need", "rx-need-opt"));
+      form.querySelectorAll(".rx-need-note").forEach((el) => el.remove());
+      (d.needs || []).forEach((n) => {
+        const el = target(n.path);
+        if (!el) return;
+        el.classList.add(n.required ? "rx-need" : "rx-need-opt");
+        const note = document.createElement("span");
+        note.className = `rx-need-note${n.required ? " rx-req" : ""}`;
+        note.textContent = `${n.required ? "Needs your input" : "Optional"}: ${n.why || n.label}`;
+        (el.tagName === "FIELDSET" ? el.querySelector("legend") : el).after(note);
+      });
     }
 
     function setPath(obj, path, v) {
@@ -1420,8 +1718,9 @@ ${field("Protein made (gene therapy)", `<input data-p="target.labels.protein" va
     function readRows(kind) {
       return [...form.querySelectorAll(`[data-list="${kind}"] .rx-row`)].map((row, i) => {
         const get = (f) => { const el = row.querySelector(`[data-f="${f}"]`); return el ? (el.type === "radio" ? el.checked : el.value) : undefined; };
-        if (kind === "journey") return { site: get("site"), title: get("title"), text: get("text"), cite: nums(get("cite")), ...(get("target") ? { target: true } : {}) };
-        if (kind === "mechanism") return { title: get("title"), text: get("text"), cite: nums(get("cite")) };
+        const was = (d[kind] || [])[i] || {};
+        if (kind === "journey") return { site: get("site"), title: get("title"), text: get("text"), cite: nums(get("cite")), ...(was.generic ? { generic: true } : {}), ...(get("target") ? { target: true } : {}) };
+        if (kind === "mechanism") return { title: get("title"), text: get("text"), cite: nums(get("cite")), ...(was.generic ? { generic: true } : {}) };
         if (kind === "facts") return { label: get("label"), value: get("value"), cite: nums(get("cite")) };
         return { id: i + 1, text: get("text"), url: get("url") || undefined };
       });
@@ -1437,20 +1736,32 @@ ${field("Protein made (gene therapy)", `<input data-p="target.labels.protein" va
       d.id = norm(d.name) || d.id;
       ["journey", "mechanism", "facts", "sources"].forEach((k) => (d[k] = readRows(k)));
       d.mechanism = d.mechanism.filter((m) => m.title || m.text).slice(0, 4);
+      // A need is met once its field has been edited and holds something.
+      d.needs = (d.needs || []).filter((n) => {
+        if (!touched.has(n.path)) return true;
+        if (n.path === "mechanism") return !d.mechanism.length;
+        if (n.path === "sources") return !d.sources.some((s) => s.text);
+        const el = target(n.path);
+        return !(el && "value" in el && String(el.value).trim());
+      });
       return d;
     }
     function preview() {
       clearTimeout(timer);
       timer = setTimeout(() => {
         read();
-        stepKeep = view._rx ? Math.min(stepKeepIdx(), 99) : 0;
-        show(d, { fromEditor: true, step: stepKeep });
+        const b = view.querySelector('[aria-current="step"]');
+        show(d, { fromEditor: true, step: b ? +b.dataset.step : 0 });
+        mark();
       }, 250);
     }
-    const stepKeepIdx = () => { const b = view.querySelector('[aria-current="step"]'); return b ? +b.dataset.step : 0; };
-
-    form.addEventListener("input", preview);
-    form.addEventListener("change", preview);
+    function touch(e) {
+      (d.needs || []).forEach((n) => { const el = target(n.path); if (el && (el === e.target || el.contains(e.target))) touched.add(n.path); });
+      if (e.target.closest('[data-list="mechanism"]')) touched.add("mechanism");
+      if (e.target.closest('[data-list="sources"]')) touched.add("sources");
+    }
+    form.addEventListener("input", (e) => { touch(e); preview(); });
+    form.addEventListener("change", (e) => { touch(e); preview(); });
     form.addEventListener("click", (e) => {
       const b = e.target.closest("button");
       if (!b) return;
@@ -1465,9 +1776,10 @@ ${field("Protein made (gene therapy)", `<input data-p="target.labels.protein" va
       }
       if (b.id === "rx-route-go") {
         read();
-        const route = $("#rx-route").value;
+        const fl = $("#rx-route").value, fi = formInfo(fl);
         const tgt = d.journey.find((j) => j.target);
-        d.journey = journeyFor(route, d.modality, d.target.name, tgt ? RX.siteId(tgt.site) : "tissues", false).map((j) => ({ ...j, generic: undefined }));
+        d.dosageForm = fl; d.route = fi.route;
+        d.journey = journeyFor(fi.route, d.modality, d.target.name, tgt ? RX.siteId(tgt.site) : fi.localSite, true);
         render(); preview(); return;
       }
       const status = $("#rx-ed-status");
@@ -1475,8 +1787,11 @@ ${field("Protein made (gene therapy)", `<input data-p="target.labels.protein" va
       if (!act) return;
       read();
       const json = JSON.stringify(clean(d), null, 2);
-      if (act === "save") { local[d.id] = clean(d); status.textContent = store.save(local) ? "Saved in this browser." : "This browser blocked local storage. Use Download JSON instead."; refreshLib(); }
-      if (act === "download") { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([json + "\n"], { type: "application/json" })); a.download = `${d.id}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); status.textContent = `Downloaded ${d.id}.json.`; }
+      if (act === "save") { local[d.id] = clean(d); status.textContent = store.save(local) ? "Saved in this browser." : "This browser blocked local storage. Use Copy JSON instead."; refreshLib(); }
+      if (act === "download") {
+        if (downloads) downloads.save({ filename: `${d.id}.json`, data: json + "\n" }).then(() => (status.textContent = `Saved ${d.id}.json.`), (err) => (status.textContent = err && err.code === "declined" ? "Download cancelled." : "Download is not available here. Use Copy JSON."));
+        else { const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob([json + "\n"], { type: "application/json" })); a.download = `${d.id}.json`; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); status.textContent = `Downloaded ${d.id}.json.`; }
+      }
       if (act === "copy") {
         const fallback = () => {
           let ta = form.querySelector(".rx-json");
@@ -1489,16 +1804,26 @@ ${field("Protein made (gene therapy)", `<input data-p="target.labels.protein" va
       if (act === "forget") { delete local[d.id]; store.save(local); refreshLib(); status.textContent = "Removed from this browser."; }
     });
     function clean(x) {
-      const o = JSON.parse(JSON.stringify(x));
+      const o = clone(x);
       delete o._local;
-      ["journey", "mechanism", "facts"].forEach((k) => (o[k] || []).forEach((it) => { if (!it.cite || !it.cite.length) delete it.cite; delete it.generic; }));
+      o.facts = (o.facts || []).filter((f) => f.label && f.value);
+      ["journey", "mechanism", "facts"].forEach((k) => (o[k] || []).forEach((it) => { if (!it.cite || !it.cite.length) delete it.cite; if (!it.generic) delete it.generic; }));
       return o;
     }
 
     return {
       get open() { return box.open; },
-      start(name) { d = blank(name); box.open = true; render(); show(d, { fromEditor: true }); box.scrollIntoView({ behavior: "smooth", block: "start" }); },
-      fill(src) { d = JSON.parse(JSON.stringify(src)); delete d._local; render(); },
+      start(name) { d = templateDraft(name || "New dossier", formSel.value || "Tablet"); touched.clear(); box.open = true; render(); show(d, { fromEditor: true }); box.scrollIntoView({ behavior: "smooth", block: "start" }); },
+      fill(src, openIt) { d = clone(src); delete d._local; touched.clear(); render(); if (openIt) box.open = true; },
+      focusNeed(path) {
+        if (!d || d.id !== (current && current.id)) this.fill(current);
+        box.open = true;
+        const el = target(path);
+        if (!el) { box.scrollIntoView({ behavior: "smooth", block: "start" }); return; }
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+        const f = el.matches("input, select, textarea") ? el : el.querySelector("input, select, textarea");
+        if (f) setTimeout(() => f.focus({ preventScroll: true }), 300);
+      },
       boot() {
         $('[data-act="new"]').addEventListener("click", () => editor.start(q.value.trim() && !find(q.value) ? q.value.trim() : ""));
         box.addEventListener("toggle", () => { if (box.open && current && (!d || d.id !== current.id)) editor.fill(current); });
@@ -1507,7 +1832,14 @@ ${field("Protein made (gene therapy)", `<input data-p="target.labels.protein" va
   })();
   editor.boot();
 
-  /* ---------- theme and start ---------- */
+  /* ---------- start ---------- */
+
+  formSel.innerHTML = `<option value="">Dosage form…</option>` + FORMS.map(([g, items]) => `<optgroup label="${esc(g)}">${items.map(([l]) => `<option>${esc(l)}</option>`).join("")}</optgroup>`).join("");
+  refreshEngine();
+  if (window.claude && typeof window.claude.use === "function") {
+    window.claude.use("sample").then((s) => { sample = s || null; refreshEngine(); }, () => {});
+    window.claude.use("downloads").then((dl) => { downloads = dl || null; if (editor.open && current) editor.fill(current); }, () => {});
+  }
 
   const themeBtn = $('[data-act="theme"]'), shell = document.querySelector(".iso"), html = document.documentElement;
   const hostTheme = () => (["light", "dark"].includes(html.dataset.theme) ? html.dataset.theme : null);
@@ -1528,7 +1860,7 @@ ${field("Protein made (gene therapy)", `<input data-p="target.labels.protein" va
   const fromHash = decodeURIComponent(location.hash.slice(1));
   const first = (fromHash && find(fromHash)) || find(window.__RX_INITIAL__ || "") || BUNDLED[0];
   if (first) show(first);
-  window.AnimaRxApp = { show, find, lookupPublic, editor, journeyFor };
+  window.AnimaRxApp = { show, find, go, lookupPublic, editor, journeyFor, templateDraft, normalize: (raw, name, form) => normalize(raw, name, form, formInfo(form)), promptFor: (name, form) => promptFor(name, form, formInfo(form)) };
 })();
 </script>
 </body></html>

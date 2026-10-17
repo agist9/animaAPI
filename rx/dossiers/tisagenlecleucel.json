@@ -2,6 +2,7 @@
   "id": "tisagenlecleucel",
   "name": "Tisagenlecleucel",
   "aliases": ["Kymriah", "CTL019", "tisa-cel"],
+  "route": "ex-vivo",
   "modality": "cell-therapy",
   "status": "Approved",
   "summary": "An autologous CAR-T cell therapy. The patient's own T cells are engineered with a lentiviral vector to carry a chimeric antigen receptor (CAR) against CD19, then given back to find and kill CD19-positive B cells.",

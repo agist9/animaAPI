@@ -2,6 +2,7 @@
   "id": "onasemnogene-abeparvovec",
   "name": "Onasemnogene abeparvovec",
   "aliases": ["Zolgensma", "AVXS-101", "onasemnogene"],
+  "route": "gene-iv",
   "modality": "gene-therapy",
   "status": "Approved",
   "summary": "An AAV9 gene therapy for spinal muscular atrophy. A non-replicating viral capsid carries a working copy of the gene for SMN protein into motor neurons, where it is expressed without integrating into the chromosomes.",

@@ -2,6 +2,7 @@
   "id": "imatinib",
   "name": "Imatinib",
   "aliases": ["STI571", "STI-571", "Gleevec", "Glivec", "CGP 57148B", "imatinib mesylate"],
+  "route": "oral",
   "modality": "small-molecule",
   "status": "Approved",
   "summary": "A small-molecule kinase inhibitor. It holds the BCR-ABL tyrosine kinase, the abnormal enzyme made by the Philadelphia chromosome in chronic myeloid leukemia, in an inactive shape, so the growth signal it drives stops.",

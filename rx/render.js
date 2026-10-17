@@ -17,6 +17,8 @@
   const SITES = {
     brain: { label: "Brain", pts: [[150, 48]] },
     mouth: { label: "Mouth", pts: [[150, 78]] },
+    eye: { label: "Eye", pts: [[139, 57], [161, 57]] },
+    nose: { label: "Nose", pts: [[150, 67]] },
     lungs: { label: "Lungs", pts: [[126, 190], [174, 190]] },
     heart: { label: "Heart", pts: [[156, 203]] },
     blood: { label: "Bloodstream", pts: [[153, 214], [92, 200], [208, 200], [121, 420], [179, 420], [152, 300]] },
@@ -45,7 +47,8 @@
     vein: "iv", intravenous: "iv", infusion: "iv", subcutaneous: "subq", sc: "subq", intramuscular: "im", muscle: "im",
     topical: "skin", transdermal: "skin", cns: "brain", spine: "spinal-cord", lung: "lungs", inhaled: "lungs", tumour: "tumor",
     duodenum: "intestine", jejunum: "intestine", ileum: "intestine", portal: "liver", hepatic: "liver", renal: "kidneys", csf: "spinal-cord", "motor-neurons": "spinal-cord",
-    oral: "mouth", manufacturing: "ex-vivo", circulation: "blood", plasma: "blood", "whole-body": "tissues", body: "tissues",
+    oral: "mouth", sublingual: "mouth", buccal: "mouth", manufacturing: "ex-vivo", eyes: "eye", ophthalmic: "eye", intravitreal: "eye",
+    nasal: "nose", intranasal: "nose", rectum: "intestine", rectal: "intestine", intrathecal: "spinal-cord", circulation: "blood", plasma: "blood", "whole-body": "tissues", body: "tissues",
   };
   const siteId = (s) => { const k = lower(s).trim().replace(/\s+/g, "-"); return SITES[k] ? k : SITE_ALIAS[k] || (SITES[k + "s"] ? k + "s" : "tissues"); };
 
@@ -73,6 +76,8 @@
 <g class="rx-vessels">${vessels.map((d) => `<path d="${d}"/>`).join("")}</g>
 ${organ("brain", `<path class="rx-o" d="M128,50 C126,34 140,27 150,28 C162,27 175,34 172,50 C171,62 160,68 150,67 C139,68 129,62 128,50 Z"/><path class="rx-o-line" d="M136,40 C141,44 137,50 142,54 M150,31 L150,66 M164,40 C159,44 163,50 158,54"/>`)}
 ${organ("mouth", `<path class="rx-o-line rx-o-strong" d="M142,77 C146,80 154,80 158,77"/>`)}
+${organ("eye", `<path class="rx-o" d="M133,57 C136,53.5 142,53.5 145,57 C142,60.5 136,60.5 133,57 Z"/><path class="rx-o" d="M155,57 C158,53.5 164,53.5 167,57 C164,60.5 158,60.5 155,57 Z"/>`)}
+${organ("nose", `<path class="rx-o-line rx-o-strong" d="M150,60 L146.5,69 L152,69"/>`)}
 ${organ("lungs", `<path class="rx-o" d="M146,152 C130,148 112,164 110,192 C108,214 114,226 124,226 C134,226 143,220 144,210 Z"/><path class="rx-o" d="M154,152 C170,148 188,164 190,192 C192,214 186,226 176,226 C166,226 157,220 156,210 Z"/><path class="rx-o-line" d="M150,104 L150,150 M150,150 L141,160 M150,150 L159,160"/>`)}
 ${organ("heart", `<path class="rx-o" d="M149,192 C142,186 134,193 139,202 C142,209 151,214 158,219 C166,212 173,204 171,196 C169,188 160,187 156,193 C154,191 152,191 149,192 Z"/>`)}
 ${organ("kidneys", `<ellipse class="rx-o" cx="128" cy="277" rx="8" ry="13"/><ellipse class="rx-o" cx="172" cy="277" rx="8" ry="13"/>`)}
@@ -204,18 +209,19 @@ ${leader(60, 140, 60, 158)}${lab(40, 170, recLabel)}${lab(434, 20, d.name, "end"
     };
   }
 
-  function sceneEnzyme(d, L) {
-    const N = 4, xs = [70, 152, 234, 316], order = [1, 3, 0, 2];
+  function sceneEnzyme(d, L, anchored) {
+    const xs = anchored ? [120, 210, 300] : [70, 152, 234, 316], N = xs.length, order = anchored ? [1, 0, 2] : [1, 3, 0, 2], x0 = xs[0];
     const up = isUp(d.target.action);
-    const enz = L.enzyme || d.target.short || "enzyme";
-    const svg = `${sideLabels(30, 110)}<rect class="rx-cyto" x="-10" y="84" width="460" height="230"/>${bilayer(66)}${nucleus(352, 270, 98, 46)}
+    const enz = L.enzyme || d.target.short || (anchored ? "receptor kinase" : "enzyme");
+    const svg = `${sideLabels(anchored ? 14 : 30, 110)}<rect class="rx-cyto" x="-10" y="84" width="460" height="230"/>${anchored ? xs.map((x) => `<path class="rx-stalk" d="M${x - 10},44 L${x - 10},147"/>`).join("") : ""}${bilayer(66)}${nucleus(352, 270, 98, 46)}
+${anchored ? xs.map((x) => `<ellipse class="rx-rec" cx="${x - 10}" cy="34" rx="8" ry="12"/>`).join("") + lab(xs[N - 1] + 6, 50, L.domain || "extracellular domain") : ""}
 ${xs.map((x, i) => g("enz", i, `<path class="rx-enz" d="M-8,-15 A17,17 0 1 0 8,-15 L0,-4 Z"/>`, "rx-enzg")).join("")}
 ${xs.map((_, i) => g("sub", i, `<rect class="rx-sub" x="-4" y="-4" width="8" height="8" rx="1.5"/>`)).join("")}
 ${xs.map((_, i) => g("phos", i, `<circle class="rx-sig" r="3.4"/><text class="rx-p" y="2.4" text-anchor="middle">P</text>`)).join("")}
 ${xs.map((_, i) => g("drug", i, drugGlyph(d.modality))).join("")}
-${leader(70, 180, 70, 196)}${lab(70, 208, enz, "middle")}${lab(120, 126, L.pocket || "active site", "start")}${leader(118, 128, 77, 146)}
-${lab(230, 246, L.signal || "downstream signal", "middle")}${lab(6, 128, L.substrate || "substrate", "start")}${leader(30, 132, 45, 154)}
-${lab(434, 20, d.name, "end", "rx-strong")}${lab(434, 33, up ? "activates the enzyme" : "inhibits the enzyme", "end")}`;
+${leader(x0, 180, x0, 196)}${lab(x0, 208, enz, "middle")}${L.note ? lab(x0, 221, L.note, "middle") : ""}${lab(x0 + 50, 126, L.pocket || "active site", "start")}${leader(x0 + 48, 128, x0 + 7, 146)}
+${lab(anchored ? 170 : 230, anchored ? 240 : 246, L.signal || "downstream signal", "middle")}${lab(6, 128, L.substrate || "substrate", "start")}${leader(30, 132, x0 - 25, 154)}
+${lab(434, 20, d.name, "end", "rx-strong")}${lab(434, 33, up ? (anchored ? "activates the kinase" : "activates the enzyme") : anchored ? "inhibits the kinase" : "inhibits the enzyme", "end")}`;
     let level = 0, bound = 0;
     return {
       svg,
@@ -232,7 +238,7 @@ ${lab(434, 20, d.name, "end", "rx-strong")}${lab(434, 33, up ? "activates the en
         xs.forEach((x, i) => {
           mv(R.enz[i], [x, 160]);
           const isB = set.has(i);
-          const start = [x - 14, 22 + (i % 2) * 10];
+          const start = anchored ? [x + 16, 14 + (i % 2) * 8] : [x - 14, 22 + (i % 2) * 10];
           let pos;
           const p0 = beatP(s, 0), p1 = beatP(s, 1);
           if (isB) pos = p1 > 0 ? mix([x - 4, 112], [x, 151], ease(p1)) : mix(start, [x - 4, 112], ease(p0));
@@ -248,7 +254,7 @@ ${lab(434, 20, d.name, "end", "rx-strong")}${lab(434, 33, up ? "activates the en
         level = act / N; bound = k;
         R.root.style.setProperty("--glow", f1(0.1 + 0.6 * level));
       },
-      metric: () => `${bound}/${N} enzymes bound · activity ${pct(level)}`,
+      metric: () => `${bound}/${N} ${anchored ? "kinases" : "enzymes"} bound · activity ${pct(level)}`,
     };
   }
 
@@ -591,14 +597,14 @@ ${lab(434, 22, d.name, "end", "rx-strong")}${lab(434, 35, "silences " + target, 
     if (c === "kinase") return "enzyme";
     if (c === "engager") return "car";
     if (c === "mrna-knockdown") return "oligo";
-    if (["checkpoint", "car", "gene", "oligo", "channel", "transporter", "nuclear", "ligand", "enzyme", "receptor"].includes(c)) return c;
+    if (["checkpoint", "car", "gene", "oligo", "channel", "transporter", "nuclear", "ligand", "enzyme", "rtk", "receptor"].includes(c)) return c;
     if (m === "cell-therapy") return "car";
     if (m === "gene-therapy" || m === "mrna") return "gene";
     if (m === "oligonucleotide") return "oligo";
     return m === "antibody" || m === "protein" || m === "peptide" ? "receptor" : "enzyme";
   }
   const SCENES = {
-    receptor: sceneReceptor, enzyme: sceneEnzyme, nuclear: sceneNuclear, ligand: sceneLigand, checkpoint: sceneCheckpoint, car: sceneCar, gene: sceneGene, oligo: sceneOligo,
+    receptor: sceneReceptor, enzyme: (d, L) => sceneEnzyme(d, L, false), rtk: (d, L) => sceneEnzyme(d, L, true), nuclear: sceneNuclear, ligand: sceneLigand, checkpoint: sceneCheckpoint, car: sceneCar, gene: sceneGene, oligo: sceneOligo,
     channel: (d, L) => sceneChannel(d, L, false), transporter: (d, L) => sceneChannel(d, L, true),
   };
   function sceneFor(d) {
@@ -606,14 +612,15 @@ ${lab(434, 22, d.name, "end", "rx-strong")}${lab(434, 35, "silences " + target, 
     s.key = key;
     return s;
   }
-  const SCENE_NAMES = { receptor: "Membrane receptor", enzyme: "Enzyme / kinase", channel: "Ion channel", transporter: "Transporter", nuclear: "Nuclear receptor", ligand: "Soluble ligand (neutraliser)", checkpoint: "Immune checkpoint (two cells)", car: "CAR-T / T-cell engager", gene: "Gene therapy / mRNA", oligo: "siRNA / antisense" };
+  const SCENE_NAMES = { receptor: "Membrane receptor", enzyme: "Enzyme / kinase", rtk: "Receptor tyrosine kinase", channel: "Ion channel", transporter: "Transporter", nuclear: "Nuclear receptor", ligand: "Soluble ligand (neutraliser)", checkpoint: "Immune checkpoint (two cells)", car: "CAR-T / T-cell engager", gene: "Gene therapy / mRNA", oligo: "siRNA / antisense" };
 
   /* ---------- the timeline ---------- */
 
+  const needFor = (d, prefix) => (d.needs || []).find((n) => String(n.path || "").startsWith(prefix));
   function timelineOf(d, scene) {
-    const journey = (d.journey || []).map((j) => ({ kind: "body", site: siteId(j.site), title: j.title, text: j.text, cite: j.cite, generic: j.generic }));
+    const journey = (d.journey || []).map((j, i) => ({ kind: "body", site: siteId(j.site), title: j.title, text: j.text, cite: j.cite, generic: j.generic, need: needFor(d, `journey[${i}]`) }));
     const mech = (d.mechanism && d.mechanism.length ? d.mechanism : scene.steps.map(([title, text]) => ({ title, text, generic: true })))
-      .map((m, i) => ({ kind: "cell", beat: Math.min(i, 3), title: m.title, text: m.text, cite: m.cite, generic: m.generic }));
+      .map((m, i) => ({ kind: "cell", beat: Math.min(i, 3), title: m.title, text: m.text, cite: m.cite, generic: m.generic, need: needFor(d, `mechanism[${i}]`) || (!(d.mechanism || []).length ? needFor(d, "mechanism") : null) }));
     let at = (d.journey || []).findIndex((j) => j.target);
     if (at < 0) at = journey.length - 1;
     const site = journey[at] ? journey[at].site : "tissues";
@@ -634,12 +641,21 @@ ${lab(434, 22, d.name, "end", "rx-strong")}${lab(434, 35, "silences " + target, 
     const scene = sceneFor(d);
     const steps = timelineOf(d, scene);
     const binding = d.binding !== false && !["cell-therapy", "gene-therapy", "oligonucleotide", "mrna"].includes(d.modality) && !["car", "gene", "oligo"].includes(lower(d.target.class));
-    const banner = d.confidential
-      ? `<p class="rx-banner rx-banner-conf"><b>Confidential.</b> Loaded on this device only. Nothing on this page is sent anywhere unless you press a public-lookup button.</p>`
-      : d.draft ? `<p class="rx-banner"><b>Auto-drafted from public databases.</b> Steps marked “typical” describe the drug class, not this drug. Verify against the label or primary sources before you rely on it.</p>` : "";
+    const form = d.dosageForm ? ` (${esc(d.dosageForm)})` : "";
+    const DRAFTS = {
+      claude: `<b>Drafted by Claude for ${esc(d.name)}${form}.</b> Claude wrote this from what it already knew; it did not look anything up. Check every statement and source before you rely on it. Steps marked “typical” describe the drug class.`,
+      template: `<b>Built from the ${esc(d.dosageForm || "route")} template.</b> The route and class steps are filled in. The highlighted fields are specific to ${esc(d.name)} and need your input.`,
+      public: `<b>Auto-drafted from public databases.</b> Steps marked “typical” describe the drug class, not this drug. Verify against the label or primary sources before you rely on it.`,
+    };
+    const needs = (d.needs || []).filter((n) => n && n.label);
+    const req = needs.filter((n) => n.required), opt = needs.filter((n) => !n.required);
+    const needBtn = (n) => `<button type="button" class="rx-need-chip${n.required ? " rx-req" : ""}" data-need="${esc(n.path)}" title="${esc(n.why || "")}">${esc(n.label)}</button>`;
+    const banner = (d.confidential ? `<p class="rx-banner rx-banner-conf"><b>Confidential.</b> Loaded on this device only. Nothing on this page is sent anywhere unless you press a public-lookup button.</p>` : "")
+      + (d.draft ? `<p class="rx-banner">${DRAFTS[d.draft] || DRAFTS.public}</p>` : "")
+      + (needs.length ? `<div class="rx-needs" role="region" aria-label="Fields that need your input">${req.length ? `<div><span class="rx-needs-h rx-req">${req.length} required field${req.length > 1 ? "s" : ""} need${req.length > 1 ? "" : "s"} your input</span>${req.map(needBtn).join("")}</div>` : `<div><span class="rx-needs-h">Nothing required is missing.</span></div>`}${opt.length ? `<div><span class="rx-needs-h">Optional, not public or not known:</span>${opt.map(needBtn).join("")}</div>` : ""}</div>` : "");
     host.innerHTML = `${banner}<figure class="iso-figure rx-fig">
 <div class="iso-plate rx-plate">
-  <div class="iso-plate-corners" aria-hidden="true"><span class="iso-plate-corner" data-corner="fig">${esc(opts.fig || "Fig 1")}</span><span class="iso-plate-corner" data-corner="title">${esc(d.name)} · ${esc(MODALITY[d.modality] || d.modality || "drug")}</span><span class="iso-plate-corner" data-corner="hint">Space pause · ←/→ step · hover parts</span><span class="iso-plate-corner" data-corner="readout" data-readout></span></div>
+  <div class="iso-plate-corners" aria-hidden="true"><span class="iso-plate-corner" data-corner="fig">${esc(opts.fig || "Fig 1")}</span><span class="iso-plate-corner" data-corner="title">${esc(d.name)} · ${esc(MODALITY[d.modality] || d.modality || "drug")}${d.dosageForm ? ` · ${esc(d.dosageForm)}` : ""}</span><span class="iso-plate-corner" data-corner="hint">Space pause · ←/→ step · hover parts</span><span class="iso-plate-corner" data-corner="readout" data-readout></span></div>
   <div class="rx-stage">
     <div class="rx-pane rx-pane-body"><div class="rx-pane-h">In the body</div>${bodySvg()}</div>
     <div class="rx-pane rx-pane-cell"><div class="rx-pane-h">At the target<span> · ${esc(d.target.cell || d.target.name || "")}</span></div>
@@ -651,11 +667,15 @@ ${lab(434, 22, d.name, "end", "rx-strong")}${lab(434, 35, "silences " + target, 
     <div class="rx-group"><button type="button" data-act="prev" aria-label="Previous step">◀</button><button type="button" data-act="play" aria-pressed="false">Pause</button><button type="button" data-act="next" aria-label="Next step">▶</button></div>
     ${binding ? `<label class="rx-range"><span class="rx-gl">Drug concentration at the target, relative to K<sub>d</sub></span><input type="range" min="-2" max="2" step="0.05" value="${opts.logc ?? 0.6}" data-act="conc" aria-describedby="rx-occ-note"><span class="rx-ticks"><i>0.01×</i><i>0.1×</i><i>1×</i><i>10×</i><i>100×</i></span></label>` : ""}
   </div>
-  <ol class="rx-steps">${steps.map((st, i) => `<li><button type="button" data-step="${i}"><span class="rx-step-k">${st.kind === "cell" ? "cell" : esc(SITES[st.site].label)}</span>${esc(st.title)}${st.generic ? ` <em>typical</em>` : ""}</button></li>`).join("")}</ol>
+  <ol class="rx-steps">${steps.map((st, i) => `<li><button type="button" data-step="${i}"><span class="rx-step-k">${st.kind === "cell" ? "cell" : esc(SITES[st.site].label)}</span>${esc(st.title)}${st.generic ? ` <em>typical</em>` : ""}${st.need ? ` <i class="rx-flag${st.need.required ? " rx-req" : ""}">${st.need.required ? "needs input" : "could add data"}</i>` : ""}</button></li>`).join("")}</ol>
 </div>
 <figcaption class="iso-legend"><span class="iso-caption">${esc(d.summary || "")}${binding ? ` <span id="rx-occ-note">The slider drives a simple binding model, occupancy = C / (C + K<sub>d</sub>) (one site, Hill coefficient 1). It shows the shape of the relationship, not a measured value for this drug.</span>` : ""}</span></figcaption>
 </figure>
-${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.structure && d.structure.url ? `<figure class="rx-struct"><img src="${esc(d.structure.url)}" alt="2D structure of ${esc(d.name)}" loading="lazy" width="150" height="150"><figcaption>2D structure${cites(d.structure.cite, d)}</figcaption></figure>` : ""}<dl>${d.facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${esc(f.value)}${cites(f.cite, d)}</dd></div>`).join("")}</dl></section>` : ""}
+${(() => {
+      const missing = needs.filter((n) => String(n.path).startsWith("fact:") && !(d.facts || []).some((f) => f.label === n.label && f.value));
+      d = { ...d, facts: [...(d.dosageForm ? [{ label: "Dosage form", value: `${d.dosageForm} (as entered)` }] : []), ...(d.facts || []).filter((f) => f.value), ...missing.map((n) => ({ label: n.label, value: "", need: n }))] };
+      return "";
+    })()}${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.structure && d.structure.url ? `<figure class="rx-struct"><img src="${esc(d.structure.url)}" alt="2D structure of ${esc(d.name)}" loading="lazy" width="150" height="150"><figcaption>2D structure${cites(d.structure.cite, d)}</figcaption></figure>` : ""}<dl>${d.facts.map((f) => `<div><dt>${esc(f.label)}</dt><dd>${f.need ? `<button type="button" class="rx-need-cell${f.need.required ? " rx-req" : ""}" data-need="${esc(f.need.path)}">${f.need.required ? "Needs your input" : "Not public: add if you have it"}</button>` : esc(f.value)}${cites(f.cite, d)}</dd></div>`).join("")}</dl></section>` : ""}
 <section class="bio-sources">
   <h2>Sources</h2>${(d.sources || []).length ? `<ol>${d.sources.map((s) => `<li id="rx-src-${esc(s.id)}" value="${esc(s.id)}">${esc(s.text)}${s.url ? ` <a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.url.replace(/^https?:\/\//, "").slice(0, 60))}</a>` : ""}</li>`).join("")}</ol>` : `<p>No sources given. Treat every statement on this page as unverified.</p>`}
   <h2>What is simplified</h2><ul>${[...(d.simplified || []), `The cell scene is the generic “${SCENE_NAMES[scene.key]}” template, labelled for this drug. It is schematic and not to scale.`].map((s) => `<li>${esc(s)}</li>`).join("")}</ul>
@@ -698,7 +718,8 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
       host.querySelector(".rx-pane-body").classList.toggle("rx-live", st.kind !== "cell");
       now.k.textContent = `Step ${idx + 1} of ${steps.length} · ${st.kind === "cell" ? "at the target" : SITES[st.site].label}${st.generic ? " · typical for the class" : ""}`;
       now.t.textContent = st.title || "";
-      now.p.innerHTML = esc(st.text || "") + cites(st.cite, d);
+      now.p.innerHTML = (st.text ? esc(st.text) : `<span class="rx-missing">Not filled in yet.</span>`) + cites(st.cite, d)
+        + (st.need ? `<span class="rx-now-need${st.need.required ? " rx-req" : ""}"><button type="button" data-need="${esc(st.need.path)}">${st.need.required ? "Needs your input" : "You could add"}: ${esc(st.need.label)}</button>${st.need.why ? ` ${esc(st.need.why)}` : ""}</span>` : "");
       labelSite(hover || st.site);
       if (user && reduce) draw();
     }
@@ -768,6 +789,11 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
       else if (e.key === "ArrowLeft") setStep(idx - 1, true);
     };
     document.addEventListener("keydown", onKey);
+    const onNeed = (e) => {
+      const b = e.target.closest && e.target.closest("[data-need]");
+      if (b && host.contains(b)) host.dispatchEvent(new CustomEvent("rx-need", { bubbles: true, detail: { path: b.dataset.need } }));
+    };
+    host.addEventListener("click", onNeed);
     let io = null;
     if (typeof IntersectionObserver === "function") { io = new IntersectionObserver((es) => { visible = es.some((e) => e.isIntersecting); }); io.observe(host.querySelector(".rx-stage")); }
 
@@ -777,7 +803,7 @@ ${(d.facts || []).length ? `<section class="rx-facts"><h2>Key facts</h2>${d.stru
     raf = requestAnimationFrame(tick);
     const api = {
       steps, scene,
-      destroy() { cancelAnimationFrame(raf); document.removeEventListener("keydown", onKey); if (io) io.disconnect(); host._rx = null; },
+      destroy() { cancelAnimationFrame(raf); document.removeEventListener("keydown", onKey); host.removeEventListener("click", onNeed); if (io) io.disconnect(); host._rx = null; },
       go: (i) => setStep(i, true),
       pause: () => setPlaying(false),
       advance(sec) { clock += sec; draw(); },

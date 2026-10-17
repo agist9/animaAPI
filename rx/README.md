@@ -11,20 +11,23 @@ Each page is generated from a **dossier**, a small JSON file of cited facts. The
 
 ## Use it
 
-Open [`anima-rx.html`](anima-rx.html) in a browser. Type a name (`imatinib`, `Keytruda`, `CTL019`) and press **Visualize**.
+Type a drug name or development code, choose its **dosage form**, and press **Go**.
 
-If the page has no dossier for what you typed, you get three choices:
+- **The page has a dossier for it.** It opens with your dosage form shown. If the form implies a different route from the dossier's, for example IV infusion for an oral drug, the entry steps are redrawn for that route and marked "typical". Everything from the target on stays as written.
+- **The page has no dossier, and it can ask Claude** (the hosted copy). Claude drafts one from the name and dosage form. It fills everything it can judge and flags what it cannot. Invented links and citations that point to nothing are stripped before the page shows the draft. The draft is saved in your browser and marked as Claude's work until you check it.
+- **The page has no dossier, and it cannot ask Claude** (the local file, or when you decline). The dosage form's template supplies the entry, distribution and clearance steps. **Fill from ChEMBL + PubChem** adds what public databases know.
 
-1. **Create a dossier.** The editor opens with a route template. The figure redraws as you type. The dossier stays in your browser; **Download JSON** saves it as a file.
-2. **Open a dossier file.** You can also drag one onto the page.
-3. **Search ChEMBL + PubChem.** This sends what you typed to EMBL-EBI and NCBI, then drafts a dossier from their records. Draft pages are marked as drafts, and their body journeys are generic for the route and modality. Do not use this for unpublished internal codes unless your confidentiality policy allows it.
+Either way, the editor opens with the fields that still need you highlighted. A solid outline means **required**: the target, the mechanism type, the action, the target tissue, and the modality when the dosage form doesn't tell. A dashed outline means **optional**: data that isn't public or isn't known, such as an unpublished half-life. A highlight clears as soon as you fill its field. The same gaps show as chips above the figure, flags on the steps and gaps in the facts table. Click any of them to jump to the field.
+
+[`dossiers/bezuclastinib.json`](dossiers/bezuclastinib.json) (CGT9486) shows the pattern. Its mechanism, disease biology and trial status are public and cited. Its human pharmacokinetics are not published yet, so those five fields are flagged as optional rather than guessed.
 
 From the command line:
 
 ```sh
 node rx/build.mjs              # rebuild rx/anima-rx.html from rx/dossiers/*.json
-node rx/build.mjs --check      # check every dossier; fails on uncited numbers or missing sources
+node rx/build.mjs --check      # check every dossier; fails on uncited numbers or missing sources, lists open required fields
 node rx/build.mjs CGT1815      # build one page from rx/private/ or rx/dossiers/ (matched by id, name or alias)
+node rx/build.mjs --hosted --out page.html   # the hosted variant, which asks Claude to draft unknown names
 ```
 
 ## Internal and confidential compounds
@@ -44,10 +47,11 @@ open rx/private/cgt1815.html
 |---|---|
 | `id`, `name`, `aliases` | Code, INN, brand names, former codes. Search matches any of them. |
 | `modality` | `small-molecule`, `antibody`, `protein`, `peptide`, `oligonucleotide`, `mrna`, `gene-therapy` or `cell-therapy`. |
+| `route`, `dosageForm` | The route the dossier describes (`oral`, `sublingual`, `inhaled`, `nasal`, `iv`, `subq`, `im`, `intravitreal`, `intrathecal`, `topical`, `transdermal`, `ophthalmic`, `rectal`, `ex-vivo`, `allogeneic`, `gene-iv`, `mrna-im`), and the dosage form chosen on the page. |
 | `status`, `confidential` | Free text, and `true` to show the confidential banner and keep the name out of the address bar. |
 | `summary` | One or two sentences, shown under the figure. |
 | `target.name`, `target.short` | Full target name, and the short label drawn in the scene. |
-| `target.class` | The scene: `receptor`, `enzyme`, `channel`, `transporter`, `nuclear`, `ligand`, `checkpoint`, `car`, `gene` or `oligo`. If left empty, it is chosen from the modality. |
+| `target.class` | The scene: `receptor`, `enzyme`, `rtk` (receptor tyrosine kinase), `channel`, `transporter`, `nuclear`, `ligand`, `checkpoint`, `car`, `gene` or `oligo`. If left empty, it is chosen from the modality. |
 | `target.action` | For example `inhibitor`, `antagonist`, `agonist`, `blocker`, `opener`, `neutraliser`, `T-cell engager` or `expression`. Agonist-like words make the scene switch things on; the rest switch them off. |
 | `target.cell`, `target.vector`, `target.labels` | The target cell's name; the vector (`AAV`, `lentivirus`, `LNP`); label overrides (`receptor`, `ligand`, `antigen`, `effector`, `target`, `protein`, `pocket`, `substrate`, `signal`, `blocks`). |
 | `binding` | `false` hides the occupancy slider. |
@@ -55,9 +59,10 @@ open rx/private/cgt1815.html
 | `mechanism[]` | Up to four beats at the target: `title`, `text`, `cite`. If left empty, the scene's own generic text is used. |
 | `facts[]` | `label`, `value`, `cite`. Values carry their units, population and conditions. |
 | `simplified[]` | What the drawing leaves out. |
+| `needs[]` | What is still missing: `path` (`target.name`, `journey[3].text`, `mechanism`, `fact:Elimination half-life` and so on), `label`, `why`, and `required`. |
 | `sources[]` | `id`, `text`, `url`. Every `cite` refers to a source `id`. |
 
-**Body sites:** `mouth`, `stomach`, `intestine`, `liver`, `pancreas`, `spleen`, `kidneys`, `bladder`, `lungs`, `heart`, `blood`, `brain`, `spinal-cord`, `bone-marrow`, `lymph-nodes`, `joints`, `skin`, `iv`, `subq`, `im`, `tumor`, `tissues` and `ex-vivo` (the manufacturing step of a cell therapy). Common synonyms also work (`gut`, `urine`, `vein`, `duodenum` and others).
+**Body sites:** `mouth`, `eye`, `nose`, `stomach`, `intestine`, `liver`, `pancreas`, `spleen`, `kidneys`, `bladder`, `lungs`, `heart`, `blood`, `brain`, `spinal-cord`, `bone-marrow`, `lymph-nodes`, `joints`, `skin`, `iv`, `subq`, `im`, `tumor`, `tissues` and `ex-vivo` (the manufacturing step of a cell therapy). Common synonyms also work (`gut`, `urine`, `vein`, `duodenum` and others).
 
 ## Rules the checker enforces
 

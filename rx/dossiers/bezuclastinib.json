@@ -1,0 +1,65 @@
+{
+  "id": "bezuclastinib",
+  "name": "Bezuclastinib",
+  "aliases": ["CGT9486", "CGT-9486", "PLX9486", "PLX-9486"],
+  "modality": "small-molecule",
+  "route": "oral",
+  "status": "Investigational. NDAs under FDA review as of 17 Oct 2026",
+  "summary": "An oral, selective type I tyrosine kinase inhibitor of KIT D816V, the mutation that drives most systemic mastocytosis. It binds the active form of the mutant kinase and shuts off the signal that keeps neoplastic mast cells growing. It is designed to spare closely related kinases and to stay largely out of the brain.",
+  "target": {
+    "name": "KIT D816V receptor tyrosine kinase",
+    "short": "KIT D816V",
+    "class": "rtk",
+    "action": "inhibitor",
+    "cell": "Neoplastic mast cell (bone marrow)",
+    "labels": { "pocket": "ATP site (active form)", "substrate": "substrate", "signal": "growth and survival signal", "domain": "SCF-binding domain", "note": "D816V: on without SCF" }
+  },
+  "binding": true,
+  "journey": [
+    { "site": "mouth", "title": "Taken by mouth", "text": "Bezuclastinib is an oral drug.", "cite": [1] },
+    { "site": "stomach", "title": "Dissolves", "text": "The dosage form disintegrates and the drug dissolves in the stomach and upper intestine.", "generic": true },
+    { "site": "intestine", "title": "Absorbed", "text": "Absorbed across the small-intestine wall into the portal blood. Bioavailability and food effect for bezuclastinib have not been published.", "generic": true },
+    { "site": "liver", "title": "First pass through the liver", "text": "Portal blood passes through the liver before it reaches the general circulation. How much bezuclastinib is lost on this pass has not been published.", "generic": true },
+    { "site": "blood", "title": "Distributed, but kept out of the brain", "text": "Carried in the blood to the tissues. Preclinical studies showed minimal brain penetration, which was a design goal. These are company-sponsored data.", "cite": [1, 2] },
+    { "site": "bone-marrow", "title": "Reaches the neoplastic mast cells", "text": "In systemic mastocytosis, mast cells carrying KIT D816V build up in the bone marrow. D816V was found in 93% of adults with indolent or aggressive SM, and in about a third of them also in CD34+ progenitors and eosinophils.", "cite": [3], "target": true },
+    { "site": "liver", "title": "Metabolised", "text": "Most oral kinase inhibitors are metabolised in the liver, often by CYP3A4. The metabolic pathway of bezuclastinib has not been published.", "generic": true },
+    { "site": "intestine", "title": "Eliminated", "text": "Kinase inhibitors and their metabolites usually leave mainly in bile and feces, with a smaller share in urine. Mass-balance data for bezuclastinib have not been published.", "generic": true }
+  ],
+  "mechanism": [
+    { "title": "Enters the mast cell", "text": "As a small molecule, bezuclastinib crosses the cell membrane to reach the kinase domain of KIT, which sits on the inside of the membrane.", "generic": true },
+    { "title": "Binds the active kinase", "text": "It is a type I inhibitor: it binds the ATP site of KIT D816V while the kinase is in its active conformation. Sunitinib, its partner in GIST, is a type II inhibitor that binds the inactive conformation.", "cite": [1, 4] },
+    { "title": "The always-on signal stops", "text": "D816V switches KIT on without its ligand, stem cell factor (SCF). With the ATP site blocked, the mutant kinase can no longer phosphorylate its substrates, and the growth and survival signal stops.", "cite": [5, 2] },
+    { "title": "Mast-cell burden falls", "text": "Neoplastic mast cells depend on this signal, so they decline. In the APEX trial in advanced SM, 65% of 68 evaluable patients responded by mIWG-MRC criteria.", "cite": [6] }
+  ],
+  "facts": [
+    { "label": "Molecule", "value": "Oral, selective type I tyrosine kinase inhibitor", "cite": [1] },
+    { "label": "Primary target", "value": "KIT D816V (exon 17); preclinical activity against KIT exon 9, 11, 17 and 18 mutations", "cite": [2] },
+    { "label": "Selectivity", "value": "Spares closely related kinases; minimal brain penetration in preclinical studies (company data)", "cite": [1, 2] },
+    { "label": "Why KIT D816V", "value": "Present in 93% of adults with indolent or aggressive SM (Spanish REMA network, n = 113)", "cite": [3] },
+    { "label": "GIST combination", "value": "With sunitinib (type II), covers both KIT conformations. PEAK phase 3: median PFS 16.5 vs 9.2 months, HR 0.50", "cite": [4, 7] },
+    { "label": "Regulatory status", "value": "Not approved. FDA target action dates: GIST with sunitinib 30 Nov 2026; nonadvanced SM 30 Dec 2026; advanced SM 29 Jun 2027", "cite": [8] }
+  ],
+  "needs": [
+    { "path": "journey[2].text", "label": "Oral bioavailability and food effect", "why": "Not published. Add from the Investigator's Brochure or clinical pharmacology report if you have it.", "required": false },
+    { "path": "journey[6].text", "label": "Metabolic pathway (main CYP enzymes)", "why": "Not published. The step shows what is typical for oral kinase inhibitors.", "required": false },
+    { "path": "journey[7].text", "label": "Elimination route (feces / urine split)", "why": "No mass-balance study published.", "required": false },
+    { "path": "fact:Elimination half-life", "label": "Elimination half-life", "why": "Human half-life not published.", "required": false },
+    { "path": "fact:Plasma protein binding", "label": "Plasma protein binding", "why": "Not published.", "required": false }
+  ],
+  "simplified": [
+    "KIT is drawn with one extracellular domain and one kinase domain. The real receptor has five immunoglobulin-like domains, a juxtamembrane region and a split kinase domain, and it signals as a dimer.",
+    "Downstream KIT signalling (for example PI3K/AKT, STAT5 and RAS/MAPK) is drawn as one growth-and-survival signal.",
+    "Systemic mastocytosis also involves mast cells in skin, gut, liver and spleen; the figure follows the bone marrow only.",
+    "Steps marked typical describe oral kinase inhibitors in general, because bezuclastinib's human pharmacokinetics have not been published."
+  ],
+  "sources": [
+    { "id": 1, "text": "OncLive. Bezuclastinib demonstrates early promise in advanced systemic mastocytosis (APEX trial coverage; describes bezuclastinib as an oral, potent, selective type I TKI that spares closely related kinases, with minimal brain penetration).", "url": "https://onclive.com/view/bezuclastinib-demonstrates-early-promise-in-advanced-systemic-mastocytosis" },
+    { "id": 2, "text": "Cogent Biosciences. Preclinical data identifies bezuclastinib as a differentiated KIT inhibitor with unique selectivity to KIT D816V and minimal evidence of brain penetration. Poster, AACR-NCI-EORTC Molecular Targets, October 2021. Company-sponsored.", "url": "https://www.cogentbio.com/wp-content/uploads/2022/08/october-2021_Cogent_Bezu_MolTargets21_Final.pdf" },
+    { "id": 3, "text": "Garcia-Montero AC, Jara-Acevedo M, Teodosio C, et al. KIT mutation in mast cells and other bone marrow hematopoietic cell lineages in systemic mast cell disorders. Blood. 2006;108(7):2366–2372.", "url": "https://pubmed.ncbi.nlm.nih.gov/?term=Garcia-Montero+KIT+mutation+mast+cells+Blood+2006" },
+    { "id": 4, "text": "Wagner AJ, et al. Association of combination of conformation-specific KIT inhibitors with clinical benefit in patients with refractory gastrointestinal stromal tumors: a phase 1b/2a nonrandomized clinical trial (PLX9486 with sunitinib, NCT02401815). JAMA Oncol. 2021;7(9):1343–1350.", "url": "https://pubmed.ncbi.nlm.nih.gov/?term=Wagner+conformation-specific+KIT+inhibitors+JAMA+Oncol+2021" },
+    { "id": 5, "text": "Furitsu T, Tsujimura T, Tono T, et al. Identification of mutations in the coding sequence of the proto-oncogene c-kit in a human mast cell leukemia cell line causing ligand-independent activation of c-kit product. J Clin Invest. 1993;92(4):1736–1744.", "url": "https://pubmed.ncbi.nlm.nih.gov/?term=Furitsu+c-kit+ligand-independent+activation+1993" },
+    { "id": 6, "text": "Cogent Biosciences. Positive top-line results of APEX trial of bezuclastinib in patients with advanced systemic mastocytosis (press release; Part 2, 68 evaluable patients, ORR 65% per mIWG-MRC).", "url": "https://investors.cogentbio.com/news-releases/news-release-details/cogent-biosciences-announces-positive-top-line-results-apex" },
+    { "id": 7, "text": "CancerNetwork. Bezuclastinib plus sunitinib meets PFS end point in KIT-mutant GIST (PEAK phase 3; median PFS 16.5 vs 9.2 months, HR 0.50, 95% CI 0.39–0.65). May 30, 2026.", "url": "https://www.cancernetwork.com/view/bezuclastinib-plus-sunitinib-meets-pfs-end-point-in-kit-mutant-gist" },
+    { "id": 8, "text": "Drugs.com. Bezuclastinib FDA approval status and NDA history (GIST priority review, PDUFA 30 Nov 2026; nonadvanced SM, 30 Dec 2026; advanced SM, 29 Jun 2027). Checked 17 Oct 2026.", "url": "https://www.drugs.com/history/bezuclastinib.html" }
+  ]
+}

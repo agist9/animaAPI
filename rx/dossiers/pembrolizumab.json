@@ -2,6 +2,7 @@
   "id": "pembrolizumab",
   "name": "Pembrolizumab",
   "aliases": ["Keytruda", "MK-3475", "lambrolizumab"],
+  "route": "iv",
   "modality": "antibody",
   "status": "Approved",
   "summary": "A humanised IgG4 monoclonal antibody against PD-1, an off switch on T cells. Blocking PD-1 stops tumour cells from using PD-L1 and PD-L2 to switch T cells off.",

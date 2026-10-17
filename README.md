@@ -75,9 +75,9 @@ Name the biological subject, the mechanism to explain, the audience and the outp
 
 ## Anima Rx: type a drug, see what it does
 
-[`rx/anima-rx.html`](rx/anima-rx.html) is a standalone page with a search box. Type a drug name or a development code and it draws two linked views. One is a body map that follows the drug from where it enters to where it is eliminated. The other is a cell-level scene of the mechanism at the target. A cited step for each stage ties them together. It ships with four worked dossiers, one per modality: imatinib (small molecule), pembrolizumab (antibody), tisagenlecleucel (CAR-T) and onasemnogene abeparvovec (AAV gene therapy).
+[`rx/anima-rx.html`](rx/anima-rx.html) is a standalone page. Type a drug name or a development code, choose its dosage form, press Go, and it draws two linked views. One is a body map that follows the drug from where it enters to where it is eliminated. The other is a cell-level scene of the mechanism at the target. A cited step for each stage ties them together. It ships with five worked dossiers: bezuclastinib (CGT9486, a receptor tyrosine kinase inhibitor), imatinib (small molecule), pembrolizumab (antibody), tisagenlecleucel (CAR-T) and onasemnogene abeparvovec (AAV gene therapy).
 
-An internal code like `CGT1815` has no public record, so you build its dossier in the page's editor. The dossier stays in your browser. You can also keep it as JSON in `rx/private/`, which git ignores. Public names can be drafted from ChEMBL and PubChem with one click. `node rx/build.mjs --check` fails any dossier that shows a number without a source. See [`rx/README.md`](rx/README.md).
+Names without a dossier are drafted for you: by Claude in the hosted copy, or from the dosage form's template in the local file. The editor then highlights only the fields that need you. An internal code like `CGT1815` has no public record, so its target and mechanism come from you. The dossier stays in your browser. You can also keep it as JSON in `rx/private/`, which git ignores. Public names can be drafted from ChEMBL and PubChem with one click. `node rx/build.mjs --check` fails any dossier that shows a number without a source. See [`rx/README.md`](rx/README.md).
 
 ## Gallery
 

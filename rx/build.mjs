@@ -38,6 +38,12 @@ function check({ file, d }) {
   if (!MODALITIES.includes(d.modality)) fail(`modality "${d.modality}" is not one of ${MODALITIES.join(", ")}`);
   const cls = d.target && d.target.class;
   if (cls && !RX.SCENE_NAMES[cls] && !["kinase", "engager", "mrna-knockdown"].includes(cls)) fail(`target.class "${cls}" is not one of ${Object.keys(RX.SCENE_NAMES).join(", ")}`);
+  const ROUTES = ["oral", "sublingual", "inhaled", "nasal", "iv", "subq", "im", "intravitreal", "intrathecal", "topical", "transdermal", "ophthalmic", "rectal", "ex-vivo", "allogeneic", "gene-iv", "mrna-im"];
+  if (d.route && !ROUTES.includes(d.route)) fail(`route "${d.route}" is not one of ${ROUTES.join(", ")}`);
+  if (!d.route) warn("no route: choosing a different dosage form cannot redraw the entry steps");
+  (d.needs || []).forEach((n, i) => { if (!n.path || !n.label) fail(`need ${i + 1} has no path or label`); });
+  const req = (d.needs || []).filter((n) => n.required);
+  if (req.length) warn(`${req.length} required field(s) still need input: ${req.map((n) => n.label).join(", ")}`);
   const ids = new Set((d.sources || []).map((s) => s.id));
   (d.sources || []).forEach((s, i) => { if (!s.text) fail(`source ${i + 1} has no text`); if (s.id == null) fail(`source ${i + 1} has no id`); });
   const targets = (d.journey || []).filter((j) => j.target).length;
@@ -94,7 +100,7 @@ function page({ title, dossiers, initial, hosted }) {
   return `${head}
 <header class="rx-head">
   <div class="rx-brand"><b>Anima Rx</b><span>drug · body · cell</span></div>
-  <form class="rx-search" id="rx-search" role="search"><label class="rx-sr" for="rx-q">Drug name or code</label><input id="rx-q" list="rx-list" placeholder="API name or code, e.g. imatinib or CGT1815" autocomplete="off" spellcheck="false"><datalist id="rx-list"></datalist><button type="submit">Visualize</button></form>
+  <form class="rx-search" id="rx-search" role="search"><label class="rx-sr" for="rx-q">Drug name or code</label><input id="rx-q" list="rx-list" placeholder="API name or code, e.g. CGT9486" autocomplete="off" spellcheck="false"><datalist id="rx-list"></datalist><label class="rx-sr" for="rx-form-sel">Dosage form</label><select id="rx-form-sel"></select><button type="submit">Go</button><p class="rx-engine" id="rx-engine"></p></form>
   <div class="rx-tools"><button type="button" data-act="open">Open dossier…</button><input type="file" id="rx-file" accept=".json,application/json" hidden><button type="button" data-act="new">New dossier</button><button type="button" data-act="theme">Light theme</button></div>
 </header>
 <nav class="rx-lib" id="rx-lib" aria-label="Dossiers on this page"></nav>
