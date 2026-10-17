@@ -73,6 +73,12 @@ More to try:
 
 Name the biological subject, the mechanism to explain, the audience and the output format. The skill sizes the job first (Figure, Hero or Epic), collects sources before drawing, builds the page, then checks it the way a reviewer would: zoomed in, in both themes, at phone width.
 
+## Anima Rx: type a drug, see what it does
+
+[`rx/anima-rx.html`](rx/anima-rx.html) is a standalone page with a search box. Type a drug name or a development code and it draws two linked views. One is a body map that follows the drug from where it enters to where it is eliminated. The other is a cell-level scene of the mechanism at the target. A cited step for each stage ties them together. It ships with four worked dossiers, one per modality: imatinib (small molecule), pembrolizumab (antibody), tisagenlecleucel (CAR-T) and onasemnogene abeparvovec (AAV gene therapy).
+
+An internal code like `CGT1815` has no public record, so you build its dossier in the page's editor. The dossier stays in your browser. You can also keep it as JSON in `rx/private/`, which git ignores. Public names can be drafted from ChEMBL and PubChem with one click. `node rx/build.mjs --check` fails any dossier that shows a number without a source. See [`rx/README.md`](rx/README.md).
+
 ## Gallery
 
 Each figure builds to a standalone HTML page in dark and light themes. The links open the live pages, so they run in your browser. To open them from a clone, use the files in `examples/`.

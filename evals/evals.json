@@ -40,6 +40,16 @@
       "id": 8,
       "prompt": "Visualize how semaglutide works on a pancreatic beta cell, with a glucose slider and a native GLP-1 versus semaglutide selector. Use official label numbers only, cite them, and keep preclinical brain findings separate from clinical evidence.",
       "expected_output": "A beta cell with the GLP-1 receptor, Gs, adenylyl cyclase, cAMP, PKA and Epac2, and the separate glucose-sensing pathway, showing that insulin release is glucose dependent. Label-derived numbers such as sequence homology, half-life and albumin binding are cited with their population. Brain and reward findings are marked preclinical or early, and no dose, schedule, weight-loss amount or recommendation appears."
+    },
+    {
+      "id": 9,
+      "prompt": "Visualize CGT1815 so I can see how it interacts in the body and what is actually happening.",
+      "expected_output": "Recognises CGT1815 as a likely internal development code with no public record. Does not guess a mechanism from the prefix, and asks before sending the code to any web search or public database. Asks for the facts or the source documents (Investigator's Brochure, development reports), writes the dossier only to rx/private/, runs node rx/build.mjs --check, and builds rx/private/cgt1815.html with a confidential banner. Nothing about the compound is committed or published, and no dose or schedule appears."
+    },
+    {
+      "id": 10,
+      "prompt": "/anima rx show what imatinib does in the body, from the tablet to the leukemic cell",
+      "expected_output": "Uses the imatinib dossier in rx/dossiers/. The page follows the drug from mouth to intestine, liver, blood and bone marrow, then shows the BCR-ABL kinase scene, where imatinib occupies the ATP site and the phosphorylation signal falls with occupancy, before metabolism by CYP3A4 and elimination mostly in feces. Every number (98% bioavailability, about 95% protein binding, half-lives of about 18 and 40 h, 68% in feces and 13% in urine) cites the Gleevec label. No dose appears."
     }
   ]
 }

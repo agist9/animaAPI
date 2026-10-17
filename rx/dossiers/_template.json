@@ -1,0 +1,43 @@
+{
+  "id": "cgt1815",
+  "name": "CGT1815",
+  "aliases": [],
+  "modality": "small-molecule",
+  "status": "Investigational (internal)",
+  "confidential": true,
+  "summary": "One or two sentences: what the molecule is and what it does to its target.",
+  "target": {
+    "name": "Full target name, e.g. KIT D816V tyrosine kinase",
+    "short": "Short label for the drawing, e.g. KIT",
+    "class": "enzyme",
+    "action": "inhibitor",
+    "cell": "Cell or tissue where the target is, e.g. mast cell",
+    "vector": "",
+    "labels": {}
+  },
+  "binding": true,
+  "journey": [
+    { "site": "mouth", "title": "Swallowed", "text": "Route of administration, from the Investigator's Brochure.", "cite": [1] },
+    { "site": "intestine", "title": "Absorbed", "text": "Absorption, with bioavailability only if it is measured and cited.", "cite": [1] },
+    { "site": "liver", "title": "First pass through the liver", "text": "First-pass metabolism, if known.", "cite": [1] },
+    { "site": "blood", "title": "Carried in the blood", "text": "Plasma protein binding, if known.", "cite": [1] },
+    { "site": "bone-marrow", "title": "Reaches the target cells", "text": "Where the target cells are.", "cite": [1], "target": true },
+    { "site": "liver", "title": "Metabolised", "text": "Main metabolic pathway (for example CYP3A4), if known.", "cite": [1] },
+    { "site": "intestine", "title": "Eliminated", "text": "Main elimination route, from the mass-balance study if there is one.", "cite": [1] }
+  ],
+  "mechanism": [
+    { "title": "Enters the cell", "text": "Beat 1 of the scene.", "cite": [1] },
+    { "title": "Binds the target", "text": "Beat 2: where and how it binds.", "cite": [1] },
+    { "title": "Blocks the signal", "text": "Beat 3: what stops or starts.", "cite": [1] },
+    { "title": "Cell response", "text": "Beat 4: what the cell does as a result.", "cite": [1] }
+  ],
+  "facts": [
+    { "label": "Half-life", "value": "Value, units, population and conditions", "cite": [1] }
+  ],
+  "simplified": [
+    "List what the drawing leaves out or simplifies."
+  ],
+  "sources": [
+    { "id": 1, "text": "Investigator's Brochure, edition and section (for example IB edition X, section Y)", "url": "" }
+  ]
+}

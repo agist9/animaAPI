@@ -1,0 +1,51 @@
+{
+  "id": "imatinib",
+  "name": "Imatinib",
+  "aliases": ["STI571", "STI-571", "Gleevec", "Glivec", "CGP 57148B", "imatinib mesylate"],
+  "modality": "small-molecule",
+  "status": "Approved",
+  "summary": "A small-molecule kinase inhibitor. It holds the BCR-ABL tyrosine kinase, the abnormal enzyme made by the Philadelphia chromosome in chronic myeloid leukemia, in an inactive shape, so the growth signal it drives stops.",
+  "target": {
+    "name": "BCR-ABL tyrosine kinase",
+    "short": "BCR-ABL",
+    "class": "enzyme",
+    "action": "inhibitor",
+    "cell": "Philadelphia-chromosome-positive leukemic cell",
+    "labels": { "pocket": "ATP site", "product": "phosphorylated substrate", "signal": "growth signal" }
+  },
+  "binding": true,
+  "journey": [
+    { "site": "mouth", "title": "Swallowed", "text": "Imatinib is taken by mouth as a tablet.", "cite": [1] },
+    { "site": "stomach", "title": "Dissolves", "text": "The tablet dissolves and the drug moves on to the small intestine." },
+    { "site": "intestine", "title": "Absorbed", "text": "Imatinib crosses the intestinal wall into the portal blood. Absorption is nearly complete: mean absolute bioavailability of the capsule formulation is 98%.", "cite": [1] },
+    { "site": "liver", "title": "First pass through the liver", "text": "Portal blood carries it through the liver before it reaches the general circulation. Little is lost on this pass, consistent with the 98% bioavailability.", "cite": [1] },
+    { "site": "blood", "title": "Carried in the blood", "text": "About 95% is bound to plasma proteins, mostly albumin and α1-acid glycoprotein. Only the unbound fraction can leave the blood and enter cells.", "cite": [1] },
+    { "site": "bone-marrow", "title": "Reaches the leukemic cells", "text": "In chronic myeloid leukemia the target cells are Philadelphia-chromosome-positive cells in the bone marrow and blood.", "cite": [1], "target": true },
+    { "site": "liver", "title": "Metabolised", "text": "CYP3A4 is the main enzyme that metabolises imatinib. The main circulating metabolite, the N-desmethyl piperazine derivative, is also active. Half-lives are about 18 h for imatinib and 40 h for the metabolite.", "cite": [1] },
+    { "site": "intestine", "title": "Eliminated, mostly in feces", "text": "About 81% of a dose is eliminated within 7 days, 68% of it in feces (via bile), mostly as metabolites.", "cite": [1] },
+    { "site": "bladder", "title": "and some in urine", "text": "The remaining 13% of the dose that is eliminated in 7 days leaves in urine.", "cite": [1] }
+  ],
+  "mechanism": [
+    { "title": "Enters the cell", "text": "Imatinib crosses the cell membrane to reach BCR-ABL, which sits in the cytoplasm.", "cite": [1] },
+    { "title": "Locks the kinase shut", "text": "It binds the ATP site of the ABL kinase domain while the kinase is in its inactive conformation, and holds it there.", "cite": [2] },
+    { "title": "No phosphate is passed on", "text": "With the site occupied, BCR-ABL cannot move phosphate from ATP onto its substrate proteins, so the growth signal it drives stops.", "cite": [1, 2] },
+    { "title": "The leukemic cell stops growing", "text": "Without BCR-ABL signalling, BCR-ABL-positive cells stop proliferating and many undergo apoptosis (programmed cell death).", "cite": [1] }
+  ],
+  "facts": [
+    { "label": "Absolute bioavailability", "value": "98% (capsule formulation, mean)", "cite": [1] },
+    { "label": "Plasma protein binding", "value": "≈95%, mostly albumin and α1-acid glycoprotein", "cite": [1] },
+    { "label": "Main metabolising enzyme", "value": "CYP3A4", "cite": [1] },
+    { "label": "Elimination half-life", "value": "≈18 h (imatinib), ≈40 h (N-desmethyl metabolite)", "cite": [1] },
+    { "label": "Elimination within 7 days", "value": "≈81% of dose: 68% feces, 13% urine", "cite": [1] },
+    { "label": "Other kinases inhibited", "value": "PDGF receptor and KIT (stem cell factor receptor)", "cite": [1] }
+  ],
+  "simplified": [
+    "Uptake into the cell is drawn as simple diffusion; transporters such as OCT-1 may contribute and their role is debated.",
+    "BCR-ABL drives several pathways (for example RAS/MAPK, PI3K/AKT and STAT5); they are drawn as one growth signal.",
+    "The body map is a schematic. Organ shapes and positions are approximate and not to scale."
+  ],
+  "sources": [
+    { "id": 1, "text": "Gleevec (imatinib mesylate) tablets, US Prescribing Information, Novartis. Sections 12.1 Mechanism of Action and 12.3 Pharmacokinetics.", "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=gleevec" },
+    { "id": 2, "text": "Schindler T, Bornmann W, Pellicena P, Miller WT, Clarkson B, Kuriyan J. Structural mechanism for STI-571 inhibition of Abelson tyrosine kinase. Science. 2000;289(5486):1938–1942.", "url": "https://doi.org/10.1126/science.289.5486.1938" }
+  ]
+}

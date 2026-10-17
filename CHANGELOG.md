@@ -6,6 +6,7 @@ All notable changes to this project are recorded here. The format follows [Keep 
 
 ### Added
 
+- `rx/`, Anima Rx: a standalone page that turns a drug name or development code into a body map (entry, absorption, distribution, target tissue, metabolism, elimination) linked to a cell-level mechanism scene, with cited steps, a binding-occupancy slider and a facts table. It has ten scene templates (receptor, enzyme, channel, transporter, nuclear receptor, soluble ligand, immune checkpoint, CAR-T or T-cell engager, gene therapy or mRNA, and siRNA or antisense) and four sourced dossiers (imatinib, pembrolizumab, tisagenlecleucel, onasemnogene abeparvovec). Internal codes get an in-browser dossier editor and a git-ignored `rx/private/` folder. Public names can be drafted from ChEMBL and PubChem on request. `node rx/build.mjs --check` fails a dossier that shows an uncited number.
 - `sunflower-bend`, a live figure of BendLab's two-state phototropism model (sensing lag, saturating bend rate), with parameter sliders, a flip-the-light option and a trajectory chart that shows when the rate limit cannot be read from the data, and three fitted presets supplied by BendLab's author. Credited to BendLab, with a link to its repository.
 
 ## [0.1.0] - 2026-10-13

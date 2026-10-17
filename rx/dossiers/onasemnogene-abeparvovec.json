@@ -1,0 +1,48 @@
+{
+  "id": "onasemnogene-abeparvovec",
+  "name": "Onasemnogene abeparvovec",
+  "aliases": ["Zolgensma", "AVXS-101", "onasemnogene"],
+  "modality": "gene-therapy",
+  "status": "Approved",
+  "summary": "An AAV9 gene therapy for spinal muscular atrophy. A non-replicating viral capsid carries a working copy of the gene for SMN protein into motor neurons, where it is expressed without integrating into the chromosomes.",
+  "target": {
+    "name": "SMN gene replacement in motor neurons",
+    "short": "SMN",
+    "class": "gene",
+    "action": "expression",
+    "vector": "AAV",
+    "cell": "Spinal motor neuron",
+    "labels": { "vector": "AAV9 capsid", "transgene": "SMN transgene", "protein": "SMN protein" }
+  },
+  "binding": false,
+  "journey": [
+    { "site": "iv", "title": "Infused into a vein", "text": "Given once as an intravenous infusion.", "cite": [1] },
+    { "site": "blood", "title": "Carried in the blood", "text": "The AAV9 capsid can cross the blood–brain barrier, which lets an intravenous dose reach neurons in the spinal cord.", "cite": [2] },
+    { "site": "spinal-cord", "title": "Reaches motor neurons", "text": "In spinal muscular atrophy, motor neurons in the spinal cord lack enough SMN protein because SMN1 is lost or mutated.", "cite": [1], "target": true },
+    { "site": "liver", "title": "Also reaches the liver", "text": "AAV9 also transduces the liver. Acute serious liver injury and acute liver failure carry a boxed warning, so liver function is monitored.", "cite": [1] },
+    { "site": "bladder", "title": "Vector DNA is shed", "text": "Vector DNA is shed for a time in saliva, urine and stool.", "cite": [1] }
+  ],
+  "mechanism": [
+    { "title": "The capsid attaches", "text": "The AAV9 capsid binds the cell surface and is taken up by endocytosis.", "cite": [3] },
+    { "title": "It travels to the nucleus", "text": "The capsid escapes the endosome and moves toward the nucleus.", "cite": [3] },
+    { "title": "The gene is delivered", "text": "In the nucleus the capsid releases its self-complementary DNA, which persists mostly as a separate episome rather than integrating into the chromosomes.", "cite": [1, 3] },
+    { "title": "SMN protein is made", "text": "The SMN transgene, driven by a CMV enhancer / chicken-β-actin hybrid promoter, is transcribed and translated into SMN protein.", "cite": [1] }
+  ],
+  "facts": [
+    { "label": "Vector", "value": "Non-replicating recombinant AAV9", "cite": [1] },
+    { "label": "Genome", "value": "Self-complementary DNA carrying human SMN cDNA", "cite": [1] },
+    { "label": "Promoter", "value": "CMV enhancer / chicken-β-actin hybrid", "cite": [1] },
+    { "label": "Fate in the nucleus", "value": "Persists mostly as a non-integrated episome", "cite": [3] },
+    { "label": "Boxed warning", "value": "Acute serious liver injury and acute liver failure", "cite": [1] }
+  ],
+  "simplified": [
+    "Receptor binding, endosomal escape and nuclear entry are each shown as one step. AAV entry involves several receptors and trafficking routes.",
+    "Uncoating is shown at the nucleus; where AAV capsids actually uncoat is still being studied.",
+    "The body map is a schematic. The spinal cord is drawn on the midline, in front of the organs, for visibility."
+  ],
+  "sources": [
+    { "id": 1, "text": "ZOLGENSMA (onasemnogene abeparvovec-xioi) suspension for intravenous infusion, US Prescribing Information, Novartis Gene Therapies. Boxed warning, sections 11 and 12.", "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=zolgensma" },
+    { "id": 2, "text": "Foust KD, Nurre E, Montgomery CL, Hernandez A, Chan CM, Kaspar BK. Intravascular AAV9 preferentially targets neonatal neurons and adult astrocytes. Nat Biotechnol. 2009;27(1):59–65.", "url": "https://doi.org/10.1038/nbt.1515" },
+    { "id": 3, "text": "Wang D, Tai PWL, Gao G. Adeno-associated virus vector as a platform for gene therapy delivery. Nat Rev Drug Discov. 2019;18(5):358–378.", "url": "https://doi.org/10.1038/s41573-019-0012-9" }
+  ]
+}

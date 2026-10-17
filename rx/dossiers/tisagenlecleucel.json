@@ -1,0 +1,47 @@
+{
+  "id": "tisagenlecleucel",
+  "name": "Tisagenlecleucel",
+  "aliases": ["Kymriah", "CTL019", "tisa-cel"],
+  "modality": "cell-therapy",
+  "status": "Approved",
+  "summary": "An autologous CAR-T cell therapy. The patient's own T cells are engineered with a lentiviral vector to carry a chimeric antigen receptor (CAR) against CD19, then given back to find and kill CD19-positive B cells.",
+  "target": {
+    "name": "CD19 on B cells",
+    "short": "CD19",
+    "class": "car",
+    "action": "cytotoxic",
+    "cell": "CAR-T cell meeting a malignant B cell",
+    "labels": { "receptor": "anti-CD19 CAR", "antigen": "CD19", "effector": "CAR-T cell", "target": "malignant B cell" }
+  },
+  "binding": false,
+  "journey": [
+    { "site": "iv", "title": "T cells are collected", "text": "White blood cells are collected from the patient's own blood by leukapheresis.", "cite": [1] },
+    { "site": "ex-vivo", "title": "Engineered outside the body", "text": "At the manufacturing site, the T cells are transduced with a lentiviral vector encoding the anti-CD19 CAR, expanded, then formulated and cryopreserved as the drug product.", "cite": [1] },
+    { "site": "iv", "title": "Infused back", "text": "The patient's own modified T cells are returned by intravenous infusion.", "cite": [1] },
+    { "site": "blood", "title": "Expands inside the patient", "text": "On meeting CD19, the CAR-T cells multiply. Unlike a conventional drug, the product keeps growing after it is given.", "cite": [1] },
+    { "site": "bone-marrow", "title": "Finds CD19-positive cells", "text": "CD19 is present on normal and malignant B cells in the blood, bone marrow and lymphoid tissue.", "cite": [1, 2], "target": true },
+    { "site": "lymph-nodes", "title": "Persists and patrols", "text": "CAR-T cells can persist for months, so normal B cells can stay depleted (B-cell aplasia) for a long time.", "cite": [2] }
+  ],
+  "mechanism": [
+    { "title": "The CAR finds CD19", "text": "The CAR's murine anti-CD19 single-chain variable fragment (scFv) binds CD19 on the B cell.", "cite": [1] },
+    { "title": "The T cell switches on", "text": "Binding signals through the CAR's 4-1BB (CD137) and CD3ζ domains and activates the T cell without needing antigen presented on MHC.", "cite": [1, 3] },
+    { "title": "It kills the target cell", "text": "The activated CAR-T cell releases cytotoxic granules and cytokines that kill the CD19-positive cell.", "cite": [3] },
+    { "title": "It multiplies and persists", "text": "Activation drives expansion and persistence. The cytokine surge from mass activation is the source of cytokine release syndrome.", "cite": [1] }
+  ],
+  "facts": [
+    { "label": "Product", "value": "Autologous T cells modified with a lentiviral vector", "cite": [1] },
+    { "label": "CAR design", "value": "Murine anti-CD19 scFv · CD8α hinge and transmembrane · 4-1BB · CD3ζ", "cite": [1] },
+    { "label": "Antigen", "value": "CD19 (normal and malignant B cells)", "cite": [1] },
+    { "label": "Boxed warnings", "value": "Cytokine release syndrome; neurological toxicities", "cite": [1] }
+  ],
+  "simplified": [
+    "Manufacturing is shown as a single ex-vivo step. The real process includes T-cell activation, transduction, expansion, formulation, release testing and cryopreservation.",
+    "Killing is drawn as granule release; cytokine-mediated and other killing routes are not shown separately.",
+    "The body map is a schematic; organ shapes and positions are approximate."
+  ],
+  "sources": [
+    { "id": 1, "text": "KYMRIAH (tisagenlecleucel) suspension for intravenous infusion, US Prescribing Information, Novartis. Boxed warning, sections 11 Description and 12.1 Mechanism of Action.", "url": "https://dailymed.nlm.nih.gov/dailymed/search.cfm?labeltype=all&query=kymriah" },
+    { "id": 2, "text": "Maude SL, Laetsch TW, Buechner J, et al. Tisagenlecleucel in children and young adults with B-cell lymphoblastic leukemia. N Engl J Med. 2018;378(5):439–448.", "url": "https://doi.org/10.1056/NEJMoa1709866" },
+    { "id": 3, "text": "June CH, Sadelain M. Chimeric antigen receptor therapy. N Engl J Med. 2018;379(1):64–73.", "url": "https://doi.org/10.1056/NEJMra1706169" }
+  ]
+}

@@ -10,3 +10,7 @@ audit.txt
 .scratch/
 tmp/
 .demo/
+
+# Anima Rx: confidential dossiers and the pages built from them
+rx/private/*
+!rx/private/README.md

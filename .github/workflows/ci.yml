@@ -35,6 +35,11 @@ jobs:
             node "${dir}build.mjs" --light
           done
 
+      - name: Check the Anima Rx dossiers and rebuild the explorer
+        run: |
+          node rx/build.mjs --check
+          node rx/build.mjs
+
       - name: Committed pages are unchanged
         run: |
           git status --short

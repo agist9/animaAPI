@@ -150,6 +150,16 @@ It is in beta: the engine is proved on its example and one test figure, not yet 
 
 Read `references/3d.md` first.
 
+## Drug lookup: Anima Rx
+
+When the user names a drug or development code and wants to see what it does in the body ("visualize CGT1815", "/anima rx imatinib"), use `rx/` before you build a bespoke figure. `rx/README.md` has the dossier format.
+
+1. Look for an existing dossier: `node rx/build.mjs <name>` matches the id, name and aliases in `rx/private/` and `rx/dossiers/`.
+2. **Public drug.** Collect sources first: the product label for approved drugs (mechanism, route, PK sections), then primary papers. Write `rx/dossiers/<id>.json`, run `node rx/build.mjs --check`, then `node rx/build.mjs`.
+3. **Internal or unpublished code** (a company prefix and number, such as `CGT1815`). Do not guess the mechanism from the prefix. Ask before you search the web or public databases for it, because a search sends the code to a third party. Ask the user for the facts or the documents they come from (Investigator's Brochure, development reports, tech-transfer package). Write the dossier only to `rx/private/`, which git ignores. Never copy it into `rx/dossiers/`, a commit, a pull request or a published artifact.
+4. Cite every number. Show the route as part of the journey, but never a dose, schedule or regimen. Mark generic steps `"generic": true` and say in `simplified` that they come from the drug class.
+5. If no scene template fits the mechanism, say so and offer a bespoke figure from the closest example.
+
 ## Biology references
 
 - `references/bio.md`: biological sourcing, scale and general representation rules.
